@@ -3,24 +3,26 @@
 function App() {
   const whatsappLink = "https://wa.me/5575998825022";
   
-  // Estado para o Slide Automático dos Cardápios
+  // Estados de Slide e Lightbox
   const [currentMenuSlide, setCurrentMenuSlide] = useState<number>(0);
-  
-  // Estado para o Lightbox (Galeria Ampliada)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   
+  // Referência para controle de toque (Swipe)
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
   const heroImage = "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1000";
   
   const allGalleryImages = [
     heroImage,
-    "/post1.png", "/post2.png", "/post3.png",
+    "/post1.png", "/post2.png", "/post3.png", "/post4.png",
     "/1.png", "/2.png", "/3.png", "/4.png",
     "/panfleto1.png", "/panfleto2.png", "/panfleto3.png"
   ];
 
   const menuImages = ["/1.png", "/2.png", "/3.png", "/4.png"];
 
-  // Efeito do slide automático para a seção de cardápios
+  // Slide Automático dos Cardápios
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentMenuSlide((prev) => (prev === menuImages.length - 1 ? 0 : prev + 1));
@@ -28,37 +30,38 @@ function App() {
     return () => clearInterval(timer);
   }, [menuImages.length]);
 
-  // Funções de Navegação da Moldura (Cardápios)
-  const nextMenu = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentMenuSlide((prev) => (prev === menuImages.length - 1 ? 0 : prev + 1));
+  // Funções de Navegação Lightbox
+  const nextLightbox = () => {
+    setLightboxIndex((prev) => (prev === null || prev === allGalleryImages.length - 1 ? 0 : prev + 1));
   };
 
-  const prevMenu = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentMenuSlide((prev) => (prev === 0 ? menuImages.length - 1 : prev - 1));
+  const prevLightbox = () => {
+    setLightboxIndex((prev) => (prev === null || prev === 0 ? allGalleryImages.length - 1 : prev - 1));
   };
 
-  // Funções de Navegação do Lightbox (Ampliado)
+  // Lógica de Swipe (Deslizar o dedo)
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) nextLightbox();
+    if (isRightSwipe) prevLightbox();
+  };
+
   const openLightbox = (imgUrl: string) => {
     const index = allGalleryImages.indexOf(imgUrl);
     setLightboxIndex(index !== -1 ? index : 0);
-  };
-
-  const nextLightbox = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLightboxIndex((prev) => {
-      if (prev === null) return 0;
-      return prev === allGalleryImages.length - 1 ? 0 : prev + 1;
-    });
-  };
-
-  const prevLightbox = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLightboxIndex((prev) => {
-      if (prev === null) return 0;
-      return prev === 0 ? allGalleryImages.length - 1 : prev - 1;
-    });
   };
 
   return (
@@ -86,39 +89,43 @@ function App() {
           background: rgba(255, 255, 255, 0.3); transform: rotate(30deg);
           left: -100%; animation: shine-effect 4s infinite ease-in-out;
         }
+        .no-select { -webkit-user-drag: none; user-select: none; -webkit-tap-highlight-color: transparent; }
       `}</style>
 
-      {/* LIGHTBOX (IMAGEM AMPLIADA CORRIGIDA) */}
+      {/* LIGHTBOX COM SUPORTE A SWIPE */}
       {lightboxIndex !== null && (
         <div 
           className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300"
           onClick={() => setLightboxIndex(null)}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
         >
-          {/* Botão Fechar */}
-          <button className="absolute top-6 right-6 text-white/50 hover:text-white z-[210] transition-colors">
+          <button className="absolute top-6 right-6 text-white/50 hover:text-white z-[210]">
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
 
-          {/* Seta Esquerda */}
-          <button onClick={prevLightbox} className="absolute left-4 lg:left-8 p-4 text-white hover:text-orange-500 bg-white/5 hover:bg-white/10 rounded-full transition-all z-[210]">
+          <button onClick={(e) => { e.stopPropagation(); prevLightbox(); }} className="hidden lg:block absolute left-8 p-4 text-white hover:text-orange-500 bg-white/5 rounded-full z-[210]">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
           </button>
 
-          {/* Container da Imagem com restrição de tamanho */}
           <div className="relative w-full h-full flex flex-col items-center justify-center pointer-events-none">
             <img 
               src={allGalleryImages[lightboxIndex]} 
               alt="Visualização" 
-              className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 pointer-events-auto" 
+              className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 pointer-events-auto no-select" 
+              style={{ touchAction: 'none' }}
               onClick={(e) => e.stopPropagation()}
             />
-            <p className="text-white/40 text-xs mt-6 font-bold tracking-widest uppercase">
-              {lightboxIndex + 1} / {allGalleryImages.length}
-            </p>
+            <div className="mt-8 text-center">
+              <p className="text-white/40 text-xs font-bold tracking-widest uppercase mb-2">
+                {lightboxIndex + 1} / {allGalleryImages.length}
+              </p>
+              <span className="lg:hidden text-white/20 text-[10px] uppercase tracking-widest italic">Deslize para o lado</span>
+            </div>
           </div>
 
-          {/* Seta Direita */}
-          <button onClick={nextLightbox} className="absolute right-4 lg:right-8 p-4 text-white hover:text-orange-500 bg-white/5 hover:bg-white/10 rounded-full transition-all z-[210]">
+          <button onClick={(e) => { e.stopPropagation(); nextLightbox(); }} className="hidden lg:block absolute right-8 p-4 text-white hover:text-orange-500 bg-white/5 rounded-full z-[210]">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -129,13 +136,12 @@ function App() {
         <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       </a>
 
-      {/* Header */}
+      {/* Header Atualizado (Sem o botão Trabalhos) */}
       <nav className="fixed top-0 w-full bg-[#FDFCFB]/80 backdrop-blur-md z-50 border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-8 py-6 flex justify-between items-center">
           <div className="text-xl font-black tracking-tighter text-slate-900 uppercase">Gerianderson.DSGN</div>
-          <div className="space-x-8 text-xs font-bold uppercase tracking-widest text-slate-400">
-            <a href="#trabalhos" className="hover:text-orange-500 transition-colors">Trabalhos</a>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="text-slate-900 border-b-2 border-orange-500">Orçamento</a>
+          <div className="text-xs font-bold uppercase tracking-widest">
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="text-slate-900 border-b-2 border-orange-500 hover:text-orange-500 transition-colors">Orçamento</a>
           </div>
         </div>
       </nav>
@@ -156,31 +162,27 @@ function App() {
       </header>
 
       {/* TÓPICO 1: SOCIAL MEDIA */}
-      <section id="trabalhos" className="py-24 border-t border-slate-100">
+      <section className="py-24 border-t border-slate-100">
         <div className="max-w-6xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1 grid grid-cols-2 gap-6">
-            <div className="col-span-2 aspect-[4/5] bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 p-2 cursor-zoom-in hover:shadow-2xl transition-all" onClick={() => openLightbox("/post1.png")}>
-                <img src="/post1.png" alt="Post 1" className="w-full h-full object-cover rounded-2xl" />
-            </div>
-            <div className="aspect-[4/5] bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 p-2 cursor-zoom-in hover:shadow-2xl transition-all" onClick={() => openLightbox("/post2.png")}>
-                <img src="/post2.png" alt="Post 2" className="w-full h-full object-cover rounded-2xl" />
-            </div>
-            <div className="aspect-[4/5] bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 p-2 cursor-zoom-in hover:shadow-2xl transition-all" onClick={() => openLightbox("/post3.png")}>
-                <img src="/post3.png" alt="Post 3" className="w-full h-full object-cover rounded-2xl" />
-            </div>
+            {["/post1.png", "/post2.png", "/post3.png", "/post4.png"].map((img, i) => (
+              <div key={i} className="aspect-[2/3] bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 p-2 cursor-zoom-in hover:shadow-2xl transition-all" onClick={() => openLightbox(img)}>
+                  <img src={img} alt={`Post ${i+1}`} className="w-full h-full object-cover rounded-2xl" />
+              </div>
+            ))}
           </div>
           <div className="order-1 lg:order-2">
             <h2 className="text-4xl font-black mb-6 tracking-tight">Social Media <br/><span className="text-orange-500 italic">Estratégico</span></h2>
-            <p className="text-slate-500 mb-8 leading-relaxed">Artes que geram desejo e autoridade. Clique para navegar na galeria.</p>
+            <p className="text-slate-500 mb-8 leading-relaxed">Artes verticais de alto impacto que dominam o feed e geram autoridade.</p>
           </div>
         </div>
       </section>
 
-      {/* TÓPICO 2: CARDÁPIOS (COM SETAS NA MOLDURA) */}
+      {/* TÓPICO 2: CARDÁPIOS */}
       <section className="py-24 bg-slate-900 text-white overflow-hidden">
         <div className="max-w-6xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-4xl font-black mb-6 tracking-tight text-white">Cardápios <br/><span className="text-orange-500">Digitais</span></h2>
+            <h2 className="text-4xl font-black mb-6 tracking-tight text-white">Cardápios <br/><span className="text-orange-500">Digitais ou inpressos</span></h2>
             <p className="text-slate-400 mb-10 leading-relaxed">Menus interativos focados na experiência do cliente.</p>
           </div>
           
@@ -190,26 +192,12 @@ function App() {
                   <img key={index} src={img} alt={`Menu ${index}`} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentMenuSlide ? 'opacity-100' : 'opacity-0'}`} />
                 ))}
             </div>
-
-            <button 
-              onClick={prevMenu}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/40 hover:bg-orange-500 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-            >
+            <button onClick={(e) => { e.stopPropagation(); setCurrentMenuSlide(prev => prev === 0 ? menuImages.length - 1 : prev - 1); }} className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/40 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-
-            <button 
-              onClick={nextMenu}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/40 hover:bg-orange-500 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm"
-            >
+            <button onClick={(e) => { e.stopPropagation(); setCurrentMenuSlide(prev => prev === menuImages.length - 1 ? 0 : prev + 1); }} className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/40 text-white rounded-full transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
             </button>
-
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-               {menuImages.map((_, i) => (
-                 <div key={i} className={`w-1.5 h-1.5 rounded-full transition-all ${i === currentMenuSlide ? 'bg-orange-500 w-4' : 'bg-white/30'}`} />
-               ))}
-            </div>
           </div>
         </div>
       </section>
@@ -218,30 +206,18 @@ function App() {
       <section className="py-24 border-t border-slate-100">
         <div className="max-w-6xl mx-auto px-8 grid lg:grid-cols-2 gap-20 items-center">
           <div className="grid grid-cols-2 gap-6 items-end">
-             <div className="bg-white aspect-[2/3.5] rounded-2xl shadow-md overflow-hidden border border-slate-100 cursor-zoom-in hover:shadow-xl transition-all" onClick={() => openLightbox("/panfleto1.png")}>
-               <img src="/panfleto1.png" alt="Panfleto 1" className="w-full h-full object-cover" />
-             </div>
-             <div className="bg-white aspect-[2/3.5] rounded-2xl shadow-md overflow-hidden border border-slate-100 cursor-zoom-in hover:shadow-xl transition-all" onClick={() => openLightbox("/panfleto2.png")}>
-               <img src="/panfleto2.png" alt="Panfleto 2" className="w-full h-full object-cover" />
-             </div>
-             <div className="col-span-2 bg-white aspect-[21/9] rounded-2xl shadow-md overflow-hidden border border-slate-100 cursor-zoom-in hover:shadow-xl transition-all" onClick={() => openLightbox("/panfleto3.png")}>
+             {["/panfleto1.png", "/panfleto2.png"].map((img, i) => (
+               <div key={i} className="bg-white aspect-[2/3.5] rounded-2xl shadow-md overflow-hidden border border-slate-100 cursor-zoom-in" onClick={() => openLightbox(img)}>
+                 <img src={img} alt={`Panfleto ${i+1}`} className="w-full h-full object-cover" />
+               </div>
+             ))}
+             <div className="col-span-2 bg-white aspect-[21/9] rounded-2xl shadow-md overflow-hidden border border-slate-100 cursor-zoom-in" onClick={() => openLightbox("/panfleto3.png")}>
                <img src="/panfleto3.png" alt="Panfleto 3" className="w-full h-full object-cover" />
              </div>
           </div>
           <div>
             <h2 className="text-4xl font-black mb-6 tracking-tight text-slate-900">Materiais <br/><span className="text-orange-500">Impressos</span></h2>
-            <p className="text-slate-500 mb-8 leading-relaxed">Design de alto impacto para qualquer formato.</p>
-            <div className="flex gap-4">
-                <div className="flex flex-col">
-                    <span className="text-2xl font-bold text-slate-900">CMYK</span>
-                    <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Padrão Gráfico</span>
-                </div>
-                <div className="w-px h-10 bg-slate-100"></div>
-                <div className="flex flex-col">
-                    <span className="text-2xl font-bold text-slate-900">300 DPI</span>
-                    <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Alta Definição</span>
-                </div>
-            </div>
+            <p className="text-slate-500 mb-8 leading-relaxed">Design de alta resolução pronto para produção física.</p>
           </div>
         </div>
       </section>
