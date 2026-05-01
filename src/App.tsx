@@ -1,13 +1,13 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 
 function App() {
   const whatsappLink = "https://wa.me/5575998825022";
   
   // Estado para o Slide Automático dos Cardápios
-  const [currentMenuSlide, setCurrentMenuSlide] = useState(0);
+  const [currentMenuSlide, setCurrentMenuSlide] = useState<number>(0);
   
   // Estado para o Lightbox (Galeria Ampliada)
-  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   
   const heroImage = "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1000";
   
@@ -29,30 +29,36 @@ function App() {
   }, [menuImages.length]);
 
   // Funções de Navegação da Moldura (Cardápios)
-  const nextMenu = (e) => {
+  const nextMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setCurrentMenuSlide((prev) => (prev === menuImages.length - 1 ? 0 : prev + 1));
   };
 
-  const prevMenu = (e) => {
+  const prevMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setCurrentMenuSlide((prev) => (prev === 0 ? menuImages.length - 1 : prev - 1));
   };
 
   // Funções de Navegação do Lightbox (Ampliado)
-  const openLightbox = (imgUrl) => {
+  const openLightbox = (imgUrl: string) => {
     const index = allGalleryImages.indexOf(imgUrl);
     setLightboxIndex(index !== -1 ? index : 0);
   };
 
-  const nextLightbox = (e) => {
+  const nextLightbox = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setLightboxIndex((prev) => (prev === allGalleryImages.length - 1 ? 0 : prev + 1));
+    setLightboxIndex((prev) => {
+      if (prev === null) return 0;
+      return prev === allGalleryImages.length - 1 ? 0 : prev + 1;
+    });
   };
 
-  const prevLightbox = (e) => {
+  const prevLightbox = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setLightboxIndex((prev) => (prev === 0 ? allGalleryImages.length - 1 : prev - 1));
+    setLightboxIndex((prev) => {
+      if (prev === null) return 0;
+      return prev === 0 ? allGalleryImages.length - 1 : prev - 1;
+    });
   };
 
   return (
