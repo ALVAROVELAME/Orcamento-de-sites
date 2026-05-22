@@ -2,9 +2,9 @@
 
 const PORTFOLIO_DATA = {
   heroImage: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1000",
-  socialImages: ["/post1.png", "/post2.png", "/post3.png", "/post4.png"],
-  menuImages: ["/1.png", "/2.png", "/3.png", "/4.png"],
-  printedImages: ["/panfleto1.png", "/panfleto2.png", "/panfleto3.png"]
+  socialImages: ["/post1.webp", "/post2.webp", "/post3.webp", "/post4.webp"],
+  menuImages: ["/1.webp", "/2.webp", "/3.webp", "/4.webp"],
+  printedImages: ["/panfleto1.webp", "/panfleto2.webp", "/panfleto3.webp"]
 };
 
 export default function App() {
