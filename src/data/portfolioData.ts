@@ -1,8 +1,45 @@
+// src/data/portfolioData.ts
+
 export interface ResponsiveImage {
   src: string;
   srcset: string;
   sizes: string;
   alt: string;
+}
+
+/**
+ * Classe inteligente:
+ * - Se for link externo (começa com http), usa o link diretamente.
+ * - Se for local, prefixa com /images/ e tenta montar o srcset otimizado.
+ */
+class ImageItem implements ResponsiveImage {
+  src: string;
+  srcset: string;
+  sizes: string;
+  alt: string;
+
+  constructor(
+    pathOrName: string, 
+    alt: string, 
+    sizes: string = "(max-width: 600px) 400px, (max-width: 900px) 800px, 1200px"
+  ) {
+    const isExternal = pathOrName.startsWith('http');
+
+    if (isExternal) {
+      // Para links externos, usamos o link como src e o srcset vazio ou igual ao src
+      this.src = pathOrName;
+      this.srcset = `${pathOrName} 1x`; // Navegador usa o link diretamente
+      this.sizes = "100vw";
+    } else {
+      // Para arquivos locais, mantemos a lógica das 3 versões
+      this.src = `/images/${pathOrName}.webp`;
+      this.srcset = `/images/${pathOrName}-400w.webp 400w, ` +
+                    `/images/${pathOrName}-800w.webp 800w`;
+      this.sizes = sizes;
+    }
+    
+    this.alt = alt;
+  }
 }
 
 export interface PortfolioData {
@@ -13,34 +50,29 @@ export interface PortfolioData {
   printedImages: ResponsiveImage[];
 }
 
-export const PORTFOLIO_DATA: PortfolioData = {
-  heroImage: {
-    src: "/images/principal-800w.webp",
-    srcset: "/images/principal-800w.webp 800w",
-    sizes: "100vw",
-    alt: "Design de destaque"
-  },
-  extraImage: {
-    src: "/images/extra.webp", // Certifique-se de ter este arquivo ou ajuste o nome
-    srcset: "/images/extra.webp 800w",
-    sizes: "100vw",
-    alt: "Imagem extra do projeto"
-  },
-  socialImages: [
-    { src: "/images/post1-800w.webp", srcset: "/images/post1-800w.webp 800w", sizes: "800px", alt: "Post social media 1" },
-    { src: "/images/post2-800w.webp", srcset: "/images/post2-800w.webp 800w", sizes: "800px", alt: "Post social media 2" },
-    { src: "/images/post3-800w.webp", srcset: "/images/post3-800w.webp 800w", sizes: "800px", alt: "Post social media 3" },
-    { src: "/images/post4-800w.webp", srcset: "/images/post4-800w.webp 800w", sizes: "800px", alt: "Post social media 4" }
-  ],
-  menuImages: [
-    { src: "/images/1-800w.webp", srcset: "/images/1-800w.webp 800w", sizes: "800px", alt: "Slide de menu 1" },
-    { src: "/images/2-800w.webp", srcset: "/images/2-800w.webp 800w", sizes: "800px", alt: "Slide de menu 2" },
-    { src: "/images/3-800w.webp", srcset: "/images/3-800w.webp 800w", sizes: "800px", alt: "Slide de menu 3" },
-    { src: "/images/4-800w.webp", srcset: "/images/4-800w.webp 800w", sizes: "800px", alt: "Slide de menu 4" }
-  ],
-  printedImages: [
-    { src: "/images/panfleto1-800w.webp", srcset: "/images/panfleto1-800w.webp 800w", sizes: "800px", alt: "Material impresso 1" },
-    { src: "/images/panfleto2-800w.webp", srcset: "/images/panfleto2-800w.webp 800w", sizes: "800px", alt: "Material impresso 2" },
-    { src: "/images/panfleto3-800w.webp", srcset: "/images/panfleto3-800w.webp 800w", sizes: "800px", alt: "Material impresso 3" }
-  ]
+export const fetchPortfolioData = async (): Promise<PortfolioData> => {
+  return {
+    heroImage: new ImageItem("principal", "Design de destaque", "100vw"),
+    extraImage: new ImageItem("extra", "Imagem extra do projeto"),
+    
+    socialImages: [
+      new ImageItem("post1", "Post social media 1"),
+      new ImageItem("post2", "Post social media 2"),
+      new ImageItem("post3", "Post social media 3"),
+      new ImageItem("post4", "Post social media 4")
+    ],
+    
+    menuImages: [
+      new ImageItem("1", "Slide de menu 1"),
+      new ImageItem("2", "Slide de menu 2"),
+      new ImageItem("3", "Slide de menu 3"),
+      new ImageItem("4", "Slide de menu 4")
+    ],
+    
+    printedImages: [
+      new ImageItem("panfleto1", "Material impresso 1"),
+      new ImageItem("panfleto2", "Material impresso 2"),
+      new ImageItem("panfleto3", "Material impresso 3"),
+    ]
+  };
 };

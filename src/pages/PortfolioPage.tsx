@@ -3,20 +3,13 @@ import { Lightbox } from '../components/Lightbox';
 import { Navbar } from '../components/Navbar';
 import { FloatingWhatsapp } from '../components/FloatingWhatsapp';
 import { GlobalEffects } from '../components/GlobalEffects';
+import { fetchPortfolioData, type PortfolioData } from '../data/portfolioData';
 
-// Interface que agora reflete a estrutura de objeto que criamos
 interface ResponsiveImage {
   src: string;
   srcset: string;
   sizes: string;
   alt: string;
-}
-
-interface PortfolioPageProps {
-  heroImage: { src: string; alt: string };
-  socialImages: ResponsiveImage[];
-  menuImages: ResponsiveImage[];
-  printedImages: ResponsiveImage[];
 }
 
 function ResponsiveImageComponent({ data, images, index, openLightbox }: { data: ResponsiveImage, images: ResponsiveImage[], index: number, openLightbox: (imgs: string[], idx: number) => void }) {
@@ -50,21 +43,31 @@ function ResponsiveImageComponent({ data, images, index, openLightbox }: { data:
   );
 }
 
-export function PortfolioPage({ heroImage, socialImages, menuImages, printedImages }: PortfolioPageProps) {
-  const whatsappLink = "https://wa.me/557598825022";
-  
+export default function PortfolioPage() {
+  const [data, setData] = useState<PortfolioData | null>(null);
   const [lightboxState, setLightboxState] = useState<{ images: string[]; index: number } | null>(null);
   const [currentMenuSlide, setCurrentMenuSlide] = useState(0);
 
   useEffect(() => {
-    if (menuImages.length === 0) return;
+    async function load() {
+      const result = await fetchPortfolioData();
+      setData(result);
+    }
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (!data || data.menuImages.length === 0) return;
     const timer = setInterval(() => {
-      setCurrentMenuSlide((prev) => (prev >= menuImages.length - 1 ? 0 : prev + 1));
+      setCurrentMenuSlide((prev) => (prev >= data.menuImages.length - 1 ? 0 : prev + 1));
     }, 5000);
     return () => clearInterval(timer);
-  }, [menuImages]);
+  }, [data]);
 
   const openLightbox = (images: string[], index: number) => setLightboxState({ images, index });
+  const whatsappLink = "https://wa.me/557598825022";
+
+  if (!data) return null;
 
   return (
     <div className="min-h-screen bg-[#FDFCFB] text-slate-900 selection:bg-orange-100 font-sans scroll-smooth">
@@ -87,17 +90,14 @@ export function PortfolioPage({ heroImage, socialImages, menuImages, printedImag
       <main>
         <header className="max-w-6xl mx-auto px-8 pt-48 pb-24 grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="inline-block px-3 py-1 bg-orange-200 text-orange-900 text-[10px] font-bold rounded-full mb-6 uppercase tracking-[0.2em]">
-              Disponível para novos projetos
-            </span>
+            <span className="inline-block px-3 py-1 bg-orange-200 text-orange-900 text-[10px] font-bold rounded-full mb-6 uppercase tracking-[0.2em]">Disponível para novos projetos</span>
             <h1 className="text-7xl font-black leading-[0.9] mb-8 tracking-tighter text-slate-900">Design que <br /><span className="text-orange-600">comunica</span>.</h1>
             <p className="text-lg text-slate-500 leading-relaxed max-w-sm mb-10">Transformando ideias em artes de alto impacto.</p>
             <a href={whatsappLink} className="bg-slate-900 text-white px-10 py-4 rounded-full font-bold text-sm hover:bg-orange-600 transition-all shadow-xl inline-block animate-soft-float btn-shine-container">Iniciar Projeto</a>
           </div>
-          
-          <div className="relative cursor-zoom-in" onClick={() => openLightbox([heroImage.src], 0)} role="button" aria-label="Ampliar imagem de destaque" tabIndex={0}>
+          <div className="relative cursor-zoom-in" onClick={() => openLightbox([data.heroImage.src], 0)} role="button">
             <div className="bg-slate-200 aspect-video rounded-[2rem] overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500">
-              <img src={heroImage.src} alt={heroImage.alt} className="w-full h-full object-cover" fetchPriority="high" />
+              <img src={data.heroImage.src} alt={data.heroImage.alt} className="w-full h-full object-cover" fetchPriority="high" />
             </div>
           </div>
         </header>
@@ -105,8 +105,8 @@ export function PortfolioPage({ heroImage, socialImages, menuImages, printedImag
         <section className="py-24 border-t border-slate-100">
           <div className="max-w-6xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 grid grid-cols-2 gap-6">
-              {socialImages.map((img, i) => (
-                <div key={i} className="aspect-[2/3] bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 p-2 cursor-zoom-in hover:shadow-2xl transition-all" onClick={() => openLightbox(socialImages.map(s => s.src), i)} role="button" tabIndex={0}>
+              {data.socialImages.map((img, i) => (
+                <div key={i} className="aspect-[2/3] bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 p-2 cursor-zoom-in hover:shadow-2xl transition-all" onClick={() => openLightbox(data.socialImages.map(s => s.src), i)} role="button">
                   <img src={img.src} srcSet={img.srcset} sizes={img.sizes} alt={img.alt} className="w-full h-full object-cover rounded-2xl" loading="lazy" />
                 </div>
               ))}
@@ -124,9 +124,9 @@ export function PortfolioPage({ heroImage, socialImages, menuImages, printedImag
               <h2 className="text-4xl font-black mb-6 tracking-tight text-white">Cardápios <br/><span className="text-orange-500">Digitais ou impressos</span></h2>
               <p className="text-slate-400 mb-10 leading-relaxed">Menus interativos focados na experiência do cliente.</p>
             </div>
-            <div className="relative group cursor-zoom-in" onClick={() => openLightbox(menuImages.map(m => m.src), currentMenuSlide)} role="button" tabIndex={0}>
+            <div className="relative group cursor-zoom-in" onClick={() => openLightbox(data.menuImages.map(m => m.src), currentMenuSlide)} role="button">
               <div className="aspect-[4/3] bg-white/5 rounded-3xl overflow-hidden border border-white/10 relative shadow-2xl">
-                {menuImages.map((img, i) => (
+                {data.menuImages.map((img, i) => (
                   <img key={i} src={img.src} srcSet={img.srcset} sizes={img.sizes} alt={img.alt} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === currentMenuSlide ? 'opacity-100' : 'opacity-0'}`} loading="lazy" />
                 ))}
               </div>
@@ -137,7 +137,7 @@ export function PortfolioPage({ heroImage, socialImages, menuImages, printedImag
         <section className="py-24 border-t border-slate-100">
           <div className="max-w-6xl mx-auto px-8 grid lg:grid-cols-2 gap-20 items-center">
             <div className="grid grid-cols-2 gap-6 items-end">
-              {printedImages.map((img, i) => <ResponsiveImageComponent key={i} data={img} images={printedImages} index={i} openLightbox={openLightbox} />)}
+              {data.printedImages.map((img, i) => <ResponsiveImageComponent key={i} data={img} images={data.printedImages} index={i} openLightbox={openLightbox} />)}
             </div>
             <div>
               <h2 className="text-4xl font-black mb-6 tracking-tight text-slate-900">Materiais <br/><span className="text-orange-600">Impressos</span></h2>

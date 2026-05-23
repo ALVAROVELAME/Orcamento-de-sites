@@ -1,13 +1,12 @@
-﻿import { PortfolioPage } from './pages/PortfolioPage';
-import { PORTFOLIO_DATA } from './data/portfolioData';
+﻿import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import PortfolioPage from './pages/PortfolioPage';
 
 export default function App() {
   return (
-    <PortfolioPage 
-      heroImage={PORTFOLIO_DATA.heroImage}
-      socialImages={PORTFOLIO_DATA.socialImages}
-      menuImages={PORTFOLIO_DATA.menuImages}
-      printedImages={PORTFOLIO_DATA.printedImages}
-    />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<PortfolioPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

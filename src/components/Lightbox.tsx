@@ -42,7 +42,8 @@ export function Lightbox({ index, images, onClose, onNext, onPrev, setIndex }: a
       onTouchEnd={handleTouchEnd}
     >
       {/* Botão Fechar */}
-      <button 
+      <button
+        type="button" 
         className="absolute top-6 right-6 text-white/50 hover:text-white z-[210] transition-colors" 
         onClick={onClose}
       >
@@ -52,7 +53,8 @@ export function Lightbox({ index, images, onClose, onNext, onPrev, setIndex }: a
       </button>
 
       {/* Setas (Desktop apenas) */}
-      <button 
+      <button
+        type="button" 
         onClick={(e) => { e.stopPropagation(); onPrev(); }} 
         className="absolute left-8 p-4 text-white hover:text-orange-500 bg-white/5 rounded-full z-[210] transition-all hidden md:flex"
       >
@@ -76,6 +78,7 @@ export function Lightbox({ index, images, onClose, onNext, onPrev, setIndex }: a
           <div className="flex gap-2">
             {images.map((_: any, i: number) => (
               <button
+              type="button"
                 key={i}
                 onClick={(e) => { e.stopPropagation(); setIndex(i); }}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
@@ -94,6 +97,7 @@ export function Lightbox({ index, images, onClose, onNext, onPrev, setIndex }: a
 
       {/* Seta Próximo (Desktop apenas) */}
       <button 
+        type="button"
         onClick={(e) => { e.stopPropagation(); onNext(); }} 
         className="absolute right-8 p-4 text-white hover:text-orange-500 bg-white/5 rounded-full z-[210] transition-all hidden md:flex"
       >
