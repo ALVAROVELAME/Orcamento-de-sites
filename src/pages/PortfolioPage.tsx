@@ -131,7 +131,8 @@ export default function PortfolioPage() {
                 ))}
                 
                 {/* Botões de navegação (Setas) */}
-                <button 
+                <button
+                aria-label="Imagem anterior" 
                   className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all opacity-0 group-hover:opacity-100"
                   onClick={(e) => { e.stopPropagation(); setCurrentMenuSlide(prev => (prev === 0 ? data.menuImages.length - 1 : prev - 1)); }}
                 >
@@ -139,6 +140,7 @@ export default function PortfolioPage() {
                 </button>
 
                 <button 
+                aria-label="Próxima imagem"
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all opacity-0 group-hover:opacity-100"
                   onClick={(e) => { e.stopPropagation(); setCurrentMenuSlide(prev => (prev >= data.menuImages.length - 1 ? 0 : prev + 1)); }}
                 >
