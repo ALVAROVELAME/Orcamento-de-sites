@@ -6,8 +6,8 @@ export interface ResponsiveImage {
 }
 
 export interface PortfolioData {
-  heroImage: ResponsiveImage; // Alterado para aceitar ResponsiveImage
-  extraImage: ResponsiveImage; // Adicionado para sua imagem extra
+  heroImage: ResponsiveImage;
+  extraImage: ResponsiveImage;
   socialImages: ResponsiveImage[];
   menuImages: ResponsiveImage[];
   printedImages: ResponsiveImage[];
@@ -15,87 +15,32 @@ export interface PortfolioData {
 
 export const PORTFOLIO_DATA: PortfolioData = {
   heroImage: {
-    src: "/images/principal.webp", 
-    srcset: "/images/principal-400w.webp 400w, /images/principal-800w.webp 800w",
-    sizes: "(max-width: 600px) 400px, 800px",
+    src: "/images/principal-800w.webp",
+    srcset: "/images/principal-800w.webp 800w",
+    sizes: "100vw",
     alt: "Design de destaque"
   },
   extraImage: {
-    src: "/images/extra.webp", // Substitua pelo nome real da sua imagem extra
-    srcset: "/images/extra-400w.webp 400w, /images/extra-800w.webp 800w",
-    sizes: "(max-width: 600px) 400px, 800px",
+    src: "/images/extra.webp", // Certifique-se de ter este arquivo ou ajuste o nome
+    srcset: "/images/extra.webp 800w",
+    sizes: "100vw",
     alt: "Imagem extra do projeto"
   },
   socialImages: [
-    { 
-      src: "/images/post1.webp", 
-      srcset: "/images/post1-400w.webp 400w, /images/post1-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Post social media 1" 
-    },
-    { 
-      src: "/images/post2.webp", 
-      srcset: "/images/post2-400w.webp 400w, /images/post2-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Post social media 2" 
-    },
-    { 
-      src: "/images/post3.webp", 
-      srcset: "/images/post3-400w.webp 400w, /images/post3-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Post social media 3" 
-    },
-    { 
-      src: "/images/post4.webp", 
-      srcset: "/images/post4-400w.webp 400w, /images/post4-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Post social media 4" 
-    }
+    { src: "/images/post1-800w.webp", srcset: "/images/post1-800w.webp 800w", sizes: "800px", alt: "Post social media 1" },
+    { src: "/images/post2-800w.webp", srcset: "/images/post2-800w.webp 800w", sizes: "800px", alt: "Post social media 2" },
+    { src: "/images/post3-800w.webp", srcset: "/images/post3-800w.webp 800w", sizes: "800px", alt: "Post social media 3" },
+    { src: "/images/post4-800w.webp", srcset: "/images/post4-800w.webp 800w", sizes: "800px", alt: "Post social media 4" }
   ],
   menuImages: [
-    { 
-      src: "/images/1.webp", 
-      srcset: "/images/1-400w.webp 400w, /images/1-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Slide de menu 1" 
-    },
-    { 
-      src: "/images/2.webp", 
-      srcset: "/images/2-400w.webp 400w, /images/2-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Slide de menu 2" 
-    },
-    { 
-      src: "/images/3.webp", 
-      srcset: "/images/3-400w.webp 400w, /images/3-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Slide de menu 3" 
-    },
-    { 
-      src: "/images/4.webp", 
-      srcset: "/images/4-400w.webp 400w, /images/4-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Slide de menu 4" 
-    }
+    { src: "/images/1-800w.webp", srcset: "/images/1-800w.webp 800w", sizes: "800px", alt: "Slide de menu 1" },
+    { src: "/images/2-800w.webp", srcset: "/images/2-800w.webp 800w", sizes: "800px", alt: "Slide de menu 2" },
+    { src: "/images/3-800w.webp", srcset: "/images/3-800w.webp 800w", sizes: "800px", alt: "Slide de menu 3" },
+    { src: "/images/4-800w.webp", srcset: "/images/4-800w.webp 800w", sizes: "800px", alt: "Slide de menu 4" }
   ],
   printedImages: [
-    { 
-      src: "/images/panfleto1.webp", 
-      srcset: "/images/panfleto1-400w.webp 400w, /images/panfleto1-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Material impresso 1" 
-    },
-    { 
-      src: "/images/panfleto2.webp", 
-      srcset: "/images/panfleto2-400w.webp 400w, /images/panfleto2-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Material impresso 2" 
-    },
-    { 
-      src: "/images/panfleto3.webp", 
-      srcset: "/images/panfleto3-400w.webp 400w, /images/panfleto3-800w.webp 800w", 
-      sizes: "(max-width: 600px) 400px, 800px", 
-      alt: "Material impresso 3" 
-    }
+    { src: "/images/panfleto1-800w.webp", srcset: "/images/panfleto1-800w.webp 800w", sizes: "800px", alt: "Material impresso 1" },
+    { src: "/images/panfleto2-800w.webp", srcset: "/images/panfleto2-800w.webp 800w", sizes: "800px", alt: "Material impresso 2" },
+    { src: "/images/panfleto3-800w.webp", srcset: "/images/panfleto3-800w.webp 800w", sizes: "800px", alt: "Material impresso 3" }
   ]
 };

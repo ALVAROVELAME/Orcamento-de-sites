@@ -6,20 +6,22 @@ export default defineConfig({
   plugins: [
     react(),
     ViteImageOptimizer({
-      test: /\.(webp|svg)$/i, // Foca apenas no que você usa
+      test: /\.(webp|svg)$/i,
       includePublic: true,
       logStats: true,
-      // Otimização para WebP (apenas compressão, sem conversão de formato)
+      // Configuração otimizada para compressão agressiva mas visualmente limpa
       webp: {
-        quality: 80,
-        lossless: false, // Define como false para permitir uma compressão melhor
+        quality: 75, // 75 é o "sweet spot" entre qualidade e peso para web
+        method: 6,   // Método 6 é o mais lento, porém entrega a melhor compressão possível
+        lossless: false,
       },
-      // Otimização para SVG
+      // Configuração otimizada para SVGs
       svg: {
         multipass: true,
         plugins: [
-          { name: 'removeViewBox' },
-          { name: 'removeEmptyAttrs', active: false }
+          { name: 'preset-default', params: { overrides: { removeViewBox: false } } },
+          { name: 'removeTitle' },
+          { name: 'removeDesc' }
         ]
       }
     })
