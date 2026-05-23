@@ -6,7 +6,8 @@ export interface ResponsiveImage {
 }
 
 export interface PortfolioData {
-  heroImage: { src: string; alt: string };
+  heroImage: ResponsiveImage; // Alterado para aceitar ResponsiveImage
+  extraImage: ResponsiveImage; // Adicionado para sua imagem extra
   socialImages: ResponsiveImage[];
   menuImages: ResponsiveImage[];
   printedImages: ResponsiveImage[];
@@ -14,8 +15,16 @@ export interface PortfolioData {
 
 export const PORTFOLIO_DATA: PortfolioData = {
   heroImage: {
-    src: "/images/principal.webp", // Mantém o original gigante
+    src: "/images/principal.webp", 
+    srcset: "/images/principal-400w.webp 400w, /images/principal-800w.webp 800w",
+    sizes: "(max-width: 600px) 400px, 800px",
     alt: "Design de destaque"
+  },
+  extraImage: {
+    src: "/images/extra.webp", // Substitua pelo nome real da sua imagem extra
+    srcset: "/images/extra-400w.webp 400w, /images/extra-800w.webp 800w",
+    sizes: "(max-width: 600px) 400px, 800px",
+    alt: "Imagem extra do projeto"
   },
   socialImages: [
     { 
