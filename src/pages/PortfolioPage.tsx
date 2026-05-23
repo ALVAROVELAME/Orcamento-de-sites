@@ -129,6 +129,21 @@ export default function PortfolioPage() {
                 {data.menuImages.map((img, i) => (
                   <img key={i} src={img.src} srcSet={img.srcset} sizes={img.sizes} alt={img.alt} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === currentMenuSlide ? 'opacity-100' : 'opacity-0'}`} loading="lazy" />
                 ))}
+                
+                {/* Botões de navegação (Setas) */}
+                <button 
+                  className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all opacity-0 group-hover:opacity-100"
+                  onClick={(e) => { e.stopPropagation(); setCurrentMenuSlide(prev => (prev === 0 ? data.menuImages.length - 1 : prev - 1)); }}
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                </button>
+
+                <button 
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all opacity-0 group-hover:opacity-100"
+                  onClick={(e) => { e.stopPropagation(); setCurrentMenuSlide(prev => (prev >= data.menuImages.length - 1 ? 0 : prev + 1)); }}
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </button>
               </div>
             </div>
           </div>
