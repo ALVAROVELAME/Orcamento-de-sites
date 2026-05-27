@@ -5,6 +5,9 @@ import { FloatingWhatsapp } from '../components/FloatingWhatsapp';
 import { GlobalEffects } from '../components/GlobalEffects';
 import { fetchPortfolioData } from '../data/portfolioData';
 
+// Importação da configuração global de contato
+import { getWhatsappLink } from '../data/config';
+
 // Importação dos novos componentes isolados
 import { DeveloperBanner } from '../components/DeveloperBanner';
 import { HeroSection } from '../components/HeroSection';
@@ -58,7 +61,8 @@ export default function PortfolioPage() {
     };
   }, [data]);
 
-  const whatsappLink = "https://wa.me/557599331557";
+  // Consumindo o link do WhatsApp de forma global e centralizada
+  const whatsappLink = getWhatsappLink();
 
   if (!data) return null;
 
@@ -108,7 +112,7 @@ export default function PortfolioPage() {
         {/* PROPOSTA COMERCIAL */}
         <CommercialProposal whatsappLink={whatsappLink} />
 
-        {/* QUEM SOMOS - Envolvido em uma div para corrigir o erro de tipagem */}
+        {/* QUEM SOMOS */}
         <div className="scroll-animate">
           <AboutUs whatsappLink={whatsappLink} />
         </div>

@@ -1,9 +1,12 @@
+import { getWhatsappLink } from '../data/config';
+
 interface FloatingWhatsappProps {
-  phone?: string;
+  message?: string;
 }
 
-export function FloatingWhatsapp({ phone = "557598825022" }: FloatingWhatsappProps) {
-  const whatsappLink = `https://wa.me/${phone}`;
+export function FloatingWhatsapp({ message }: FloatingWhatsappProps) {
+  // Utiliza o helper centralizado para gerar o link correto
+  const whatsappLink = getWhatsappLink(message);
 
   return (
     <>
