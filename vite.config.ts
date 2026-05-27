@@ -16,10 +16,14 @@ export default defineConfig({
       svg: {
         multipass: true,
         plugins: [
-          { 
-            name: 'preset-default', 
-            params: { overrides: { removeViewBox: false } } 
-          },
+          {
+            name: 'preset-default',
+            params: {
+              overrides: {
+                removeViewBox: false,
+              },
+            },
+          } as any, // O 'as any' resolve o conflito estrito de assinatura com o svgo types
           { name: 'removeTitle' },
           { name: 'removeDesc' }
         ]

@@ -47,7 +47,7 @@ export default function PortfolioPage() {
     };
   }, [data]);
 
-  const openLightbox = (images: string[], index: number) => setLightboxState({ images, index });
+ // const openLightbox = (images: string[], index: number) => setLightboxState({ images, index });
   
   const whatsappLink = "https://wa.me/557599331557";
 
