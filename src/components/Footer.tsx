@@ -1,33 +1,63 @@
-interface FooterProps {
-  whatsappLink: string;
-}
+import { getWhatsappLink } from '../data/config';
 
-export function Footer({ whatsappLink }: FooterProps) {
+export function Footer() {
+  const whatsappLink = getWhatsappLink();
+
   return (
-    <footer className="py-16 bg-slate-950 text-slate-400 border-t border-slate-900 px-4 md:px-8 w-full text-sm">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 mb-12">
-        <div>
-          <h4 className="text-white font-bold text-lg mb-4">SeuSiteContabilidade</h4>
-          <p className="text-slate-400 leading-relaxed text-xs">Transformando obrigações contábeis e fiscais em inteligência financeira estratégica para a sua organização.</p>
+    <footer className="bg-[#1a1a1a] text-gray-400 py-16 border-t border-gray-800">
+      <div className="max-w-6xl mx-auto px-6">
+        
+        {/* Logo com ícone escolhido */}
+        <div className="flex items-center justify-center gap-4 mb-16">
+          <div className="h-px bg-gray-700 flex-1 max-w-[200px]"></div>
+          <div className="text-center">
+            {/* Ícone de Chapéu de Chef selecionado */}
+            <svg 
+              className="w-14 h-14 text-white mx-auto mb-2" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="1.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/>
+              <path d="M6 17h12"/>
+            </svg>
+            <h2 className="text-2xl font-bold text-white tracking-[0.2em] uppercase">SEU SITE</h2>
+          </div>
+          <div className="h-px bg-gray-700 flex-1 max-w-[200px]"></div>
         </div>
-        <div>
-          <h4 className="text-white font-bold text-md mb-4">Navegação</h4>
-          <ul className="space-y-2 text-xs">
-            <li><a href="#sobre" className="hover:text-teal-400 transition-all">Quem Somos</a></li>
-            <li><a href="#servicos" className="hover:text-teal-400 transition-all">Nossos Serviços</a></li>
-            <li><a href={whatsappLink} className="hover:text-teal-400 transition-all">Contato Direto</a></li>
-          </ul>
+
+        {/* Informações organizadas */}
+        <div className="grid md:grid-cols-3 gap-12 text-center md:text-left">
+          
+          <div>
+            <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-sm">Sobre Nós</h4>
+            <p className="text-sm leading-relaxed">
+              A verdadeira experiência do sabor premium. Qualidade e tradição em cada pedido.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-sm">Links</h4>
+            <ul className="space-y-3 text-sm">
+              <li className="hover:text-red-500 cursor-pointer transition-colors">Cardápio</li>
+              <li className="hover:text-red-500 cursor-pointer transition-colors">Nossa História</li>
+              <li className="hover:text-red-500 cursor-pointer transition-colors">Localização</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-sm">Contato</h4>
+            <div className="space-y-3 text-sm">
+              <p>Shopping Barra, Loja 45<br/>Salvador - BA</p>
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block text-red-600 font-bold hover:text-white transition-colors">
+                (75) 9933-1557
+              </a>
+            </div>
+          </div>
         </div>
-        <div>
-          <h4 className="text-white font-bold text-md mb-4">Informações de Contato</h4>
-          <p className="text-xs text-slate-400 mb-2">📍 Atendimento Digital e Presencial</p>
-          <p className="text-xs text-slate-400 mb-2">📞 (75) 9933-1557</p>
-          <p className="text-xs text-slate-400">✉️ contato@seusitecontabilidade.com.br</p>
-        </div>
-      </div>
-      <div className="max-w-6xl mx-auto pt-8 border-t border-slate-900 text-center text-xs text-slate-600 flex flex-col sm:flex-row justify-between gap-4">
-        <p>© 2026 SeuSiteContabilidade. Todos os direitos reservados.</p>
-        <p className="hover:text-teal-400 transition-colors">Desenvolvido com maestria por Álvaro Velame</p>
       </div>
     </footer>
   );

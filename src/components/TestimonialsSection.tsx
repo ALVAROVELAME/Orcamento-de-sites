@@ -1,38 +1,64 @@
+import { SITE_IMAGES } from '../data/imageConfig';
+
 export function TestimonialsSection() {
+  const testimonials = SITE_IMAGES.testimonials || [];
+
   return (
-    <section className="py-24 bg-slate-950 text-white w-full relative">
-      <div className="max-w-6xl mx-auto px-4 md:px-8 w-full">
-        <div className="mb-16 scroll-animate">
-          <span className="text-xs font-bold text-teal-400 uppercase tracking-widest block mb-3">Parcerias de Sucesso</span>
-          <h2 className="text-3xl font-bold tracking-tight">Aprovado por Empresas como a Sua</h2>
+    <section id="testimonials" className="py-24 bg-slate-950 relative overflow-hidden">
+      {/* Background Decorativo */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[500px] h-[500px] bg-red-900/10 blur-[120px] rounded-full" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Cabeçalho */}
+        <div className="text-center mb-16">
+          <span className="text-red-500 font-sans font-bold text-sm tracking-[0.2em] uppercase mb-4 block">
+            Depoimentos
+          </span>
+          <h2 className="text-4xl md:text-5xl font-serif font-medium text-white tracking-tight">
+            O que nossos clientes dizem
+          </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-[#0f1b29] p-8 rounded-sm border border-slate-800 hover:border-teal-500 transition-colors scroll-animate">
-            <p className="text-slate-300 italic mb-6">"Excelente transição de sistema. A equipe reduziu toda a nossa burocracia interna e conseguimos focar 100% nas nossas vendas, sabendo que a parte fiscal está impecável."</p>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-slate-700 rounded-full overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100" alt="Cliente" />
-              </div>
+        {/* Grid dos Depoimentos */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {testimonials.map((item, i) => (
+            <div 
+              key={i} 
+              className="bg-white/[0.03] backdrop-blur-md border border-white/[0.08] p-8 rounded-3xl flex flex-col justify-between hover:bg-white/[0.06] transition-all duration-500 group"
+            >
               <div>
-                <h4 className="font-bold text-sm">Amanda Silva</h4>
-                <span className="text-xs text-slate-500">Diretora, TechStore</span>
+                {/* Estrelas */}
+                <div className="flex gap-1 mb-6 text-amber-500">
+                  {Array.from({ length: item.rating }).map((_, idx) => (
+                    <span key={idx} className="text-lg">★</span>
+                  ))}
+                </div>
+                
+                {/* Texto */}
+                <p className="text-slate-300 font-sans leading-relaxed text-[15px] italic mb-8">
+                  "{item.text}"
+                </p>
               </div>
-            </div>
-          </div>
 
-          <div className="bg-[#0f1b29] p-8 rounded-sm border border-slate-800 hover:border-teal-500 transition-colors scroll-animate">
-            <p className="text-slate-300 italic mb-6">"O planejamento tributário que fizeram poupou milhares de reais logo no primeiro trimestre do ano. Recomendo muito o modelo de atendimento consultivo deles."</p>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-slate-700 rounded-full overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100" alt="Cliente" />
-              </div>
-              <div>
-                <h4 className="font-bold text-sm">Ricardo Mendes</h4>
-                <span className="text-xs text-slate-500">Fundador, Construtora RM</span>
+              {/* Rodapé do card */}
+              <div className="flex items-center gap-4 pt-6 border-t border-white/[0.05]">
+                <div className="relative">
+                  <img 
+                    src={item.avatar} 
+                    alt={item.name} 
+                    loading="lazy"
+                    className="w-12 h-12 rounded-full object-cover ring-2 ring-white/[0.05] group-hover:ring-red-500/50 transition-all duration-300"
+                  />
+                </div>
+                <div>
+                  <h4 className="font-sans font-bold text-sm text-white">{item.name}</h4>
+                  <p className="text-[11px] uppercase tracking-widest text-slate-500">{item.role}</p>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

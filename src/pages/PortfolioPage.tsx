@@ -1,143 +1,117 @@
-import { useState, useEffect } from 'react';
-import { Lightbox } from '../components/Lightbox';
+import { useState } from 'react';
 import { Navbar } from '../components/Navbar';
-import { FloatingWhatsapp } from '../components/FloatingWhatsapp';
-import { GlobalEffects } from '../components/GlobalEffects';
-import { fetchPortfolioData } from '../data/portfolioData';
-
-// Importação da configuração global de contato
-import { getWhatsappLink } from '../data/config';
-
-// Importação dos novos componentes isolados
-import { DeveloperBanner } from '../components/DeveloperBanner';
 import { HeroSection } from '../components/HeroSection';
-import { Partners } from '../components/Partners';
-import { CommercialProposal } from '../components/CommercialProposal';
 import { AboutUs } from '../components/AboutUs';
-import { ServicesSection } from '../components/ServicesSection';
-import { HistorySection } from '../components/HistorySection';
+import { CardapioSection } from '../components/CardapioSection';
 import { TestimonialsSection } from '../components/TestimonialsSection';
-import { BlogSection } from '../components/BlogSection';
-import { FaqSection } from '../components/FaqSection';
-import { CtaBanner } from '../components/CtaBanner';
+import { FloatingWhatsapp } from '../components/FloatingWhatsapp';
 import { Footer } from '../components/Footer';
+import { DeveloperBanner } from '../components/DeveloperBanner'; // Importação do banner
+import { SITE_IMAGES } from '../data/imageConfig';
+import { SITE_CONFIG, getWhatsappLink } from '../data/config';
 
 export default function PortfolioPage() {
-  const [data, setData] = useState<any>(null);
-  const [lightboxState, setLightboxState] = useState<{ images: string[]; index: number } | null>(null);
+  const [nome, setNome] = useState('');
+  const [itemSelecionado, setItemSelecionado] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [pedido, setPedido] = useState('');
 
-  useEffect(() => {
-    async function load() {
-      const result = await fetchPortfolioData();
-      setData(result);
-    }
-    load();
-  }, []);
-
-  // Hook isolado para controlar as animações após os dados estarem prontos no DOM
-  useEffect(() => {
-    if (!data) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
-    );
-
-    const timer = setTimeout(() => {
-      const animatedElements = document.querySelectorAll('.scroll-animate');
-      animatedElements.forEach((el) => observer.observe(el));
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, [data]);
-
-  // Consumindo o link do WhatsApp de forma global e centralizada
-  const whatsappLink = getWhatsappLink();
-
-  if (!data) return null;
+  const handleWhatsAppOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    const textoMensagem = `Olá! Meu nome é ${nome}. Gostaria de pedir: ${itemSelecionado}. 
+Endereço de entrega: ${endereco}. 
+Observações: ${pedido}`;
+    
+    const url = getWhatsappLink(textoMensagem);
+    window.open(url, '_blank');
+  };
 
   return (
-    <div className="min-h-screen bg-[#FDFCFB] text-slate-800 selection:bg-teal-100 font-sans scroll-smooth overflow-x-hidden w-full">
-      {/* Estilos CSS Controlados para Scroll Animation de Alta Performance */}
-      <style>{`
-        .scroll-animate {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
-                      transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: transform, opacity;
-        }
-        .scroll-animate.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-
-      <GlobalEffects />
-      
-      {lightboxState && (
-        <Lightbox 
-          index={lightboxState.index} 
-          images={lightboxState.images} 
-          onClose={() => setLightboxState(null)} 
-          onNext={() => setLightboxState(prev => prev ? {...prev, index: (prev.index + 1) % prev.images.length} : null)} 
-          onPrev={() => setLightboxState(prev => prev ? {...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length} : null)}
-          setIndex={(newIndex: number) => setLightboxState(prev => prev ? { ...prev, index: newIndex } : null)}
-        />
-      )}
-      
-      <FloatingWhatsapp />
+    <div className="min-h-screen">
+      {/* 1. Navbar no topo */}
       <Navbar />
 
-      {/* BANNER DE VENDA DO DESENVOLVEDOR */}
-      <DeveloperBanner whatsappLink={whatsappLink} />
+      {/* 2. Banner de desenvolvimento logo abaixo da Navbar */}
+      <DeveloperBanner 
+        whatsappLink={getWhatsappLink("Olá, Álvaro! Gostaria de um site com este modelo premium.")} 
+      />
 
-      <main>
-        {/* HERO SECTION */}
-        <HeroSection whatsappLink={whatsappLink} />
+      {/* 3. Restante do conteúdo */}
+      <HeroSection />
+      <CardapioSection />         
+      <AboutUs />
+      <TestimonialsSection />
 
-        {/* LOGOS / PARCEIROS */}
-        <Partners />
+      {/* Formulário + Mapa (ADICIONADO O id="pedido" AQUI ABAIXO) */}
+      <section id="pedido" className="py-20 bg-slate-900 text-white">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+          <div>
+            <h2 className="text-4xl font-bold mb-8">Faça seu Pedido</h2>
+            <form onSubmit={handleWhatsAppOrder} className="space-y-6">
+              <input 
+                type="text" 
+                placeholder="Seu Nome" 
+                className="w-full p-5 bg-slate-800 border border-slate-700 rounded-2xl" 
+                required 
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
+              
+              <select 
+                className="w-full p-5 bg-slate-800 border border-slate-700 rounded-2xl text-white appearance-none"
+                required
+                value={itemSelecionado}
+                onChange={(e) => setItemSelecionado(e.target.value)}
+              >
+                <option value="" disabled>Selecione seu item do cardápio</option>
+                {SITE_IMAGES.categories.map((cat, idx) => (
+                  <option key={idx} value={cat.alt}>{cat.alt}</option>
+                ))}
+              </select>
 
-        {/* PROPOSTA COMERCIAL */}
-        <CommercialProposal whatsappLink={whatsappLink} />
+              <input 
+                type="text" 
+                placeholder="Endereço de Entrega (Rua, Número, Bairro)" 
+                className="w-full p-5 bg-slate-800 border border-slate-700 rounded-2xl" 
+                required 
+                value={endereco}
+                onChange={(e) => setEndereco(e.target.value)}
+              />
 
-        {/* QUEM SOMOS */}
-        <div className="scroll-animate">
-          <AboutUs whatsappLink={whatsappLink} />
+              <textarea 
+                placeholder="Alguma observação no pedido?" 
+                rows={5} 
+                className="w-full p-5 bg-slate-800 border border-slate-700 rounded-2xl" 
+                value={pedido}
+                onChange={(e) => setPedido(e.target.value)}
+              ></textarea>
+              
+              <button type="submit" className="w-full bg-red-600 py-6 rounded-2xl font-bold text-xl hover:bg-red-700 transition-all">
+                ENVIAR PEDIDO 📲
+              </button>
+            </form>
+          </div>
+
+          <div>
+            <h3 className="text-3xl font-bold mb-2">Nossa Localização</h3>
+            <p className="text-slate-400 mb-6">{SITE_CONFIG.contact.address}</p>
+            <div className="w-full h-[480px] rounded-2xl overflow-hidden border border-slate-700">
+              <iframe 
+                title="Localização Shopping Barra"
+                src={SITE_CONFIG.contact.mapLink}
+                width="100%" 
+                height="100%" 
+                style={{border:0}} 
+                allowFullScreen 
+                loading="lazy" 
+              />
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* CARDS DE SERVIÇOS */}
-        <ServicesSection whatsappLink={whatsappLink} />
-
-        {/* TRAJETÓRIA */}
-        <HistorySection whatsappLink={whatsappLink} />
-
-        {/* DEPOIMENTOS */}
-        <TestimonialsSection />
-
-        {/* POSTS RECENTES */}
-        <BlogSection />
-
-        {/* PERGUNTAS FREQUENTES */}
-        <FaqSection />
-
-        {/* BANNER INFERIOR DE CONSULTA GRATUITA */}
-        <CtaBanner whatsappLink={whatsappLink} />
-      </main>
-
-      {/* RODAPÉ CORPORATIVO */}
-      <Footer whatsappLink={whatsappLink} />
+      <Footer />
+      <FloatingWhatsapp />
     </div>
   );
 }
