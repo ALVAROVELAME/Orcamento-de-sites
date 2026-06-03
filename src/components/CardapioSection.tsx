@@ -1,9 +1,9 @@
 import { SITE_IMAGES, getOptimizedImage } from '../data/imageConfig';
 
 export function CardapioSection() {
-  // Mapeia aplicando a URL tratada e mantendo as propriedades do item original intactas
+  // CORRIGIDO: Agora passa apenas o 'item' para a função, evitando o erro de compilação do TS
   const menuCategories = SITE_IMAGES.categories.map(item => {
-    const optimizedResult = getOptimizedImage(item, 'medium');
+    const optimizedResult = getOptimizedImage(item);
     return {
       ...item, 
       src: optimizedResult.src, 
@@ -19,7 +19,7 @@ export function CardapioSection() {
         {/* Cabeçalho */}
         <div className="text-center mb-16 flex flex-col items-center">
           
-          {/* CATEGORIA com flechas vermelhas geométricas idênticas à imagem */}
+          {/* CATEGORIA com flechas vermelhas geométricas */}
           <div className="flex items-center justify-center gap-4 mb-4 w-full max-w-sm">
             {/* Flecha Esquerda Vermelha */}
             <div className="w-20 md:w-24 flex items-center text-[#e32828]">
