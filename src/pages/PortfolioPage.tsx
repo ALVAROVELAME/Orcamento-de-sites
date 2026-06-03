@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react'; // Corrigido: Importando o FormEvent diretamente
 import { Navbar } from '../components/Navbar';
 import { HeroSection } from '../components/HeroSection';
 import { AboutUs } from '../components/AboutUs';
@@ -6,7 +6,7 @@ import { CardapioSection } from '../components/CardapioSection';
 import { TestimonialsSection } from '../components/TestimonialsSection';
 import { FloatingWhatsapp } from '../components/FloatingWhatsapp';
 import { Footer } from '../components/Footer';
-import { DeveloperBanner } from '../components/DeveloperBanner'; // Importação do banner
+import { DeveloperBanner } from '../components/DeveloperBanner'; 
 import { SITE_IMAGES } from '../data/imageConfig';
 import { SITE_CONFIG, getWhatsappLink } from '../data/config';
 
@@ -16,7 +16,8 @@ export default function PortfolioPage() {
   const [endereco, setEndereco] = useState('');
   const [pedido, setPedido] = useState('');
 
-  const handleWhatsAppOrder = (e: React.FormEvent) => {
+  // Corrigido: Tipagem limpa com FormEvent nativo do escopo do React importado acima
+  const handleWhatsAppOrder = (e: FormEvent) => {
     e.preventDefault();
     const textoMensagem = `Olá! Meu nome é ${nome}. Gostaria de pedir: ${itemSelecionado}. 
 Endereço de entrega: ${endereco}. 
@@ -42,7 +43,7 @@ Observações: ${pedido}`;
       <AboutUs />
       <TestimonialsSection />
 
-      {/* Formulário + Mapa (ADICIONADO O id="pedido" AQUI ABAIXO) */}
+      {/* Formulário + Mapa */}
       <section id="pedido" className="py-20 bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
           <div>
