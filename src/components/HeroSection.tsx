@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { getWhatsappLink } from '../data/config';
 
 const heroSlides = [
   {
@@ -21,7 +20,6 @@ const heroSlides = [
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const whatsappLink = getWhatsappLink("Olá! Quero fazer um pedido!");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -34,7 +32,6 @@ export function HeroSection() {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
 
   return (
-    /* Adicionado 'group' para controlar a visibilidade das setas pelo mouse na capa */
     <header className="group relative w-full h-screen flex items-center justify-center text-white overflow-hidden bg-neutral-950">
       
       {/* 1. Imagens de Fundo com Transição Suave */}
@@ -85,7 +82,6 @@ export function HeroSection() {
                 </svg>
               </div>
               
-              {/* TRADUZIDO: "MORE FLAVOUR" alterado para "MAIS SABOR" */}
               <span className="text-[13px] md:text-sm font-sans font-extrabold tracking-[0.25em] text-white uppercase whitespace-nowrap">
                 MAIS SABOR
               </span>
@@ -136,20 +132,20 @@ export function HeroSection() {
               </p>
             </div>
 
-            {/* BOTÃO COMPRAR */}
+            {/* BOTÃO CORRIGIDO: Redireciona para #pedido */}
             <a 
-              href={whatsappLink}
+              href="#pedido"
               className={`bg-[#e32828] hover:bg-red-700 text-white px-9 py-4 text-xs font-bold uppercase tracking-widest transition-all duration-1000 ease-out transform-gpu shadow-lg ${
                 isActive ? 'translate-y-0 opacity-100 delay-300' : 'translate-y-24 opacity-0'
               }`}
             >
-              Explore o Menu
+              Faça seu Pedido
             </a>
           </div>
         );
       })}
 
-      {/* 3. Controles das Setas Laterais — Agora controladas pelo Hover geral da capa (group) e muito mais brancas */}
+      {/* 3. Controles das Setas Laterais */}
       <button 
         onClick={prevSlide} 
         className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 border-2 border-white bg-white/10 hover:bg-white/30 text-white rounded-full flex items-center justify-center transition-all duration-300 z-30 backdrop-blur-xs opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto"
