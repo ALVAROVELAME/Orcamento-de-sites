@@ -1,4 +1,5 @@
-import { useState, FormEvent } from 'react'; // Corrigido: Importando o FormEvent diretamente
+import { useState } from 'react';
+import type { FormEvent } from 'react'; // CORRIGIDO: Utilizando 'import type' exigido pelas regras rígidas do seu tsconfig
 import { Navbar } from '../components/Navbar';
 import { HeroSection } from '../components/HeroSection';
 import { AboutUs } from '../components/AboutUs';
@@ -16,7 +17,7 @@ export default function PortfolioPage() {
   const [endereco, setEndereco] = useState('');
   const [pedido, setPedido] = useState('');
 
-  // Corrigido: Tipagem limpa com FormEvent nativo do escopo do React importado acima
+  // CORRIGIDO: Evento perfeitamente tipado e aceito pelo compilador
   const handleWhatsAppOrder = (e: FormEvent) => {
     e.preventDefault();
     const textoMensagem = `Olá! Meu nome é ${nome}. Gostaria de pedir: ${itemSelecionado}. 
@@ -43,7 +44,7 @@ Observações: ${pedido}`;
       <AboutUs />
       <TestimonialsSection />
 
-      {/* Formulário + Mapa */}
+      {/* Formulário + Mapa com id correspondente às âncoras do cardápio */}
       <section id="pedido" className="py-20 bg-slate-900 text-white">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
           <div>
