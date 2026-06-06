@@ -1,7 +1,8 @@
 {
-  "name": "meu-site",
+  "name": "formulario-de-orcamento",
   "private": true,
   "version": "0.0.0",
+  "description": "Formulário de orçamento para criação de sites com React, Vite e Tailwind CSS.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +12,8 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.4",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.15.1"

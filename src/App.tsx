@@ -1,11 +1,11 @@
 ﻿import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import PortfolioPage from './pages/PortfolioPage';
+import { HomePage } from './pages/HomePage';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PortfolioPage />} />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     ViteImageOptimizer({
       test: /\.(webp|svg)$/i,
-      includePublic: true,
+      includePublic: false,
       logStats: true,
       webp: {
         quality: 75,

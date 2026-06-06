@@ -1,13 +1,29 @@
-# React + TypeScript + Vite
+# Formulário de Orçamento
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é um site de formulário de orçamento para criação de sites, construído com React, TypeScript, Vite e Tailwind CSS.
 
-Currently, two official plugins are available:
+## Sobre o projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Formulário em múltiplas etapas para captação de dados de empresas e preferência de seções.
+- Integração com WhatsApp para enviar a proposta diretamente.
+- Layout responsivo e visual moderno usando Tailwind CSS.
 
-## React Compiler
+## Scripts úteis
+
+- `npm install` — instala as dependências.
+- `npm run dev` — inicia o servidor de desenvolvimento.
+- `npm run build` — gera a versão de produção.
+- `npm run preview` — visualiza o build de produção localmente.
+
+## Melhorias recomendadas
+
+- Personalizar os textos e imagens do formulário para o seu negócio.
+- Ajustar o número de WhatsApp em `src/data/config.ts`.
+- Adicionar testes e validação extra conforme o fluxo de orçamento.
+
+## Desenvolvimento
+
+O ponto de entrada do app é `src/main.tsx` e a página principal está em `src/pages/HomePage.tsx`.
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
