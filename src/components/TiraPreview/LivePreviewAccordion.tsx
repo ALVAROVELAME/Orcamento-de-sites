@@ -1,9 +1,9 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ComponentType } from 'react';
 import type { PersonalizacaoAsset } from '../../assets/personalizacaoAssets';
-import { ShoppingCart, CheckCircle2, HelpCircle } from 'lucide-react';
+import { ShoppingCart, CheckCircle2 } from 'lucide-react';
 
 // Importando a estrutura de pacotes e preços extras
-import { PRECOS_SECOES, PACOTES, PRECO_SECAO_ADICIONAL } from '../../data/precos';
+import { PACOTES, PRECO_SECAO_ADICIONAL } from '../../data/precos';
 
 import {
   ServicosModel1,
@@ -23,7 +23,7 @@ import {
 interface ModeloSecao {
   title: string;
   description: string;
-  component: React.ComponentType; 
+  component: ComponentType<any>;
 }
 
 interface LivePreviewAccordionProps {
