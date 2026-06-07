@@ -52,7 +52,8 @@ export function Formulario() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-44 md:pt-36">
+    // Ajustado pt-44 para algo mais dinâmico: pt-32 no mobile e pt-36 no desktop
+    <div className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[130px] md:pt-[120px]">
       <ProgressBar 
         etapaAtual={etapaAtual} 
         pacoteEscolhido={pacoteEscolhido} 
