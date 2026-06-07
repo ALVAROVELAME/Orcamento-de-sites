@@ -1,6 +1,5 @@
 import { Navbar } from '../components/Navbar';
-import { CtaBanner } from '../components/CtaBanner';
-import { FormularioPersonalizacao } from '../components/FormularioPersonalizacao';
+import { Formulario} from '../components/Formulario';
 import { Footer } from '../components/Footer';
 import { GlobalEffects } from '../components/GlobalEffects';
 
@@ -9,8 +8,7 @@ export function HomePage() {
     <>
       <GlobalEffects />
       <Navbar />
-      <CtaBanner />
-      <FormularioPersonalizacao />
+      <Formulario />
       <Footer />
     </>
   );
