@@ -1,70 +1,95 @@
-import { useState } from 'react';
-
-type AccentColor = 'blue' | 'emerald' | 'rose' | 'violet';
+import { useState, useEffect } from 'react';
 
 export function MapaModel1() {
-  const [accentColor, setAccentColor] = useState<AccentColor>('blue');
+  // Estado para carregar o mapa com segurança sem quebrar em iOS antigos
+  const [carregarMapa, setCarregarMapa] = useState(false);
 
-  const colors = {
-    blue: { bg: 'bg-blue-50', text: 'text-blue-600', hover: 'hover:text-blue-700' },
-    emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', hover: 'hover:text-emerald-700' },
-    rose: { bg: 'bg-rose-50', text: 'text-rose-600', hover: 'hover:text-rose-700' },
-    violet: { bg: 'bg-violet-50', text: 'text-violet-600', hover: 'hover:text-violet-700' }
-  } as const;
-  const accentColorOptions = Object.keys(colors) as AccentColor[];
+  useEffect(() => {
+    // Carrega o mapa assim que o componente monta no navegador
+    setCarregarMapa(true);
+  }, []);
+
+  // Definição estática da cor da seção de produção (Exemplo: azul profissional)
+  const tema = {
+    bgIcone: 'bg-blue-50',
+    textoLink: 'text-blue-600 hover:text-blue-700',
+  };
+
+  // Link real de rotas baseado no seu endereço fornecido
+  const urlGoogleMapsRotas = "https://www.google.com/maps/dir/?api=1&destination=Av.+Centenário,+2992+-+Chame-Chame,+Salvador+-+BA";
+  
+  // URL de Embed Real (Substitua depois pelo src completo gerado no Google Maps se desejar)
+  const urlEmbedMapa = "https://maps.google.com/maps?q=Av.%20Centen%C3%A1rio,%202992%20-%20Chame-Chame,%20Salvador%20-%20BA&t=&z=15&ie=UTF8&iwloc=&output=embed";
 
   return (
-    <div className="space-y-4 p-6 max-w-2xl mx-auto w-full">
-      
-      {/* Seletor de Cores */}
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-sm font-medium text-slate-500">Tema:</span>
-        {accentColorOptions.map((color) => (
-          <button
-            key={color}
-            onClick={() => setAccentColor(color)}
-            className={`w-6 h-6 rounded-full border-2 border-white ring-1 ring-slate-200 transition-transform hover:scale-110 ${
-              color === 'blue' ? 'bg-blue-500' : 
-              color === 'emerald' ? 'bg-emerald-500' : 
-              color === 'rose' ? 'bg-rose-500' : 'bg-violet-500'
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Container do Mapa - Proporção 3/4 (mais alto que largo no mobile) */}
-      <div className="rounded-3xl border border-slate-200 overflow-hidden shadow-sm ring-1 ring-slate-200/50 aspect-[3/4] md:aspect-video">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3887.4495784175965!2d-38.5253047!3d-13.0070176!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7160379108013cb%3A0x4bae66cbdb92151f!2sShopping%20Barra!5e0!3m2!1spt-BR!2sbr!4v1780691277302!5m2!1spt-BR!2sbr"
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Nossa localização"
-        />
-      </div>
-
-      {/* Seção de Informações */}
-      <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-4">
-        <div className={`p-3 ${colors[accentColor].bg} rounded-2xl ${colors[accentColor].text}`}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </div>
+    <section className="w-full py-16 md:py-24 bg-slate-50 border-b border-slate-100">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
-        <div className="flex-1 w-full text-center sm:text-left">
-          <h3 className="text-lg font-bold text-slate-900">Visite nosso espaço</h3>
-          <p className="mt-1 text-slate-600 text-sm leading-relaxed line-clamp-2">
-            Av. Centenário, 2992 - Chame-Chame, Salvador - BA.
+        {/* Textos de Cabeçalho da Seção */}
+        <div className="text-center max-w-xl mx-auto space-y-2">
+          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+            Nossa Localização
+          </h2>
+          <p className="text-lg text-slate-500">
+            Fácil acesso e excelente infraestrutura para receber você.
           </p>
-          <button className={`mt-3 text-sm font-bold ${colors[accentColor].text} ${colors[accentColor].hover}`}>
-            Como chegar →
-          </button>
         </div>
+
+        {/* Container do Mapa - Proporção adaptável para Mobile/Desktop */}
+        <div className="w-full bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-md ring-1 ring-slate-200/50 aspect-[4/5] sm:aspect-[16/10] md:aspect-video transition-all duration-300">
+          {carregarMapa ? (
+            <iframe
+              src={urlEmbedMapa}
+              className="w-full h-full border-0"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Mapa interativo mostrando a localização da empresa"
+            />
+          ) : (
+            <div className="w-full h-full bg-slate-100 animate-pulse flex items-center justify-center text-slate-400">
+              Carregando mapa...
+            </div>
+          )}
+        </div>
+
+        {/* Bloco Informativo inferior */}
+        <div className="bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-5 max-w-3xl mx-auto">
+          <div className={`p-4 ${tema.bgIcone} rounded-2xl text-blue-600 shrink-0`}>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-7 w-7" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          
+          <div className="flex-1 w-full text-center sm:text-left space-y-1">
+            <h3 className="text-xl font-bold text-slate-900">Venha tomar um café conosco</h3>
+            <p className="text-slate-600 text-base leading-relaxed">
+              Av. Centenário, 2992 - Chame-Chame, Salvador - BA.
+            </p>
+            <div className="pt-2">
+              <a 
+                href={urlGoogleMapsRotas}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Abrir rotas de navegação no Google Maps externo"
+                className={`inline-flex items-center text-base font-bold transition-colors ${tema.textoLink}`}
+              >
+                Como chegar
+                <span className="sr-only"> abrir rotas no mapa do Google</span>
+                <span className="ml-1" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 }
