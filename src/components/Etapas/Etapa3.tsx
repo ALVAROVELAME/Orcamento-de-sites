@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import type { InfoSite, SecaoNoSite, Pacote, CategoriaSecao } from '../Formulario';
+// IMPORTAÇÕES CORRIGIDAS: Puxando o Pacote direto de precos.ts para evitar erros de build
+import type { InfoSite, SecaoNoSite, CategoriaSecao } from '../Formulario';
+import type { Pacote } from '../../data/precos'; 
 import { BIBLIOTECA_SECOES, RENDERIZADOR_COMPONENTES } from './constants';
 
 interface Etapa3Props {
@@ -55,18 +57,17 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite }: Etapa3Props
               {/* Barra de Gerenciamento do Bloco */}
               <div className="w-full bg-slate-800 text-white px-2 py-2 flex flex-row items-center justify-between gap-2 md:absolute md:top-4 md:left-4 md:w-[calc(100%-2rem)] md:z-20 md:bg-transparent md:text-slate-900 md:p-0 pointer-events-none box-border">
                 
-                {/* Indicador de Seção - Fonte ajustada para text-sm e padding ideal */}
+                {/* Indicador de Seção */}
                 <span className="bg-slate-900 text-amber-400 border border-amber-500 px-2 py-2.5 rounded-xl text-center text-sm md:text-base font-black uppercase tracking-wider shadow-md pointer-events-auto block w-1/2 sm:w-auto truncate">
                   {index + 1}. {secao.categoria}
                 </span>
 
-                {/* Botão Remover - Otimizado para usar o tamanho máximo do texto no mobile */}
+                {/* Botão Remover */}
                 <button 
                   onClick={() => removerSecao(secao.id)}
                   title={`Remover seção número ${index + 1}: ${secao.categoria}`}
                   className="bg-rose-700 hover:bg-rose-800 text-white min-h-[40px] sm:min-h-[48px] px-1 sm:px-4 py-2.5 rounded-xl shadow-lg transition-all font-black flex items-center justify-center gap-2 text-sm md:text-lg cursor-pointer pointer-events-auto border-2 border-white active:scale-95 md:opacity-100 md:group-hover:opacity-100 w-1/2 sm:w-auto md:max-w-xs shrink-0"
                 >
-                  {/* Ícone oculto no mobile para dar espaço total ao texto */}
                   <svg className="hidden sm:block w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>

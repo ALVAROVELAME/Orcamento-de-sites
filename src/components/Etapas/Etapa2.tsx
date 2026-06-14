@@ -34,7 +34,7 @@ export function Etapa2({ infoSite, setInfoSite, avancarParaEtapa3, voltarEtapa }
               {[0, 1, 2].map((index) => (
                 <div key={index} className="flex flex-col items-center gap-2 md:gap-3">
                   <div className="relative group">
-                      <input 
+                    <input 
                       type="color" 
                       value={infoSite.cores[index]}
                       onChange={(e) => {
