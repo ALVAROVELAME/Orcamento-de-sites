@@ -17,15 +17,25 @@ export interface SecaoNoSite {
   modelo: string;
 }
 
+// INTERFACE ATUALIZADA: Agora o TypeScript reconhece os novos campos da Etapa 2
 export interface InfoSite {
   nome: string;
   cores: [string, string, string];
+  status_logo?: string;      // Adicionado para rastrear o Radio Button do Logo
+  estilo_marca?: string[];   // Adicionado para rastrear os Checkboxes de Percepção
 }
 
 export function Formulario() {
   const [etapaAtual, setEtapaAtual] = useState<1 | 2 | 3>(1);
   const [pacoteEscolhido, setPacoteEscolhido] = useState<Pacote | null>(null);
-  const [infoSite, setInfoSite] = useState<InfoSite>({ nome: '', cores: ['#2563eb', '#1e40af', '#ffffff'] });
+  
+  // ESTADO INICIAL ATUALIZADO: Evita erros de undefined ao montar os novos campos na Etapa 2
+  const [infoSite, setInfoSite] = useState<InfoSite>({ 
+    nome: '', 
+    cores: ['#2563eb', '#1e40af', '#ffffff'],
+    status_logo: '',
+    estilo_marca: []
+  });
   const [site, setSite] = useState<SecaoNoSite[]>([]);
 
   // Calcula o valor total baseado no preço base numérico do seu arquivo de preços
