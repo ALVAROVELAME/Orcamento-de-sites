@@ -39,16 +39,13 @@ export function ProgressBar({
       role="region"
       aria-label="Status do orçamento e progresso do formulário"
     >
-      {/* 
-        Ajuste responsivo principal: 
-        No Mobile: grid com 2 colunas e espaçamento vertical (gap-y-3)
-        No Desktop (md): flex-row original, ocupando uma única linha perfeitamente
-      */}
-      <div className="max-w-7xl mx-auto px-4 py-3.5 grid grid-cols-2 gap-y-3 gap-x-2 md:flex md:flex-row md:justify-between md:items-center md:gap-4 items-center">
+      {/* Grid responsivo mantido com padding levemente maior (py-4) para dar respiro aos textos maiores */}
+      <div className="max-w-7xl mx-auto px-4 py-4 grid grid-cols-2 gap-y-3.5 gap-x-2 md:flex md:flex-row md:justify-between md:items-center md:gap-4 items-center">
         
         {/* ================= BLOCADOS NA ESQUERDA (MOBILE: COLUNA 1, LINHA 1) ================= */}
         <div className="flex items-center justify-start md:min-w-[120px]">
-          <span className="text-xs md:text-xs font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-2 rounded-xl border border-indigo-100/60 whitespace-nowrap shadow-sm shadow-indigo-100/20">
+          {/* Aumentado de text-xs para text-sm no mobile */}
+          <span className="text-sm md:text-xs font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-2 rounded-xl border border-indigo-100/60 whitespace-nowrap shadow-sm shadow-indigo-100/20">
             Etapa {etapaAtual} / 3
           </span>
         </div>
@@ -59,11 +56,12 @@ export function ProgressBar({
             <div className="relative w-full max-w-[170px] sm:max-w-[190px] group">
               <label htmlFor="seletor-pacote-direta" className="sr-only">Trocar plano contratado</label>
               
+              {/* Aumentado de text-xs para text-sm no mobile e padding vertical ajustado para py-2.5 */}
               <select
                 id="seletor-pacote-direta"
                 value={pacoteEscolhido.id}
                 onChange={handlePacoteChange}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-700 py-2 pl-3 pr-8 rounded-xl text-xs md:text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 outline-none cursor-pointer transition-all appearance-none text-center hover:bg-slate-100 hover:border-slate-300"
+                className="w-full bg-slate-50 border border-slate-200 text-slate-700 py-2.5 pl-3 pr-8 rounded-xl text-sm md:text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 outline-none cursor-pointer transition-all appearance-none text-center hover:bg-slate-100 hover:border-slate-300"
               >
                 {listaPacotes.map((pacote) => (
                   <option key={pacote.id} value={pacote.id} className="text-slate-800 font-medium">
@@ -80,27 +78,28 @@ export function ProgressBar({
               </div>
             </div>
           ) : pacoteEscolhido ? (
-            <span className="text-xs font-bold text-slate-700 text-center w-full block bg-slate-50 border border-slate-100 py-2 px-3 rounded-xl max-w-[170px]">
+            <span className="text-sm font-bold text-slate-700 text-center w-full block bg-slate-50 border border-slate-100 py-2.5 px-3 rounded-xl max-w-[170px]">
               {pacoteEscolhido.nome}
             </span>
           ) : (
-            <span className="text-xs text-slate-400 font-medium italic text-center w-full block py-2">
+            <span className="text-sm text-slate-400 font-medium italic text-center w-full block py-2.5">
               Selecione...
             </span>
           )}
         </div>
 
         {/* ================= INVESTIMENTO (MOBILE: OCUPA AS 2 COLUNAS ABAIXO, LINHA 2) ================= */}
-        {/* Usamos col-span-2 no celular para centralizar o preço embaixo, dando muito mais destaque e espaço */}
         <div 
-          className="col-span-2 md:col-span-1 flex flex-row items-center gap-2 justify-center text-center bg-slate-50 md:bg-transparent py-1.5 md:py-0 rounded-xl md:rounded-none border border-slate-100 md:border-none"
+          className="col-span-2 md:col-span-1 flex flex-row items-center gap-2 justify-center text-center bg-slate-50 md:bg-transparent py-2 md:py-0 rounded-xl md:rounded-none border border-slate-100 md:border-none"
           aria-live="polite" 
           aria-atomic="true"
         >
-          <span className="text-[11px] md:text-xs text-slate-400 font-bold uppercase tracking-wider block">
+          {/* Aumentado de text-[11px] para text-xs estável no mobile */}
+          <span className="text-xs md:text-xs text-slate-400 font-bold uppercase tracking-wider block">
             Investimento Estimado:
           </span>
-          <span className="text-base md:text-xl font-black text-indigo-600 tracking-tight transition-all duration-300 transform scale-100 hover:scale-102">
+          {/* Aumentado de text-base para text-lg no mobile */}
+          <span className="text-lg md:text-xl font-black text-indigo-600 tracking-tight transition-all duration-300 transform scale-100 hover:scale-102">
             {formatarMoeda(valorTotal)}
           </span>
         </div>
