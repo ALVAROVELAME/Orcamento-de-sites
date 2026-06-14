@@ -4,7 +4,11 @@ import { Etapa1 } from './Etapas/Etapa1';
 import { Etapa2 } from './Etapas/Etapa2';
 import { Etapa3 } from './Etapas/Etapa3';
 
-// --- TIPOS E INTERFACES UNIFICADOS ---
+// IMPORTAÇÃO DOS SEUS DADOS REAIS
+import { PACOTES } from '../data/precos';
+import type { Pacote } from '../data/precos';
+
+// --- OUTROS TIPOS CONFIGURADOS ---
 export type CategoriaSecao = 'capa' | 'sobre' | 'servicos' | 'depoimentos' | 'faq' | 'blog' | 'formulario' | 'video' | 'mapa' | 'galeria';
 
 export interface SecaoNoSite {
@@ -13,26 +17,22 @@ export interface SecaoNoSite {
   modelo: string;
 }
 
-export interface Pacote {
-  id: string;
-  nome: string;
-  preco: string;
-  limiteSecoes: number | 'Ilimitado';
-  limitePaginas: number;
-  detalhes: string[];
-}
-
 export interface InfoSite {
   nome: string;
   cores: [string, string, string];
 }
-// -------------------------------------
 
 export function Formulario() {
   const [etapaAtual, setEtapaAtual] = useState<1 | 2 | 3>(1);
   const [pacoteEscolhido, setPacoteEscolhido] = useState<Pacote | null>(null);
   const [infoSite, setInfoSite] = useState<InfoSite>({ nome: '', cores: ['#2563eb', '#1e40af', '#ffffff'] });
   const [site, setSite] = useState<SecaoNoSite[]>([]);
+
+  // Calcula o valor total baseado no preço base numérico do seu arquivo de preços
+  const obterValorTotal = (): number => {
+    if (!pacoteEscolhido) return 0;
+    return pacoteEscolhido.precoBase; // Retorna o valor numérico puro do precos.ts
+  };
 
   const avancarParaEtapa2 = (pacote: Pacote) => {
     setPacoteEscolhido(pacote);
@@ -51,13 +51,21 @@ export function Formulario() {
     if (etapaAtual === 3) setEtapaAtual(2);
   };
 
+  // Função disparada quando a pessoa muda o pacote pelo seletor da barra
+  const selecionarPacoteDireto = (pacote: Pacote) => {
+    setPacoteEscolhido(pacote);
+  };
+
   return (
-    // Ajustado pt-44 para algo mais dinâmico: pt-32 no mobile e pt-36 no desktop
     <div className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[130px] md:pt-[120px]">
+      
+      {/* ProgressBar corrigida: a propriedade voltarEtapa foi removida daqui */}
       <ProgressBar 
         etapaAtual={etapaAtual} 
         pacoteEscolhido={pacoteEscolhido} 
-        voltarEtapa={voltarEtapa} 
+        listaPacotes={PACOTES} 
+        valorTotal={obterValorTotal()}
+        selecionarPacote={selecionarPacoteDireto}
       />
 
       {etapaAtual === 1 && (

@@ -1,98 +1,113 @@
-import type { Pacote } from '../Formulario';
+import React from 'react';
+import type { Pacote } from '../../data/precos'; 
 
 interface ProgressBarProps {
   etapaAtual: 1 | 2 | 3;
   pacoteEscolhido: Pacote | null;
-  voltarEtapa: () => void;
+  listaPacotes: Pacote[];
+  valorTotal: number;
+  selecionarPacote: (pacote: Pacote) => void;
 }
 
-export function ProgressBar({ etapaAtual, pacoteEscolhido, voltarEtapa }: ProgressBarProps) {
-  // Mapeamento de nomes para o modo Mobile simplificado
-  const nomesEtapas = {
-    1: 'Escolha do Pacote',
-    2: 'Identidade Visual',
-    3: 'Ajustes e Seções',
+export function ProgressBar({ 
+  etapaAtual, 
+  pacoteEscolhido, 
+  listaPacotes = [], 
+  valorTotal = 0,       
+  selecionarPacote
+}: ProgressBarProps) {
+
+  // Formatação segura para Real (R$)
+  const formatarMoeda = (valor: number) => {
+    const numeroValido = typeof valor === 'number' ? valor : 0;
+    return numeroValido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
-  // Cálculo da porcentagem real para a barra de progresso fluida do mobile
-  const porcentagemProgresso = etapaAtual === 1 ? 'w-1/3' : etapaAtual === 2 ? 'w-2/3' : 'w-full';
+  const handlePacoteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const pacoteId = e.target.value;
+    const pacoteEncontrado = listaPacotes.find(p => p.id === pacoteId);
+    if (pacoteEncontrado && selecionarPacote) {
+      selecionarPacote(pacoteEncontrado);
+    }
+  };
+
+  // Calcula a largura da linha de progresso na base da barra
+  const percentualProgresso = (etapaAtual / 3) * 100;
 
   return (
     <div 
-      className="w-full bg-white shadow-md border-b border-slate-200/80 fixed top-[73px] left-0 z-40 transition-all duration-300"
-      role="progressbar"
-      aria-valuenow={etapaAtual}
-      aria-valuemin={1}
-      aria-valuemax={3}
-      aria-label={`Etapa ${etapaAtual} de 3: ${nomesEtapas[etapaAtual]}`}
+      className="w-full bg-white/75 backdrop-blur-lg fixed top-[73px] left-0 z-40 transition-all duration-300 shadow-sm shadow-slate-200/50"
+      role="region"
+      aria-label="Status do orçamento e progresso do formulário"
     >
-      <div className="max-w-7xl mx-auto px-4 py-3.5 flex flex-col md:flex-row justify-between items-center gap-3.5 md:gap-4">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-row justify-between items-center gap-4">
         
-        {/* ================= VISUAL MOBILE-FIRST (Acessível e Limpo) ================= */}
-        <div className="flex flex-col w-full md:hidden gap-2">
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">
-              Etapa {etapaAtual} de 3
-            </span>
-            <span className="text-sm font-bold text-slate-700">
-              {nomesEtapas[etapaAtual]}
-            </span>
-          </div>
-          {/* Barra de progresso linear moderna */}
-          <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-            <div className={`h-full bg-indigo-600 rounded-full ${porcentagemProgresso} transition-all duration-500 ease-out`} />
-          </div>
-        </div>
-
-        {/* ================= VISUAL DESKTOP (`md:flex`) ================= */}
-        <div className="hidden md:flex items-center justify-center gap-3 text-sm font-bold md:w-auto">
-          <span 
-            aria-current={etapaAtual === 1 ? 'step' : undefined}
-            className={`px-3.5 py-1.5 rounded-full shadow-sm transition-all duration-300 ${etapaAtual >= 1 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}`}
-          >
-            1. Pacote
-          </span>
-          <div className={`w-12 h-1 rounded-full transition-colors duration-300 ${etapaAtual >= 2 ? 'bg-indigo-600' : 'bg-slate-100'}`}></div>
-          
-          <span 
-            aria-current={etapaAtual === 2 ? 'step' : undefined}
-            className={`px-3.5 py-1.5 rounded-full shadow-sm transition-all duration-300 ${etapaAtual >= 2 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}`}
-          >
-            2. Identidade
-          </span>
-          <div className={`w-12 h-1 rounded-full transition-colors duration-300 ${etapaAtual === 3 ? 'bg-indigo-600' : 'bg-slate-100'}`}></div>
-          
-          <span 
-            aria-current={etapaAtual === 3 ? 'step' : undefined}
-            className={`px-3.5 py-1.5 rounded-full shadow-sm transition-all duration-300 ${etapaAtual === 3 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}`}
-          >
-            3. Ajustes
+        {/* ================= ESQUERDA: ETAPA ATUAL ================= */}
+        <div className="flex items-center justify-start min-w-[85px] md:min-w-[120px]">
+          <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100/60 whitespace-nowrap shadow-sm shadow-indigo-100/20">
+            Etapa {etapaAtual} / 3
           </span>
         </div>
 
-        {/* ================= RESUMO DO PACOTE ESCOLHIDO ================= */}
-        {etapaAtual > 1 && pacoteEscolhido && (
-          <div className="flex w-full md:w-auto items-center justify-between bg-slate-50 border border-slate-200/60 p-3 md:px-4 md:py-2 rounded-xl gap-4 shadow-inner">
-            <div className="flex items-center gap-3">
-              <div>
-                <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Plano Ativo</p>
-                <p className="text-sm font-bold text-slate-800 line-clamp-1">{pacoteEscolhido.nome}</p>
-              </div>
-              <div className="h-7 w-px bg-slate-200"></div>
-              <div className="text-xs text-indigo-600 bg-indigo-50/60 px-2 py-0.5 rounded-md font-bold whitespace-nowrap">
-                {pacoteEscolhido.limiteSecoes} Seções
+        {/* ================= CENTRO: VALOR TOTAL DO PROJETO ================= */}
+        <div 
+          className="flex flex-col sm:flex-row items-center sm:gap-2 justify-center text-center"
+          aria-live="polite" 
+          aria-atomic="true"
+        >
+          <span className="text-[9px] md:text-xs text-slate-400 font-bold uppercase tracking-wider block">
+            Investimento Estimado
+          </span>
+          <span className="text-base md:text-xl font-black text-indigo-600 tracking-tight transition-all duration-300 transform scale-100 hover:scale-102">
+            {formatarMoeda(valorTotal)}
+          </span>
+        </div>
+
+        {/* ================= DIREITA: SELETOR DE PLANOS DROP-DOWN ================= */}
+        <div className="flex items-center justify-end min-w-[145px] md:min-w-[180px]">
+          {pacoteEscolhido && listaPacotes.length > 0 ? (
+            <div className="relative w-full max-w-[190px] group">
+              <label htmlFor="seletor-pacote-direta" className="sr-only">Trocar plano contratado</label>
+              
+              <select
+                id="seletor-pacote-direta"
+                value={pacoteEscolhido.id}
+                onChange={handlePacoteChange}
+                className="w-full bg-slate-50/80 border border-slate-200/80 text-slate-700 py-1.5 pl-4 pr-8 rounded-xl text-xs md:text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 outline-none cursor-pointer transition-all appearance-none text-center hover:bg-slate-100/80 hover:border-slate-300"
+              >
+                {listaPacotes.map((pacote) => (
+                  <option key={pacote.id} value={pacote.id} className="text-slate-800 font-medium">
+                    {pacote.emoji} &nbsp; {pacote.nome}
+                  </option>
+                ))}
+              </select>
+              
+              {/* Setinha customizada minimalista */}
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-hover:text-slate-600 transition-colors">
+                <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                </svg>
               </div>
             </div>
-            
-            {/* Botão com área de toque (touch target) aumentada no mobile */}
-            <button 
-              onClick={voltarEtapa} 
-              className="text-xs bg-white border border-slate-200 py-2.5 px-3.5 md:py-1.5 md:px-3 rounded-lg hover:bg-slate-50 active:bg-slate-100 font-bold text-slate-600 shadow-sm transition-all shrink-0 focus:ring-2 focus:ring-indigo-500/20 outline-none min-h-[40px] md:min-h-0 flex items-center justify-center"
-            >
-              Alterar
-            </button>
-          </div>
-        )}
+          ) : pacoteEscolhido ? (
+            <span className="text-xs font-bold text-slate-700 text-center w-full block bg-slate-50/60 border border-slate-100 py-2 px-3 rounded-xl">
+              {pacoteEscolhido.nome}
+            </span>
+          ) : (
+            <span className="text-xs text-slate-400 font-medium italic text-center w-full block py-2">
+              Selecione um plano...
+            </span>
+          )}
+        </div>
+
+      </div>
+
+      {/* ================= BARRA DE PROGRESSO DE ALTA PRECISÃO ================= */}
+      <div className="w-full h-[3px] bg-slate-100/70 overflow-hidden" aria-hidden="true">
+        <div 
+          className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 transition-all duration-500 ease-out shadow-[0_0_8px_rgba(99,102,241,0.5)]"
+          style={{ width: `${percentualProgresso}%` }}
+        />
       </div>
     </div>
   );

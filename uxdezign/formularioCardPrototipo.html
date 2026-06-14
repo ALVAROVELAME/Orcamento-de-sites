@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construtor de Site - Briefing Dinâmico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen p-4 md:p-8 font-sans text-gray-800">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+        
+        <!-- HEADER COM ORÇAMENTO AO VIVO -->
+        <div class="bg-gradient-to-r from-blue-700 to-indigo-700 p-6 md:p-8 text-white">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Construtor de Site</h1>
+                    <p class="text-blue-100">Monte seu projeto de forma simples e visual</p>
+                </div>
+                <div class="bg-white/20 backdrop-blur-md px-6 py-4 rounded-2xl text-center">
+                    <p class="text-xs uppercase tracking-widest">Orçamento Estimado</p>
+                    <p id="total-orcamento" class="text-3xl font-bold">R$ 1.497,00</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tela-formulario" class="p-6 md:p-10 block">
+            <div class="mb-10">
+                <div class="flex justify-between text-sm font-semibold text-gray-500 mb-3">
+                    <span id="texto-progresso">Passo 1 de 6: Identificação</span>
+                    <span id="porcentagem-progresso">17%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div id="barra-progresso" class="bg-gradient-to-r from-blue-600 to-indigo-600 h-3 rounded-full transition-all duration-500" style="width: 16.66%"></div>
+                </div>
+            </div>
+
+            <form id="form-briefing">
+
+                <!-- PASSO 1 -->
+                <div class="step-card block fade-in">
+                    <fieldset class="border-l-4 border-blue-600 bg-gray-50 p-8 rounded-r-2xl shadow-sm">
+                        <legend class="text-2xl font-bold text-gray-800 px-3">1. Identificação</legend>
+                        <p class="text-gray-600 mb-8">Vamos começar com suas informações básicas.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Empresa / Seu Nome *</label>
+                                <input type="text" name="cliente_nome" required class="w-full p-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Nome do Site / Projeto *</label>
+                                <input type="text" name="nome_site" required placeholder="Ex: Studio Bella, Clínica Vida" class="w-full p-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">WhatsApp *</label>
+                                <input type="tel" name="cliente_whatsapp" id="whatsapp-input" required maxlength="15" oninput="maskPhone(this)" class="w-full p-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- PASSO 2 -->
+                <div class="step-card hidden fade-in">
+                    <fieldset class="border-l-4 border-indigo-600 bg-gray-50 p-8 rounded-r-2xl shadow-sm">
+                        <legend class="text-2xl font-bold text-gray-800 px-3">2. Estratégia e Pacote</legend>
+                        <p class="text-gray-600 mb-8">Qual pacote melhor atende sua necessidade?</p>
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Qual pacote você deseja? *</label>
+                                <select id="objetivo_principal" name="pacote_selecionado" required class="w-full p-4 border border-indigo-200 rounded-2xl bg-white focus:ring-2 focus:ring-indigo-500 text-lg">
+                                    <option value="" disabled selected>Escolha o pacote ideal...</option>
+                                    <option value="1 - Cartão Digital (3 Sessões)" data-base-price="497">1 - Cartão Digital (3 Sessões)</option>
+                                    <option value="2 - Cartão Digital (6 Sessões)" data-base-price="797">2 - Cartão Digital (6 Sessões)</option>
+                                    <option value="3 - Site Institucional Simples" data-base-price="1497">3 - Site Institucional Simples</option>
+                                    <option value="4 - Site Institucional Premium" data-base-price="2497">4 - Site Institucional Premium</option>
+                                    <option value="5 - Site WooCommerce (Loja Virtual)" data-base-price="3497">5 - Site WooCommerce (Loja Virtual)</option>
+                                </select>
+                            </div>
+                            <div id="bloco-ecommerce" class="hidden bg-amber-50 border border-amber-300 p-6 rounded-2xl">
+                                <h3 class="font-bold text-amber-800 mb-4 flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Funcionalidades da Loja Virtual</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="funcionalidades_ecommerce" value="Cálculo de Frete Correios" class="accent-amber-600"> Cálculo de Frete Correios</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="funcionalidades_ecommerce" value="Integração Melhor Envio" class="accent-amber-600"> Integração Melhor Envio</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="funcionalidades_ecommerce" value="Pagamento Pix Automático" class="accent-amber-600"> Pagamento Pix Automático</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="funcionalidades_ecommerce" value="Pagamento Cartão" class="accent-amber-600"> Pagamento via Cartão</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="funcionalidades_ecommerce" value="Produtos com Variações" class="accent-amber-600"> Produtos com Variações</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="funcionalidades_ecommerce" value="Sistema de Cupons" class="accent-amber-600"> Sistema de Cupons</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Qual é o seu público-alvo principal?</label>
+                                <input type="text" name="publico_alvo" class="w-full p-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500" placeholder="Ex: Mulheres de 28 a 45 anos...">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- PASSO 3 - Seções -->
+                <div class="step-card hidden fade-in" id="step-3">
+                    <fieldset class="border-l-4 border-purple-600 bg-gray-50 p-8 rounded-r-2xl shadow-sm">
+                        <legend class="text-2xl font-bold text-gray-800 px-3">3. Estrutura da Página Inicial</legend>
+                        <p class="text-gray-600 mb-6">Selecione as seções desejadas (clique para ver exemplo).</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="sessoes-container"></div>
+                    </fieldset>
+                </div>
+
+                <!-- Container para extras das SEÇÕES (inserido logo após o Passo 3) -->
+                <div id="extras-sessoes-container"></div>
+
+                <!-- PASSO 4 - Páginas -->
+                <div class="step-card hidden fade-in" id="step-4">
+                    <fieldset class="border-l-4 border-green-600 bg-gray-50 p-8 rounded-r-2xl shadow-sm">
+                        <legend class="text-2xl font-bold text-gray-800 px-3">4. Páginas Adicionais</legend>
+                        <p class="text-gray-600 mb-6">Quais outras páginas seu site precisa?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="paginas-container"></div>
+                    </fieldset>
+                </div>
+
+                <!-- Container para extras das PÁGINAS (inserido logo após o Passo 4) -->
+                <div id="extras-paginas-container"></div>
+
+                <!-- PASSO 5 e 6 -->
+                <div class="step-card hidden fade-in">
+                    <fieldset class="border-l-4 border-pink-600 bg-gray-50 p-8 rounded-r-2xl shadow-sm">
+                        <legend class="text-2xl font-bold text-gray-800 px-3">5. Design e Visual</legend>
+                        <div class="space-y-8">
+                            <!-- Conteúdo do passo 5 mantido -->
+                            <div class="bg-white p-6 rounded-2xl border">
+                                <label class="block text-sm font-semibold text-gray-700 mb-4">Sobre o Logotipo:</label>
+                                <div class="space-y-4">
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="status_logo" value="Já tenho o Logo em alta qualidade" class="accent-pink-600" required> <span>Já tenho o Logo em alta qualidade</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="status_logo" value="Tenho apenas a imagem (PNG/JPG)"> <span>Tenho apenas imagem (PNG/JPG)</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="radio" name="status_logo" id="preciso_logo" value="Preciso que o logo seja criado"> <span class="font-semibold text-pink-700">Quero que criem o logo para mim</span></label>
+                                </div>
+                                <div id="bloco-branding" class="hidden mt-6 p-5 bg-pink-50 border border-pink-200 rounded-2xl">
+                                    <p class="font-semibold text-pink-800 mb-3">Como você quer que a marca seja percebida?</p>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                                        <label class="flex items-center gap-2"><input type="checkbox" name="estilo_marca" value="Moderna" class="accent-pink-600"> Moderna</label>
+                                        <label class="flex items-center gap-2"><input type="checkbox" name="estilo_marca" value="Clássica/Séria" class="accent-pink-600"> Clássica</label>
+                                        <label class="flex items-center gap-2"><input type="checkbox" name="estilo_marca" value="Divertida" class="accent-pink-600"> Divertida</label>
+                                        <label class="flex items-center gap-2"><input type="checkbox" name="estilo_marca" value="Luxuosa" class="accent-pink-600"> Luxuosa</label>
+                                        <label class="flex items-center gap-2"><input type="checkbox" name="estilo_marca" value="Minimalista" class="accent-pink-600"> Minimalista</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="step-card hidden fade-in">
+                    <fieldset class="border-l-4 border-orange-600 bg-gray-50 p-8 rounded-r-2xl shadow-sm">
+                        <legend class="text-2xl font-bold text-gray-800 px-3">6. Extras e Integrações</legend>
+                        <p class="text-gray-600 mb-8">Selecione funcionalidades adicionais.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-2xl hover:bg-orange-50 cursor-pointer"><input type="checkbox" name="recursos_extras" value="WhatsApp Flutuante" class="accent-orange-600"> Botão WhatsApp Flutuante</label>
+                            <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-2xl hover:bg-orange-50 cursor-pointer"><input type="checkbox" name="recursos_extras" value="Google Analytics 4" class="accent-orange-600"> Google Analytics</label>
+                            <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-2xl hover:bg-orange-50 cursor-pointer"><input type="checkbox" name="recursos_extras" value="Pixel do Meta Ads" class="accent-orange-600"> Pixel Meta</label>
+                            <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-2xl hover:bg-orange-50 cursor-pointer"><input type="checkbox" name="recursos_extras" value="Sistema de Agendamento" class="accent-orange-600"> Sistema de Agendamento</label>
+                            <label class="flex items-center gap-3 p-4 border border-gray-200 rounded-2xl hover:bg-orange-50 cursor-pointer"><input type="checkbox" name="recursos_extras" value="Otimização SEO Avançada" class="accent-orange-600"> SEO Avançado</label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Botões -->
+                <div class="flex justify-between items-center mt-10 pt-6 border-t">
+                    <button type="button" id="btn-voltar" class="hidden px-8 py-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-2xl">← Voltar</button>
+                    <button type="button" id="btn-avancar" class="px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-2xl shadow-lg">Próximo Passo →</button>
+                    <button type="submit" id="btn-enviar" class="hidden px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-2xl shadow-lg">Gerar Resumo</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- MODAL -->
+        <div id="modal-preview" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-auto">
+                <div class="p-6">
+                    <button onclick="fecharModal()" class="float-right text-3xl text-gray-400 hover:text-gray-600">×</button>
+                    <div id="modal-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA RESULTADO -->
+        <div id="tela-resultado" class="hidden p-6 md:p-10">
+            <div class="bg-white shadow-2xl rounded-3xl p-8">
+                <h2 class="text-3xl font-bold mb-6">Seu Projeto Está Pronto!</h2>
+                <div id="dados-extraidos" class="space-y-6"></div>
+            </div>
+            <div class="flex gap-4 mt-8">
+                <button onclick="voltarFormulario()" class="flex-1 py-4 bg-gray-800 text-white rounded-2xl font-semibold">Revisar Respostas</button>
+                <button id="btn-whatsapp" class="flex-1 py-4 bg-green-600 text-white rounded-2xl font-semibold">Enviar via WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .option-card { transition: all 0.3s ease; }
+        .option-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+    </style>
+
+    <script>
+        function maskPhone(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0,11);
+            if (value.length > 2) value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+            if (value.length > 9) value = `${value.slice(0,10)}-${value.slice(10)}`;
+            input.value = value;
+        }
+
+        let passoAtual = 0;
+        let steps = [];
+        let selectedSessoes = [];
+        let selectedPaginas = [];
+
+        const modelosPorItem = {
+            "Hero (Banner/Capa)": [{nome: "Básico", preco: 0}, {nome: "Com Vídeo", preco: 650}],
+            "Sobre a Empresa/Profissional": [{nome: "Simples", preco: 0}, {nome: "Completo", preco: 450}],
+            "Serviços / Especialidades": [{nome: "Lista", preco: 0}, {nome: "Cards Interativos", preco: 380}],
+            "Quem Somos (Detalhado)": [{nome: "Padrão", preco: 0}, {nome: "Com Galeria", preco: 420}],
+            // Adicione mais conforme necessário
+        };
+
+        function criarOpcoes(containerId, itens, name) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            itens.forEach(item => {
+                const checked = (item.value.includes("Hero") || item.value.includes("Rodapé")) ? "checked" : "";
+                const div = document.createElement('div');
+                div.className = "option-card bg-white border-2 border-transparent rounded-3xl overflow-hidden cursor-pointer";
+                div.innerHTML = `
+                    <div class="relative">
+                        <img src="${item.img}" class="w-full h-48 object-cover">
+                        <div class="absolute top-3 right-3 bg-white/90 text-xs px-3 py-1 rounded-full">${item.desc}</div>
+                    </div>
+                    <div class="p-5">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" name="${name}" value="${item.value}" ${checked} class="accent-purple-600">
+                            <span class="font-semibold">${item.label}</span>
+                        </label>
+                    </div>
+                `;
+                div.addEventListener('click', (e) => {
+                    if (e.target.type !== 'checkbox') abrirModal(item);
+                });
+                container.appendChild(div);
+            });
+        }
+
+        function gerarExtras(containerId, selecionados, prefixo) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            selecionados.forEach(item => {
+                const modelos = modelosPorItem[item] || [{nome: "Modelo Padrão", preco: 0}];
+                let html = `
+                    <div class="step-card hidden fade-in">
+                        <fieldset class="border-l-4 border-violet-600 bg-gray-50 p-8 rounded-r-2xl shadow-sm">
+                            <legend class="text-2xl font-bold text-gray-800 px-3">${prefixo}: ${item}</legend>
+                            <p class="text-gray-600 mb-6">Escolha o modelo para <strong>${item}</strong></p>
+                            <div class="space-y-4">`;
+                modelos.forEach(m => {
+                    html += `
+                        <label class="flex justify-between p-5 border rounded-2xl cursor-pointer hover:bg-violet-50">
+                            <span>${m.nome}</span>
+                            <span class="font-semibold text-violet-600">+ R$ ${m.preco}</span>
+                            <input type="radio" name="modelo-${item.replace(/[^a-zA-Z0-9]/g,'')}" value="${m.nome}" class="accent-violet-600">
+                        </label>`;
+                });
+                html += `</div></fieldset></div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function abrirModal(item) {
+            document.getElementById('modal-content').innerHTML = `
+                <h3 class="text-2xl font-bold mb-4">${item.label}</h3>
+                <img src="${item.img}" class="w-full rounded-2xl mb-4" alt="${item.label}">
+                <p class="text-gray-600">${item.desc}</p>
+                <button onclick="fecharModal()" class="mt-6 w-full py-3 bg-indigo-600 text-white rounded-2xl font-semibold">Fechar</button>
+            `;
+            document.getElementById('modal-preview').classList.remove('hidden');
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-preview').classList.add('hidden');
+        }
+
+        // Navegação
+        document.getElementById('btn-avancar').addEventListener('click', () => {
+            const current = steps[passoAtual];
+            if (!current) return;
+
+            const required = current.querySelectorAll('input[required], select[required]');
+            let valido = true;
+            required.forEach(el => {
+                if (!el.checkValidity()) {
+                    el.reportValidity();
+                    valido = false;
+                }
+            });
+
+            if (valido) {
+                if (passoAtual === 2) { // Após Passo 3 (Seções)
+                    selectedSessoes = Array.from(document.querySelectorAll('input[name="sessoes_selecionadas"]:checked')).map(cb => cb.value);
+                    gerarExtras('extras-sessoes-container', selectedSessoes, "Modelo da Seção");
+                }
+                if (passoAtual === 3) { // Após Passo 4 (Páginas)
+                    selectedPaginas = Array.from(document.querySelectorAll('input[name="paginas_selecionadas"]:checked')).map(cb => cb.value);
+                    gerarExtras('extras-paginas-container', selectedPaginas, "Modelo da Página");
+                }
+                if (passoAtual < steps.length - 1) {
+                    passoAtual++;
+                    steps = document.querySelectorAll('.step-card'); // Atualiza lista
+                    atualizarUI();
+                }
+            }
+        });
+
+        document.getElementById('btn-voltar').addEventListener('click', () => {
+            if (passoAtual > 0) {
+                passoAtual--;
+                atualizarUI();
+            }
+        });
+
+        function atualizarUI() {
+            steps.forEach((step, i) => {
+                step.classList.toggle('block', i === passoAtual);
+                step.classList.toggle('hidden', i !== passoAtual);
+            });
+
+            document.getElementById('btn-voltar').classList.toggle('hidden', passoAtual === 0);
+            document.getElementById('btn-avancar').classList.toggle('hidden', passoAtual === steps.length - 1);
+            document.getElementById('btn-enviar').classList.toggle('hidden', passoAtual !== steps.length - 1);
+
+            const progresso = Math.round(((passoAtual + 1) / steps.length) * 100);
+            document.getElementById('barra-progresso').style.width = `${progresso}%`;
+            document.getElementById('texto-progresso').textContent = `Passo ${passoAtual + 1} de ${steps.length}`;
+            document.getElementById('porcentagem-progresso').textContent = `${progresso}%`;
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            criarOpcoes('sessoes-container', [
+                { value: "Hero (Banner/Capa)", label: "Hero / Capa", desc: "Banner principal", img: "https://picsum.photos/id/1015/600/400" },
+                { value: "Sobre a Empresa/Profissional", label: "Sobre Nós", desc: "Apresentação", img: "https://picsum.photos/id/64/600/400" },
+                { value: "Serviços / Especialidades", label: "Serviços", desc: "O que oferecemos", img: "https://picsum.photos/id/201/600/400" }
+            ], 'sessoes_selecionadas');
+
+            criarOpcoes('paginas-container', [
+                { value: "Quem Somos (Detalhado)", label: "Quem Somos", desc: "Página detalhada", img: "https://picsum.photos/id/64/600/400" },
+                { value: "Página de Contato", label: "Contato", desc: "Formulário", img: "https://picsum.photos/id/201/600/400" }
+            ], 'paginas_selecionadas');
+
+            steps = document.querySelectorAll('.step-card');
+            atualizarUI();
+        });
+
+        document.getElementById('form-briefing').addEventListener('submit', e => {
+            e.preventDefault();
+            alert("✅ Briefing gerado com sucesso!");
+        });
+    </script>
+</body>
+</html>
