@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Pacote } from '../../data/precos'; 
 
 interface ProgressBarProps {
@@ -36,44 +35,35 @@ export function ProgressBar({
 
   return (
     <div 
-      className="w-full bg-white/75 backdrop-blur-lg fixed top-[73px] left-0 z-40 transition-all duration-300 shadow-sm shadow-slate-200/50"
+      className="w-full bg-white/90 backdrop-blur-lg fixed top-[73px] left-0 z-40 transition-all duration-300 shadow-sm shadow-slate-200/50"
       role="region"
       aria-label="Status do orçamento e progresso do formulário"
     >
-      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-row justify-between items-center gap-4">
+      {/* 
+        Ajuste responsivo principal: 
+        No Mobile: grid com 2 colunas e espaçamento vertical (gap-y-3)
+        No Desktop (md): flex-row original, ocupando uma única linha perfeitamente
+      */}
+      <div className="max-w-7xl mx-auto px-4 py-3.5 grid grid-cols-2 gap-y-3 gap-x-2 md:flex md:flex-row md:justify-between md:items-center md:gap-4 items-center">
         
-        {/* ================= ESQUERDA: ETAPA ATUAL ================= */}
-        <div className="flex items-center justify-start min-w-[85px] md:min-w-[120px]">
-          <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100/60 whitespace-nowrap shadow-sm shadow-indigo-100/20">
+        {/* ================= BLOCADOS NA ESQUERDA (MOBILE: COLUNA 1, LINHA 1) ================= */}
+        <div className="flex items-center justify-start md:min-w-[120px]">
+          <span className="text-xs md:text-xs font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-2 rounded-xl border border-indigo-100/60 whitespace-nowrap shadow-sm shadow-indigo-100/20">
             Etapa {etapaAtual} / 3
           </span>
         </div>
 
-        {/* ================= CENTRO: VALOR TOTAL DO PROJETO ================= */}
-        <div 
-          className="flex flex-col sm:flex-row items-center sm:gap-2 justify-center text-center"
-          aria-live="polite" 
-          aria-atomic="true"
-        >
-          <span className="text-[9px] md:text-xs text-slate-400 font-bold uppercase tracking-wider block">
-            Investimento Estimado
-          </span>
-          <span className="text-base md:text-xl font-black text-indigo-600 tracking-tight transition-all duration-300 transform scale-100 hover:scale-102">
-            {formatarMoeda(valorTotal)}
-          </span>
-        </div>
-
-        {/* ================= DIREITA: SELETOR DE PLANOS DROP-DOWN ================= */}
-        <div className="flex items-center justify-end min-w-[145px] md:min-w-[180px]">
+        {/* ================= DIREITA (MOBILE: COLUNA 2, LINHA 1) ================= */}
+        <div className="flex items-center justify-end md:min-w-[180px]">
           {pacoteEscolhido && listaPacotes.length > 0 ? (
-            <div className="relative w-full max-w-[190px] group">
+            <div className="relative w-full max-w-[170px] sm:max-w-[190px] group">
               <label htmlFor="seletor-pacote-direta" className="sr-only">Trocar plano contratado</label>
               
               <select
                 id="seletor-pacote-direta"
                 value={pacoteEscolhido.id}
                 onChange={handlePacoteChange}
-                className="w-full bg-slate-50/80 border border-slate-200/80 text-slate-700 py-1.5 pl-4 pr-8 rounded-xl text-xs md:text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 outline-none cursor-pointer transition-all appearance-none text-center hover:bg-slate-100/80 hover:border-slate-300"
+                className="w-full bg-slate-50 border border-slate-200 text-slate-700 py-2 pl-3 pr-8 rounded-xl text-xs md:text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 outline-none cursor-pointer transition-all appearance-none text-center hover:bg-slate-100 hover:border-slate-300"
               >
                 {listaPacotes.map((pacote) => (
                   <option key={pacote.id} value={pacote.id} className="text-slate-800 font-medium">
@@ -83,21 +73,36 @@ export function ProgressBar({
               </select>
               
               {/* Setinha customizada minimalista */}
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-hover:text-slate-600 transition-colors">
+              <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-hover:text-slate-600 transition-colors">
                 <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
           ) : pacoteEscolhido ? (
-            <span className="text-xs font-bold text-slate-700 text-center w-full block bg-slate-50/60 border border-slate-100 py-2 px-3 rounded-xl">
+            <span className="text-xs font-bold text-slate-700 text-center w-full block bg-slate-50 border border-slate-100 py-2 px-3 rounded-xl max-w-[170px]">
               {pacoteEscolhido.nome}
             </span>
           ) : (
             <span className="text-xs text-slate-400 font-medium italic text-center w-full block py-2">
-              Selecione um plano...
+              Selecione...
             </span>
           )}
+        </div>
+
+        {/* ================= INVESTIMENTO (MOBILE: OCUPA AS 2 COLUNAS ABAIXO, LINHA 2) ================= */}
+        {/* Usamos col-span-2 no celular para centralizar o preço embaixo, dando muito mais destaque e espaço */}
+        <div 
+          className="col-span-2 md:col-span-1 flex flex-row items-center gap-2 justify-center text-center bg-slate-50 md:bg-transparent py-1.5 md:py-0 rounded-xl md:rounded-none border border-slate-100 md:border-none"
+          aria-live="polite" 
+          aria-atomic="true"
+        >
+          <span className="text-[11px] md:text-xs text-slate-400 font-bold uppercase tracking-wider block">
+            Investimento Estimado:
+          </span>
+          <span className="text-base md:text-xl font-black text-indigo-600 tracking-tight transition-all duration-300 transform scale-100 hover:scale-102">
+            {formatarMoeda(valorTotal)}
+          </span>
         </div>
 
       </div>
