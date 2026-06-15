@@ -33,27 +33,28 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
 
   const limiteDoPlano = pacoteEscolhido?.limiteSecoes === 'Ilimitado' ? 999 : (pacoteEscolhido?.limiteSecoes as number) || 5;
 
-  // SOLUÇÃO FORA DA CAIXA: Calcula a posição absoluta em pixels fixos
-  // Evita o travamento do scroll nativo durante as transições de layout
+  // Função reaproveitável para rolar a tela suavemente até o topo do componente
+  const rolarParaOTopo = () => {
+    if (topoComponenteRef.current) {
+      const posicaoY = topoComponenteRef.current.getBoundingClientRect().top + window.scrollY - 20;
+      window.scrollTo({
+        top: posicaoY,
+        behavior: 'smooth'
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Calcula a posição absoluta em pixels fixos nas mudanças de fase ou índice
   useEffect(() => {
     const timerScroll = setTimeout(() => {
-      if (topoComponenteRef.current) {
-        // Pega a posição do container em relação ao viewport + o scroll atual - 20px de margem visual
-        const posicaoY = topoComponenteRef.current.getBoundingClientRect().top + window.scrollY - 20;
-        
-        window.scrollTo({
-          top: posicaoY,
-          behavior: 'smooth'
-        });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }, 50); // 50ms é o suficiente para o React renderizar o novo estado antes de medir a tela
-
+      rolarParaOTopo();
+    }, 50); 
     return () => clearTimeout(timerScroll);
   }, [fase, indiceAtual]);
 
-  // AJUSTE: Sequência de timers para atrasar o início e controlar a velocidade
+  // Sequência de timers para controlar a animação e subir o scroll após fechar
   useEffect(() => {
     if (fase === 'escolha_modelos' && categoriasPendentes[indiceAtual]) {
       const modelosDaCategoria = BIBLIOTECA_SECOES[categoriasPendentes[indiceAtual]];
@@ -62,14 +63,22 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
         const primeiroModeloId = modelosDaCategoria[0].id;
         
         let fecharTimer: ReturnType<typeof setTimeout>;
+        let subirTimer: ReturnType<typeof setTimeout>;
 
-        // 1. Espera 500ms (meio segundo) antes de abrir o acordeão
+        // 1. Espera 500ms antes de abrir o acordeão
         const abrirTimer = setTimeout(() => {
           setModeloExpandido(primeiroModeloId);
 
           // 2. Após abrir, espera mais 1000ms (1 segundo) para fechar
           fecharTimer = setTimeout(() => {
             setModeloExpandido(null);
+
+            // Espera a animação de fechamento do grid (700ms) terminar 
+            // para jogar a tela suavemente de volta ao topo.
+            subirTimer = setTimeout(() => {
+              rolarParaOTopo();
+            }, 700);
+
           }, 1000);
 
         }, 500);
@@ -77,6 +86,7 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
         return () => {
           clearTimeout(abrirTimer);
           if (fecharTimer) clearTimeout(fecharTimer);
+          if (subirTimer) clearTimeout(subirTimer);
         };
       }
     }
@@ -95,8 +105,7 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
   const avancarParaProximaCategoria = () => {
     if (!modeloSelecionado) return;
 
-    const categoryAtual =
-      categoriasPendentes[indiceAtual];
+    const categoryAtual = categoriasPendentes[indiceAtual];
     const siteFiltrado = site.filter(secao => secao.categoria !== categoryAtual);
     const novaSecao = { id: crypto.randomUUID(), categoria: categoryAtual, modelo: modeloSelecionado };
     
@@ -150,6 +159,7 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
   };
 
   const checarProximoDesabilitado = () => {
+    // CORREÇÃO DO ERRO TS2552: Removido o prefixo incorreto "Reduzir"
     if (fase === 'selecao_inicial') return categoriasSelecionadas.length === 0;
     if (fase === 'escolha_modelos') return !modeloSelecionado;
     return false;
@@ -176,11 +186,9 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
               </div>
               
               <SeletorSessoes 
-                运作nados={categoriasSelecionadas} // Mantido idêntico ao estado local selecionados
-                外部Selecionados={categoriasSelecionadas} 
+                selecionados={categoriasSelecionadas} 
                 setSelecionados={setCategoriasSelecionadas} 
                 limiteSecoes={limiteDoPlano}
-                {...{ selecionados: categoriasSelecionadas }} // Garante compatibilidade caso o nome mude na propriedade interna
               />
             </div>
           )}
@@ -227,7 +235,7 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
                           <label className="relative cursor-pointer flex items-center">
                             <input 
                               type="radio" 
-                              name={`selecao-${categoriasPendentes[indiceAtual]}`}
+                              name={`text-selecao-${categoriasPendentes[indiceAtual]}`}
                               checked={isSelected}
                               onChange={() => {
                                 setModeloSelecionado(modelo.id);
@@ -244,14 +252,20 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
                         </div>
                       </div>
 
-                      {/* Transição visual de 1 segundo exato (duration-1000) */}
-                      <div className={`transition-all duration-1000 ease-in-out ${isExpanded ? 'max-h-[3000px] opacity-100 border-t border-slate-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                        <div className="p-0 bg-white w-full overflow-x-auto">
-                          <div className="w-full bg-white pointer-events-none">
-                            {ComponenteReal ? <ComponenteReal /> : <div className="p-8 text-center font-bold text-slate-400">Modelo indisponível</div>}
+                      <div 
+                        className={`grid transition-all duration-700 ease-in-out ${
+                          isExpanded ? 'grid-rows-[1fr] opacity-100 border-t border-slate-100' : 'grid-rows-[0fr] opacity-0'
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="p-0 bg-white w-full overflow-x-auto">
+                            <div className="w-full bg-white pointer-events-none">
+                              {ComponenteReal ? <ComponenteReal /> : <div className="p-8 text-center font-bold text-slate-400">Modelo indisponível</div>}
+                            </div>
                           </div>
                         </div>
                       </div>
+                      
                     </div>
                   );
                 })}
