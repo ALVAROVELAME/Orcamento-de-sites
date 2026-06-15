@@ -17,7 +17,7 @@ export interface SecaoNoSite {
   modelo: string;
 }
 
-// INTERFACE ATUALIZADA: Agora o TypeScript reconhece os novos campos da Etapa 2
+// INTERFACE ATUALIZADA
 export interface InfoSite {
   nome: string;
   cores: [string, string, string];
@@ -29,7 +29,7 @@ export function Formulario() {
   const [etapaAtual, setEtapaAtual] = useState<1 | 2 | 3>(1);
   const [pacoteEscolhido, setPacoteEscolhido] = useState<Pacote | null>(null);
   
-  // ESTADO INICIAL ATUALIZADO: Evita erros de undefined ao montar os novos campos na Etapa 2
+  // ESTADO INICIAL ATUALIZADO
   const [infoSite, setInfoSite] = useState<InfoSite>({ 
     nome: '', 
     cores: ['#2563eb', '#1e40af', '#ffffff'],
@@ -38,10 +38,10 @@ export function Formulario() {
   });
   const [site, setSite] = useState<SecaoNoSite[]>([]);
 
-  // Calcula o valor total baseado no preço base numérico do seu arquivo de preços
+  // Calcula o valor total baseado no preço base numérico
   const obterValorTotal = (): number => {
     if (!pacoteEscolhido) return 0;
-    return pacoteEscolhido.precoBase; // Retorna o valor numérico puro do precos.ts
+    return pacoteEscolhido.precoBase;
   };
 
   const avancarParaEtapa2 = (pacote: Pacote) => {
@@ -61,7 +61,6 @@ export function Formulario() {
     if (etapaAtual === 3) setEtapaAtual(2);
   };
 
-  // Função disparada quando a pessoa muda o pacote pelo seletor da barra
   const selecionarPacoteDireto = (pacote: Pacote) => {
     setPacoteEscolhido(pacote);
   };
@@ -69,7 +68,6 @@ export function Formulario() {
   return (
     <div className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[130px] md:pt-[120px]">
       
-      {/* ProgressBar corrigida: a propriedade voltarEtapa foi removida daqui */}
       <ProgressBar 
         etapaAtual={etapaAtual} 
         pacoteEscolhido={pacoteEscolhido} 
@@ -78,27 +76,30 @@ export function Formulario() {
         selecionarPacote={selecionarPacoteDireto}
       />
 
-      {etapaAtual === 1 && (
-        <Etapa1 avancarParaEtapa2={avancarParaEtapa2} />
-      )}
+      <div className="w-full pt-16 md:pt-20 flex flex-col items-center">
+        {etapaAtual === 1 && (
+          <Etapa1 avancarParaEtapa2={avancarParaEtapa2} />
+        )}
 
-      {etapaAtual === 2 && (
-        <Etapa2 
-          infoSite={infoSite} 
-          setInfoSite={setInfoSite} 
-          avancarParaEtapa3={avancarParaEtapa3} 
-          voltarEtapa={voltarEtapa} 
-        />
-      )}
+        {etapaAtual === 2 && (
+          <Etapa2 
+            infoSite={infoSite} 
+            setInfoSite={setInfoSite} 
+            avancarParaEtapa3={avancarParaEtapa3} 
+            voltarEtapa={voltarEtapa} 
+          />
+        )}
 
-      {etapaAtual === 3 && (
-        <Etapa3 
-          infoSite={infoSite}
-          pacoteEscolhido={pacoteEscolhido}
-          site={site}
-          setSite={setSite}
-        />
-      )}
+        {etapaAtual === 3 && (
+          <Etapa3 
+            infoSite={infoSite}
+            pacoteEscolhido={pacoteEscolhido}
+            site={site}
+            setSite={setSite}
+            onVoltarEtapaAnterior={voltarEtapa} // Corrigido: Propriedade obrigatória entregue
+          />
+        )}
+      </div>
     </div>
   );
 }
