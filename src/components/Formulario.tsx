@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProgressBar } from './Etapas/ProgressBar';
 import { Etapa1 } from './Etapas/Etapa1';
 import { Etapa2 } from './Etapas/Etapa2';
@@ -37,6 +37,14 @@ export function Formulario() {
     estilo_marca: []
   });
   const [site, setSite] = useState<SecaoNoSite[]>([]);
+
+  // O SEGREDO ESTÁ AQUI: Rola para o topo automaticamente a cada troca de etapa
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Faz a subida de forma suave e elegante
+    });
+  }, [etapaAtual]); // Dispara sempre que 'etapaAtual' mudar
 
   // Calcula o valor total baseado no preço base numérico
   const obterValorTotal = (): number => {
@@ -96,7 +104,7 @@ export function Formulario() {
             pacoteEscolhido={pacoteEscolhido}
             site={site}
             setSite={setSite}
-            onVoltarEtapaAnterior={voltarEtapa} // Corrigido: Propriedade obrigatória entregue
+            onVoltarEtapaAnterior={voltarEtapa}
           />
         )}
       </div>

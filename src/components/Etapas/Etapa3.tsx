@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { InfoSite, SecaoNoSite, CategoriaSecao } from '../Formulario';
 import type { Pacote } from '../../data/precos'; 
 import { BIBLIOTECA_SECOES, RENDERIZADOR_COMPONENTES } from './constants';
@@ -30,6 +30,36 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
 
   const limiteDoPlano = pacoteEscolhido?.limiteSecoes === 'Ilimitado' ? 999 : (pacoteEscolhido?.limiteSecoes as number) || 5;
 
+  // AJUSTE: Sequência de timers para atrasar o início e controlar a velocidade
+  useEffect(() => {
+    if (fase === 'escolha_modelos' && categoriasPendentes[indiceAtual]) {
+      const modelosDaCategoria = BIBLIOTECA_SECOES[categoriasPendentes[indiceAtual]];
+      
+      if (modelosDaCategoria && modelosDaCategoria.length > 0) {
+        const primeiroModeloId = modelosDaCategoria[0].id;
+        
+        // CORREÇÃO AQUI: Mudança de NodeJS.Timeout para ReturnType<typeof setTimeout>
+        let fecharTimer: ReturnType<typeof setTimeout>;
+
+        // 1. Espera 500ms (meio segundo) antes de abrir o acordeão
+        const abrirTimer = setTimeout(() => {
+          setModeloExpandido(primeiroModeloId);
+
+          // 2. Após abrir, espera mais 1000ms (1 segundo) para fechar
+          fecharTimer = setTimeout(() => {
+            setModeloExpandido(null);
+          }, 1000);
+
+        }, 500);
+
+        return () => {
+          clearTimeout(abrirTimer);
+          if (fecharTimer) clearTimeout(fecharTimer);
+        };
+      }
+    }
+  }, [fase, indiceAtual, categoriasPendentes]);
+
   const iniciarEscolhaDeModelos = () => {
     if (categoriasSelecionadas.length === 0) return;
     setCategoriasPendentes(categoriasSelecionadas);
@@ -43,9 +73,9 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
   const avancarParaProximaCategoria = () => {
     if (!modeloSelecionado) return;
 
-    const categoriaAtual = categoriasPendentes[indiceAtual];
-    const siteFiltrado = site.filter(secao => secao.categoria !== categoriaAtual);
-    const novaSecao = { id: crypto.randomUUID(), categoria: categoriaAtual, modelo: modeloSelecionado };
+    const categoryAtual = categoriasPendentes[indiceAtual];
+    const siteFiltrado = site.filter(secao => secao.categoria !== categoryAtual);
+    const novaSecao = { id: crypto.randomUUID(), categoria: categoryAtual, modelo: modeloSelecionado };
     
     const novoSite = [...siteFiltrado, novaSecao];
     setSite(novoSite);
@@ -92,7 +122,7 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
     } else if (fase === 'escolha_modelos') {
       avancarParaProximaCategoria();
     } else if (fase === 'resumo') {
-      // Aqui você pode disparar a função final para avançar ou concluir o formulário
+      // Concluir formulário se necessário
     }
   };
 
@@ -107,12 +137,12 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
   };
 
   return (
-    <div className="w-full flex flex-col items-center pt-12 pb-24 bg-slate-50 min-h-screen">
-      <div className="w-full max-w-4xl px-4 animate-fade-in">
-        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-slate-200">
+    <div className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen">
+      <div className="w-full max-w-none px-0 animate-fade-in">
+        <div className={`bg-white w-full p-4 md:p-6 ${fase === 'escolha_modelos' ? 'shadow-none bg-transparent' : 'shadow-sm border-b border-slate-200'}`}>
           
           {fase === 'selecao_inicial' && (
-            <div>
+            <div className="max-w-7xl mx-auto px-4">
               <div className="mb-6 pb-4 border-b border-slate-100">
                 <h3 className="text-2xl md:text-3xl font-black text-slate-800">
                   Selecione as seções desejadas
@@ -131,16 +161,16 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
           )}
 
           {fase === 'escolha_modelos' && categoriasPendentes.length > 0 && (
-            <div>
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8 pb-6 border-b border-slate-100">
+            <div className="w-full">
+              <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8 pb-6 border-b border-slate-200">
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-black text-slate-800">
+                  <h3 className="text-2xl md:text-4xl font-black text-slate-800">
                     Defina o estilo para: <span className="text-indigo-600 capitalize">{categoriasPendentes[indiceAtual]}</span>
                   </h3>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-6 w-full">
                 {BIBLIOTECA_SECOES[categoriasPendentes[indiceAtual]].map((modelo) => {
                   const isExpanded = modeloExpandido === modelo.id;
                   const isSelected = modeloSelecionado === modelo.id;
@@ -149,12 +179,12 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
                   return (
                     <div 
                       key={modelo.id} 
-                      className={`border-2 rounded-2xl overflow-hidden transition-all duration-300 ${
-                        isSelected ? 'border-indigo-600 shadow-md ring-2 ring-indigo-50' : 'border-slate-200 hover:border-slate-300'
+                      className={`bg-white transition-all duration-300 w-full ${
+                        isSelected ? 'ring-4 ring-indigo-600/20 border-y-2 border-indigo-600' : 'border-y border-slate-200'
                       }`}
                     >
                       <div 
-                        className="flex items-center justify-between p-4 md:p-5 bg-white cursor-pointer select-none group"
+                        className="flex items-center justify-between p-5 bg-white cursor-pointer select-none group max-w-7xl mx-auto"
                         onClick={() => setModeloExpandido(isExpanded ? null : modelo.id)}
                       >
                         <div className="flex items-center gap-4">
@@ -189,9 +219,10 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
                         </div>
                       </div>
 
-                      <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-[2000px] opacity-100 border-t-2 border-slate-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                        <div className="bg-slate-100 p-4 md:p-6 overflow-hidden">
-                          <div className="w-full bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden origin-top scale-[0.95] md:scale-100 pointer-events-none">
+                      {/* Transição visual de 1 segundo exato (duration-1000) */}
+                      <div className={`transition-all duration-1000 ease-in-out ${isExpanded ? 'max-h-[3000px] opacity-100 border-t border-slate-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                        <div className="p-0 bg-white w-full overflow-x-auto">
+                          <div className="w-full bg-white pointer-events-none">
                             {ComponenteReal ? <ComponenteReal /> : <div className="p-8 text-center font-bold text-slate-400">Modelo indisponível</div>}
                           </div>
                         </div>
@@ -204,10 +235,9 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
           )}
 
           {fase === 'resumo' && (
-            <div>
-              <div className="flex flex-col mb-6 pb-4 border-b border-slate-100 gap-1">
+            <div className="w-full">
+              <div className="max-w-7xl mx-auto px-4 flex flex-col mb-6 pb-4 border-b border-slate-100 gap-1">
                 <h3 className="text-2xl font-black text-slate-800">Estrutura Final do Site</h3>
-                {/* infoSite sendo lido aqui para resolver o warning de variável não utilizada */}
                 {infoSite.nome && (
                   <p className="text-sm text-indigo-600 font-semibold">
                     Projeto Customizado para: {infoSite.nome}
@@ -215,25 +245,27 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
                 )}
               </div>
 
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-6 w-full">
                 {site.map((secao, index) => {
                   const ComponenteReal = RENDERIZADOR_COMPONENTES[secao.modelo];
                   
                   return (
-                    <div key={secao.id} className="relative bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                      <div className="bg-slate-800 p-3 flex justify-between items-center z-10 relative">
-                        <span className="text-indigo-300 font-black uppercase text-sm px-3">
-                          {index + 1}. {secao.categoria}
-                        </span>
-                        <button 
-                          onClick={() => removerSecao(secao.id)}
-                          className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-sm transition-colors"
-                        >
-                          Remover
-                        </button>
+                    <div key={secao.id} className="relative bg-white border-y border-slate-200 overflow-hidden">
+                      <div className="bg-slate-800 p-4 flex justify-between items-center z-10 relative">
+                        <div className="max-w-7xl mx-auto w-full flex justify-between items-center px-4">
+                          <span className="text-indigo-300 font-black uppercase text-sm">
+                            {index + 1}. {secao.categoria}
+                          </span>
+                          <button 
+                            onClick={() => removerSecao(secao.id)}
+                            className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-sm transition-colors"
+                          >
+                            Remover
+                          </button>
+                        </div>
                       </div>
 
-                      <div className="w-full pointer-events-none opacity-90 max-h-[400px] overflow-hidden relative">
+                      <div className="w-full pointer-events-none opacity-90 max-h-[600px] overflow-hidden relative">
                         {ComponenteReal ? <ComponenteReal /> : <div className="p-10 text-center text-slate-500 font-bold bg-slate-50">Visualização não disponível.</div>}
                         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent" />
                       </div>
@@ -244,11 +276,13 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
             </div>
           )}
 
-          <BotoesNavegacao
-            onVoltar={tratarAcaoVoltar}
-            onProximo={tratarAcaoProximo}
-            desabilitarProximo={checarProximoDesabilitado()}
-          />
+          <div className="mt-8 max-w-7xl mx-auto px-4">
+            <BotoesNavegacao
+              onVoltar={tratarAcaoVoltar}
+              onProximo={tratarAcaoProximo}
+              desabilitarProximo={checarProximoDesabilitado()}
+            />
+          </div>
 
         </div>
       </div>
