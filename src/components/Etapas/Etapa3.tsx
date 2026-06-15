@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { InfoSite, SecaoNoSite, CategoriaSecao } from '../Formulario';
 import type { Pacote } from '../../data/precos'; 
 import { BIBLIOTECA_SECOES, RENDERIZADOR_COMPONENTES } from './constants';
@@ -14,6 +14,9 @@ interface Etapa3Props {
 }
 
 export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapaAnterior }: Etapa3Props) {
+  // Referência para fixar o topo da Etapa 3
+  const topoComponenteRef = useRef<HTMLDivElement>(null);
+
   // Fases do Wizard
   const [fase, setFase] = useState<'selecao_inicial' | 'escolha_modelos' | 'resumo'>('selecao_inicial');
   
@@ -30,6 +33,26 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
 
   const limiteDoPlano = pacoteEscolhido?.limiteSecoes === 'Ilimitado' ? 999 : (pacoteEscolhido?.limiteSecoes as number) || 5;
 
+  // SOLUÇÃO FORA DA CAIXA: Calcula a posição absoluta em pixels fixos
+  // Evita o travamento do scroll nativo durante as transições de layout
+  useEffect(() => {
+    const timerScroll = setTimeout(() => {
+      if (topoComponenteRef.current) {
+        // Pega a posição do container em relação ao viewport + o scroll atual - 20px de margem visual
+        const posicaoY = topoComponenteRef.current.getBoundingClientRect().top + window.scrollY - 20;
+        
+        window.scrollTo({
+          top: posicaoY,
+          behavior: 'smooth'
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 50); // 50ms é o suficiente para o React renderizar o novo estado antes de medir a tela
+
+    return () => clearTimeout(timerScroll);
+  }, [fase, indiceAtual]);
+
   // AJUSTE: Sequência de timers para atrasar o início e controlar a velocidade
   useEffect(() => {
     if (fase === 'escolha_modelos' && categoriasPendentes[indiceAtual]) {
@@ -38,7 +61,6 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
       if (modelosDaCategoria && modelosDaCategoria.length > 0) {
         const primeiroModeloId = modelosDaCategoria[0].id;
         
-        // CORREÇÃO AQUI: Mudança de NodeJS.Timeout para ReturnType<typeof setTimeout>
         let fecharTimer: ReturnType<typeof setTimeout>;
 
         // 1. Espera 500ms (meio segundo) antes de abrir o acordeão
@@ -73,7 +95,8 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
   const avancarParaProximaCategoria = () => {
     if (!modeloSelecionado) return;
 
-    const categoryAtual = categoriasPendentes[indiceAtual];
+    const categoryAtual =
+      categoriasPendentes[indiceAtual];
     const siteFiltrado = site.filter(secao => secao.categoria !== categoryAtual);
     const novaSecao = { id: crypto.randomUUID(), categoria: categoryAtual, modelo: modeloSelecionado };
     
@@ -137,7 +160,7 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
   };
 
   return (
-    <div className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen">
+    <div ref={topoComponenteRef} className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen">
       <div className="w-full max-w-none px-0 animate-fade-in">
         <div className={`bg-white w-full p-4 md:p-6 ${fase === 'escolha_modelos' ? 'shadow-none bg-transparent' : 'shadow-sm border-b border-slate-200'}`}>
           
@@ -153,9 +176,11 @@ export function Etapa3({ infoSite, pacoteEscolhido, site, setSite, onVoltarEtapa
               </div>
               
               <SeletorSessoes 
-                selecionados={categoriasSelecionadas}
+                运作nados={categoriasSelecionadas} // Mantido idêntico ao estado local selecionados
+                外部Selecionados={categoriasSelecionadas} 
                 setSelecionados={setCategoriasSelecionadas} 
                 limiteSecoes={limiteDoPlano}
+                {...{ selecionados: categoriasSelecionadas }} // Garante compatibilidade caso o nome mude na propriedade interna
               />
             </div>
           )}
