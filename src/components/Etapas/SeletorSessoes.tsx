@@ -32,7 +32,8 @@ export function SeletorSessoes({ selecionados, setSelecionados, limiteSecoes }: 
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* 👇 AQUI FOI FEITA A ALTERAÇÃO: lg:grid-cols-4 e gap-5 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {categorias.map((cat, index) => {
           const isChecked = selecionados.includes(cat);
           const isDisabled = !isChecked && selecionados.length >= limiteSecoes;
@@ -46,8 +47,8 @@ export function SeletorSessoes({ selecionados, setSelecionados, limiteSecoes }: 
                 isDisabled ? 'border-slate-200 opacity-50 cursor-not-allowed' : 'border-slate-200 hover:border-indigo-400 hover:shadow-md'
               }`}
             >
-              <div className={`w-full h-32 md:h-40 bg-gradient-to-br ${obterEstiloCard(index)} flex items-center justify-center relative`}>
-                <span className="text-6xl drop-shadow-md">{BIBLIOTECA_SECOES[cat][0]?.thumb}</span>
+              <div className={`w-full h-32 md:h-36 bg-gradient-to-br ${obterEstiloCard(index)} flex items-center justify-center relative`}>
+                <span className="text-5xl md:text-6xl drop-shadow-md">{BIBLIOTECA_SECOES[cat][0]?.thumb}</span>
                 {isChecked && (
                   <div className="absolute top-3 right-3 bg-white text-indigo-600 p-1.5 rounded-full shadow-md">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
@@ -56,16 +57,15 @@ export function SeletorSessoes({ selecionados, setSelecionados, limiteSecoes }: 
                   </div>
                 )}
               </div>
-              <div className="p-5 flex items-center gap-3">
-                {/* Resolvido o erro axe/forms adicionando o atributo aria-label descritivo */}
+              <div className="p-4 flex items-center gap-3">
                 <input 
                   type="checkbox" 
                   checked={isChecked} 
                   readOnly 
                   aria-label={`Selecionar seção ${cat}`}
-                  className="w-5 h-5 accent-indigo-600 pointer-events-none" 
+                  className="w-5 h-5 accent-indigo-600 pointer-events-none shrink-0" 
                 />
-                <span className="font-bold text-lg text-slate-800 capitalize truncate">{cat}</span>
+                <span className="font-bold text-base text-slate-800 capitalize truncate">{cat}</span>
               </div>
             </div>
           );
