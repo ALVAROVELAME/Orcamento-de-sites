@@ -1,5 +1,6 @@
 export * from './servicos';
 export * from './sobre';
+export * from './capa';
 export * from './video';
 export * from './mapa';
 export * from './galeria';

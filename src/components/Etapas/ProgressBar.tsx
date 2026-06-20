@@ -85,7 +85,7 @@ export function ProgressBar({
               >
                 {listaPacotes.map((pacote) => (
                   <option key={pacote.id} value={pacote.id} className="font-bold text-base">
-                    {pacote.emoji} &nbsp; {pacote.nome}
+                    {pacote.nome}
                   </option>
                 ))}
               </select>

@@ -12,20 +12,12 @@ import { GaleriaModel1 } from '../sections/galeria';
 import { ServicosModel1 , ServicosModel2 } from '../sections/servicos';
 import { SobreModel1 } from '../sections/sobre';
 import { VideoModel1 } from '../sections/video';
-
-// Interface interna do motor visual para controle das opções de blocos
-interface InterfaceObjetoSecao {
-  id: string;
-  nome: string;
-  thumb: string;
-  componente: ElementType;
-}
-
+import { CapaModel1 } from '../sections/capa';
 // =========================================================================
-// INSTÂNCIAS DE COMPONENTES DAS SEÇÕES
+// REGISTRO ÚNICO DOS MODELOS
 // =========================================================================
-const secoesEspecificas: Record<string, InterfaceObjetoSecao> = {
-  capaPadrao: { id: 'CapaPlaceholder', nome: 'Capa Padrão (Em breve)', thumb: '🖼️', componente: () => <div className="w-full py-32 bg-blue-900 text-white flex items-center justify-center text-3xl font-bold">Adicione o componente de Capa aqui</div> },
+const MODELOS_SECOES = {
+  capaModel1: { id: 'CapaModel1', nome: 'Capa com Destaque', thumb: '🖼️', componente: CapaModel1 },
   sobreEmpresa: { id: 'SobreModel1', nome: 'Sobre a Empresa', thumb: '🏢', componente: SobreModel1 },
   servicosModel1: { id: 'ServicosModel1', nome: 'Serviços - Modelo 1', thumb: '⚙️', componente: ServicosModel1 },
   servicosModel2: { id: 'ServicosModel2', nome: 'Serviços - Modelo 2', thumb: '⚙️', componente: ServicosModel2 },
@@ -38,35 +30,31 @@ const secoesEspecificas: Record<string, InterfaceObjetoSecao> = {
   videoInst: { id: 'VideoModel1', nome: 'Vídeo Institucional', thumb: '▶️', componente: VideoModel1 },
   mapaLocal: { id: 'MapaModel1', nome: 'Localização', thumb: '📍', componente: MapaModel1 },
   galeriaFotos: { id: 'GaleriaModel1', nome: 'Galeria de Fotos', thumb: '📸', componente: GaleriaModel1 },
-};
+} as const;
 
-// Helper simples para formatar a saída sem precisar de classes complexas
-const extrairDadosVisuais = (secao: InterfaceObjetoSecao) => ({ 
-  id: secao.id, 
-  nome: secao.nome, 
-  thumb: secao.thumb 
-});
+type ModeloSecao = (typeof MODELOS_SECOES)[keyof typeof MODELOS_SECOES];
+const toPreviewItem = ({ id, nome, thumb }: ModeloSecao) => ({ id, nome, thumb });
 
 // =========================================================================
 // BIBLIOTECA DA LISTA LATERAL (CONSTRUTOR ETAPA 3)
 // =========================================================================
 export const BIBLIOTECA_SECOES: Record<CategoriaSecao, { id: string; nome: string; thumb: string }[]> = {
-  capa: [extrairDadosVisuais(secoesEspecificas.capaPadrao)],
-  sobre: [extrairDadosVisuais(secoesEspecificas.sobreEmpresa)],
-  servicos: [extrairDadosVisuais(secoesEspecificas.servicosModel1), extrairDadosVisuais(secoesEspecificas.servicosModel2)],
-  depoimentos: [extrairDadosVisuais(secoesEspecificas.depCarrossel), extrairDadosVisuais(secoesEspecificas.depGoogle), extrairDadosVisuais(secoesEspecificas.depTradicional)],
-  faq: [extrairDadosVisuais(secoesEspecificas.faqModel1)],
-  blog: [extrairDadosVisuais(secoesEspecificas.blogModel1)],
-  formulario: [extrairDadosVisuais(secoesEspecificas.formModel1)],
-  video: [extrairDadosVisuais(secoesEspecificas.videoInst)],
-  mapa: [extrairDadosVisuais(secoesEspecificas.mapaLocal)],
-  galeria: [extrairDadosVisuais(secoesEspecificas.galeriaFotos)]
+  capa: [toPreviewItem(MODELOS_SECOES.capaModel1)],
+  sobre: [toPreviewItem(MODELOS_SECOES.sobreEmpresa)],
+  servicos: [toPreviewItem(MODELOS_SECOES.servicosModel1), toPreviewItem(MODELOS_SECOES.servicosModel2)],
+  depoimentos: [toPreviewItem(MODELOS_SECOES.depCarrossel), toPreviewItem(MODELOS_SECOES.depGoogle), toPreviewItem(MODELOS_SECOES.depTradicional)],
+  faq: [toPreviewItem(MODELOS_SECOES.faqModel1)],
+  blog: [toPreviewItem(MODELOS_SECOES.blogModel1)],
+  formulario: [toPreviewItem(MODELOS_SECOES.formModel1)],
+  video: [toPreviewItem(MODELOS_SECOES.videoInst)],
+  mapa: [toPreviewItem(MODELOS_SECOES.mapaLocal)],
+  galeria: [toPreviewItem(MODELOS_SECOES.galeriaFotos)],
 };
 
 // =========================================================================
 // DICIONÁRIO RENDERIZADOR (CONSTRUTOR ETAPA 3)
 // =========================================================================
-export const RENDERIZADOR_COMPONENTES: Record<string, ElementType> = Object.values(secoesEspecificas).reduce((acc, secao) => {
+export const RENDERIZADOR_COMPONENTES: Record<string, ElementType> = Object.values(MODELOS_SECOES).reduce((acc, secao) => {
   acc[secao.id] = secao.componente;
   return acc;
 }, {} as Record<string, ElementType>);

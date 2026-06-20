@@ -4,6 +4,8 @@ import type { Pacote } from '../../data/precos';
 import { BIBLIOTECA_SECOES, RENDERIZADOR_COMPONENTES } from './constants';
 import { BotoesNavegacao } from './BotoesNavegacao';
 
+const TODAS_CATEGORIAS = Object.keys(BIBLIOTECA_SECOES) as CategoriaSecao[];
+
 // --- COMPONENTE PARA A FASE 2: ESCOLHA DOS MODELOS (MANTIDO E INTACTO) ---
 interface ItemAcordeaoProps {
   modelo: { id: string; nome: string };
@@ -144,8 +146,8 @@ function CategoriaAcordeao({
         }`}
       >
         <div className="overflow-hidden">
-          <div className="p-0 bg-white w-full overflow-x-auto relative">
-            <div className="w-full bg-white pointer-events-none opacity-80">
+          <div className="p-0 bg-white w-full overflow-x-auto">
+            <div className="w-full bg-white pointer-events-none">
               {ComponenteReal ? <ComponenteReal /> : <div className="p-8 text-center font-bold text-slate-400">Prévia indisponível</div>}
             </div>
           </div>
@@ -162,7 +164,7 @@ interface Etapa3Props {
   site: SecaoNoSite[];
   setSite: (site: SecaoNoSite[]) => void;
   onVoltarEtapaAnterior: () => void;
-  onAvancarParaEtapa4: () => void; // <-- Adicionado com sucesso aqui
+  onAvancarParaEtapa4: () => void; 
 }
 
 export function Etapa3({ 
@@ -171,7 +173,7 @@ export function Etapa3({
   site, 
   setSite, 
   onVoltarEtapaAnterior,
-  onAvancarParaEtapa4 // <-- Injetado no componente
+  onAvancarParaEtapa4 
 }: Etapa3Props) {
   const [fase, setFase] = useState<'selecao_inicial' | 'escolha_modelos' | 'resumo'>('selecao_inicial');
   const [categoriasPendentes, setCategoriasPendentes] = useState<CategoriaSecao[]>([]);
@@ -182,8 +184,10 @@ export function Etapa3({
   const [modeloExpandido, setModeloExpandido] = useState<string | null>(null);
   const [modeloSelecionado, setModeloSelecionado] = useState<string | null>(null);
 
-  const limiteDoPlano = pacoteEscolhido?.limiteSecoes === 'Ilimitado' ? 999 : (pacoteEscolhido?.limiteSecoes as number) || 5;
-  const todasCategorias = Object.keys(BIBLIOTECA_SECOES) as CategoriaSecao[];
+  // NOVO ESTADO: Controla a exibição do aviso de limite
+  const [mostrarAvisoLimite, setMostrarAvisoLimite] = useState(false);
+
+  const limiteDoPlano = pacoteEscolhido?.limiteSecoes ?? 5;
 
   useEffect(() => {
     window.scrollTo({
@@ -192,6 +196,38 @@ export function Etapa3({
     });
   }, [fase, indiceAtual]);
 
+  // NOVO EFEITO: Fecha o aviso de limite automaticamente após 5 segundos
+  useEffect(() => {
+    if (mostrarAvisoLimite) {
+      const timer = setTimeout(() => {
+        setMostrarAvisoLimite(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [mostrarAvisoLimite]);
+
+  // --- EFEITO: Animação de prévia para a Fase 1 (Categorias) ---
+  useEffect(() => {
+    if (fase === 'selecao_inicial' && TODAS_CATEGORIAS.length > 0) {
+      const primeiraCategoria = TODAS_CATEGORIAS[0];
+      let fecharTimer: ReturnType<typeof setTimeout>;
+
+      const abrirTimer = setTimeout(() => {
+        setCategoriaExpandida(primeiraCategoria);
+        
+        fecharTimer = setTimeout(() => {
+          setCategoriaExpandida(null);
+        }, 1500);
+      }, 400);
+
+      return () => {
+        clearTimeout(abrirTimer);
+        if (fecharTimer) clearTimeout(fecharTimer);
+      };
+    }
+  }, [fase]); 
+
+  // --- EFEITO: Animação de prévia para a Fase 2 (Modelos) ---
   useEffect(() => {
     if (fase === 'escolha_modelos' && categoriasPendentes[indiceAtual]) {
       const modelosDaCategoria = BIBLIOTECA_SECOES[categoriasPendentes[indiceAtual]];
@@ -214,7 +250,7 @@ export function Etapa3({
         };
       }
     }
-  }, [fase, indiceAtual, ...[categoriasPendentes]]);
+  }, [fase, indiceAtual, categoriasPendentes]);
 
   const iniciarEscolhaDeModelos = () => {
     if (categoriasSelecionadas.length === 0) return;
@@ -278,7 +314,7 @@ export function Etapa3({
     } else if (fase === 'escolha_modelos') {
       avancarParaProximaCategoria();
     } else if (fase === 'resumo') {
-      onAvancarParaEtapa4(); // <-- Agora aciona a troca global de tela no Formulario.tsx
+      onAvancarParaEtapa4(); 
     }
   };
 
@@ -293,7 +329,40 @@ export function Etapa3({
   };
 
   return (
-    <div className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen">
+    <div className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen relative overflow-hidden">
+      
+      {/* --- MENSAGEM DE AVISO (TOAST) --- */}
+      <div 
+        className={`fixed top-4 right-4 md:top-8 md:right-8 z-50 transition-all duration-500 transform ${
+          mostrarAvisoLimite ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="bg-rose-600 text-white p-4 rounded-xl shadow-xl flex items-start gap-4 border border-rose-500 max-w-sm">
+          <div className="mt-0.5">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h4 className="font-bold text-md mb-1">Limite do Pacote Atingido</h4>
+            <p className="text-sm text-rose-100">
+              Seu pacote permite apenas {limiteDoPlano} seções. Para adicionar mais opções, você precisará alterar o plano escolhido.
+            </p>
+          </div>
+          <button 
+            onClick={() => setMostrarAvisoLimite(false)}
+            aria-label="Fechar aviso de limite do pacote"
+            title="Fechar aviso de limite do pacote"
+            className="p-1 hover:bg-rose-700 rounded transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      {/* --------------------------------- */}
+
       <div className="w-full max-w-none px-0 animate-fade-in delay-[300ms] fill-mode-both relative">
         <div className={`bg-white w-full p-4 md:p-6 relative ${fase === 'escolha_modelos' ? 'shadow-none bg-transparent' : 'shadow-sm border-b border-slate-200'}`}>
           
@@ -319,7 +388,7 @@ export function Etapa3({
               </div>
               
               <div className="flex flex-col gap-6 w-full mt-6">
-                {todasCategorias.map((categoria) => {
+                {TODAS_CATEGORIAS.map((categoria) => {
                   const modelosDaCategoria = BIBLIOTECA_SECOES[categoria];
                   const primeiroModelo = modelosDaCategoria && modelosDaCategoria.length > 0 ? modelosDaCategoria[0] : null;
                   const ComponentePreview = primeiroModelo ? RENDERIZADOR_COMPONENTES[primeiroModelo.id] : undefined;
@@ -336,9 +405,14 @@ export function Etapa3({
                       onToggleSelect={() => {
                         if (isSelected) {
                           setCategoriasSelecionadas(categoriasSelecionadas.filter(c => c !== categoria));
+                          setMostrarAvisoLimite(false); // Esconde o aviso caso desmarque
                         } else {
                           if (categoriasSelecionadas.length < limiteDoPlano) {
                             setCategoriasSelecionadas([...categoriasSelecionadas, categoria]);
+                            setMostrarAvisoLimite(false);
+                          } else {
+                            // MOSTRA O AVISO SE TENTAR PASSAR DO LIMITE
+                            setMostrarAvisoLimite(true);
                           }
                         }
                       }}

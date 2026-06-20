@@ -7,8 +7,9 @@ import { Etapa4 } from './Etapas/Etapa4';
 import { Etapa5 } from './Etapas/Etapa5';
 import { Etapa6 } from './Etapas/Etapa6'; // <-- IMPORTAÇÃO DA NOVA ETAPA
 
-import { PACOTES } from '../data/precos';
+import { PACOTES, calcularValorProjeto } from '../data/precos';
 import type { Pacote } from '../data/precos';
+import { abrirWhatsAppFormulario } from '../utils/whatsappFormulario';
 
 export type CategoriaSecao = 'capa' | 'sobre' | 'servicos' | 'depoimentos' | 'faq' | 'blog' | 'formulario' | 'video' | 'mapa' | 'galeria';
 
@@ -26,6 +27,7 @@ export interface InfoSite {
   paginas_extras?: string[]; 
   extras_integracoes?: string[];
   ecommerce_extras?: string[]; // <-- NOVO: Armazena extras de E-commerce
+  tem_hospedagem_dominio?: boolean;
 }
 
 export function Formulario() {
@@ -40,9 +42,11 @@ export function Formulario() {
     estilo_marca: [],
     paginas_extras: [],
     extras_integracoes: [],
-    ecommerce_extras: [] // <-- Inicializado
+    ecommerce_extras: [],
+    tem_hospedagem_dominio: true
   });
   const [site, setSite] = useState<SecaoNoSite[]>([]);
+  const [etapa3ResetKey, setEtapa3ResetKey] = useState(0);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -50,7 +54,15 @@ export function Formulario() {
 
   const obterValorTotal = (): number => {
     if (!pacoteEscolhido) return 0;
-    return pacoteEscolhido.precoBase;
+
+    return calcularValorProjeto({
+      pacoteId: pacoteEscolhido.id,
+      secoes: site,
+      paginasExtras: infoSite.paginas_extras,
+      extrasIntegracoes: infoSite.extras_integracoes,
+      ecommerceExtras: infoSite.ecommerce_extras,
+      temHospedagemDominio: infoSite.tem_hospedagem_dominio
+    });
   };
 
   const avancarParaEtapa2 = (pacote: Pacote) => {
@@ -75,13 +87,8 @@ export function Formulario() {
     if (ehEcommerce) {
       setEtapaAtual(6);
     } else {
-      finalizarProjeto();
+      enviarFormularioWhatsApp();
     }
-  };
-
-  const finalizarProjeto = () => {
-    console.log("Projeto Finalizado!", { infoSite, pacoteEscolhido, site });
-    alert("Obrigado! Seu projeto foi configurado com sucesso.");
   };
 
   const voltarEtapa = () => {
@@ -92,7 +99,33 @@ export function Formulario() {
     if (etapaAtual === 6) setEtapaAtual(5);
   };
 
-  const selecionarPacoteDireto = (pacote: Pacote) => setPacoteEscolhido(pacote);
+  const selecionarPacoteDireto = (pacote: Pacote) => {
+    const mudouPacote = pacoteEscolhido?.id !== pacote.id;
+    setPacoteEscolhido(pacote);
+
+    if (mudouPacote && etapaAtual >= 3) {
+      setSite([]);
+      setInfoSite((atual) => ({
+        ...atual,
+        paginas_extras: [],
+        extras_integracoes: [],
+        ecommerce_extras: [],
+      }));
+      setEtapa3ResetKey((prev) => prev + 1);
+      setEtapaAtual(3);
+    }
+  };
+
+  const enviarFormularioWhatsApp = () => {
+    if (!pacoteEscolhido) return;
+
+    abrirWhatsAppFormulario({
+      infoSite,
+      pacoteEscolhido,
+      site,
+      valorTotal: obterValorTotal(),
+    });
+  };
 
   return (
     <div
@@ -110,7 +143,7 @@ export function Formulario() {
       <div className="w-full pt-8 md:pt-10 flex flex-col items-center">
         {etapaAtual === 1 && <Etapa1 avancarParaEtapa2={avancarParaEtapa2} />}
         {etapaAtual === 2 && <Etapa2 infoSite={infoSite} setInfoSite={setInfoSite} avancarParaEtapa3={avancarParaEtapa3} voltarEtapa={voltarEtapa} />}
-        {etapaAtual === 3 && <Etapa3 infoSite={infoSite} pacoteEscolhido={pacoteEscolhido} site={site} setSite={setSite} onVoltarEtapaAnterior={voltarEtapa} onAvancarParaEtapa4={avancarParaEtapa4} />}
+        {etapaAtual === 3 && <Etapa3 key={etapa3ResetKey} infoSite={infoSite} pacoteEscolhido={pacoteEscolhido} site={site} setSite={setSite} onVoltarEtapaAnterior={voltarEtapa} onAvancarParaEtapa4={avancarParaEtapa4} />}
         {etapaAtual === 4 && <Etapa4 infoSite={infoSite} setInfoSite={setInfoSite} voltarEtapa={voltarEtapa} finalizarProjeto={avancarParaEtapa5} />}
         
         {/* Etapa 5 agora usa avancarDaEtapa5 para decidir o próximo passo */}
@@ -131,7 +164,7 @@ export function Formulario() {
             infoSite={infoSite}
             setInfoSite={setInfoSite}
             voltarEtapa={voltarEtapa}
-            finalizarProjeto={finalizarProjeto}
+            finalizarProjeto={enviarFormularioWhatsApp}
           />
         )}
       </div>

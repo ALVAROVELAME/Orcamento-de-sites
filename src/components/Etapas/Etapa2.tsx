@@ -51,6 +51,42 @@ export function Etapa2({ infoSite, setInfoSite, avancarParaEtapa3, voltarEtapa }
             />
           </div>
 
+          <fieldset className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
+            <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">
+              Hospedagem e Domínio *
+            </legend>
+            <p className="text-sm text-slate-600 clear-both">
+              Informe se você já possui hospedagem e domínio. Caso não tenha, adicionaremos esse item no orçamento.
+            </p>
+
+            <div className="space-y-4 pt-2 clear-both">
+              <label className="flex items-center gap-3 cursor-pointer text-slate-700 font-bold text-base md:text-lg">
+                <input
+                  type="radio"
+                  name="tem_hospedagem_dominio"
+                  value="true"
+                  checked={infoSite.tem_hospedagem_dominio === true}
+                  onChange={() => setInfoSite({ ...infoSite, tem_hospedagem_dominio: true })}
+                  className="w-5 h-5 text-indigo-600 focus:ring-indigo-500 accent-indigo-600"
+                  required
+                />
+                <span>Já tenho hospedagem e domínio</span>
+              </label>
+
+              <label className="flex items-center gap-3 cursor-pointer text-slate-700 font-bold text-base md:text-lg">
+                <input
+                  type="radio"
+                  name="tem_hospedagem_dominio"
+                  value="false"
+                  checked={infoSite.tem_hospedagem_dominio === false}
+                  onChange={() => setInfoSite({ ...infoSite, tem_hospedagem_dominio: false })}
+                  className="w-5 h-5 text-indigo-600 focus:ring-indigo-500 accent-indigo-600"
+                />
+                <span>Não tenho, quero incluir no orçamento</span>
+              </label>
+            </div>
+          </fieldset>
+
           {/* SEÇÃO DO LOGOTIPO */}
           <fieldset className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
             <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">

@@ -1,13 +1,5 @@
-import { useState, useEffect } from 'react';
-
 export function MapaModel1() {
-  // Estado para carregar o mapa com segurança sem quebrar em iOS antigos
-  const [carregarMapa, setCarregarMapa] = useState(false);
-
-  useEffect(() => {
-    // Carrega o mapa assim que o componente monta no navegador
-    setCarregarMapa(true);
-  }, []);
+  const carregarMapa = true;
 
   // Definição estática da cor da seção de produção (Exemplo: azul profissional)
   const tema = {
@@ -42,6 +34,7 @@ export function MapaModel1() {
               src={urlEmbedMapa}
               className="w-full h-full border-0"
               allowFullScreen
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="Mapa interativo mostrando a localização da empresa"
             />

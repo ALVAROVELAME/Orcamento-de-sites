@@ -32,7 +32,7 @@ export function Etapa1({ avancarParaEtapa2 }: Etapa1Props) {
             {/* Topo do Card: Informações principais */}
             <div>
               <div className="text-4xl mb-4 bg-slate-50 w-14 h-14 flex items-center justify-center rounded-2xl">
-                {pacote.emoji}
+                {pacote.nome.charAt(0)}
               </div>
               
               <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">
