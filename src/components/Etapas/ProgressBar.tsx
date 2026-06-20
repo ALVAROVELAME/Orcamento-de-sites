@@ -59,7 +59,7 @@ export function ProgressBar({
 
   return (
     <div 
-      className="w-full bg-white/95 backdrop-blur-md fixed top-[73px] left-0 z-40 transition-all duration-300 shadow-lg shadow-slate-200/50 border-b border-slate-100"
+      className="w-full bg-white/95 backdrop-blur-md sticky top-[72px] left-0 z-40 transition-all duration-300 shadow-lg shadow-slate-200/50 border-b border-slate-100"
       role="region"
       aria-label="Status do orçamento e progresso do formulário"
     >

@@ -95,7 +95,10 @@ export function Formulario() {
   const selecionarPacoteDireto = (pacote: Pacote) => setPacoteEscolhido(pacote);
 
   return (
-    <div className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[130px] md:pt-[120px]">
+    <div
+      id="formulario"
+      className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[72px] md:pt-[72px]"
+    >
       <ProgressBar 
         etapaAtual={etapaAtual} 
         pacoteEscolhido={pacoteEscolhido} 
@@ -104,7 +107,7 @@ export function Formulario() {
         selecionarPacote={selecionarPacoteDireto}
       />
 
-      <div className="w-full pt-16 md:pt-20 flex flex-col items-center">
+      <div className="w-full pt-8 md:pt-10 flex flex-col items-center">
         {etapaAtual === 1 && <Etapa1 avancarParaEtapa2={avancarParaEtapa2} />}
         {etapaAtual === 2 && <Etapa2 infoSite={infoSite} setInfoSite={setInfoSite} avancarParaEtapa3={avancarParaEtapa3} voltarEtapa={voltarEtapa} />}
         {etapaAtual === 3 && <Etapa3 infoSite={infoSite} pacoteEscolhido={pacoteEscolhido} site={site} setSite={setSite} onVoltarEtapaAnterior={voltarEtapa} onAvancarParaEtapa4={avancarParaEtapa4} />}
