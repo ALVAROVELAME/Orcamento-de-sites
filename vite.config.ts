@@ -1,23 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
-import type { Config as SVGOConfig } from 'svgo'
-
-const svgConfig: SVGOConfig = {
-  multipass: true,
-  plugins: [
-    {
-      name: 'preset-default',
-      params: {
-        overrides: {
-          removeViewBox: false,
-        },
-      },
-    },
-    'removeTitle',
-    'removeDesc',
-  ],
-}
 
 export default defineConfig({
   plugins: [
@@ -30,7 +13,9 @@ export default defineConfig({
         quality: 75,
         lossless: false,
       },
-      svg: svgConfig
+      svg: {
+        multipass: true,
+      }
     })
   ],
   build: {
