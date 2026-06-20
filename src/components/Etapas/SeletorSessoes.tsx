@@ -1,4 +1,4 @@
-import type { CategoriaSecao } from '../Formulario';
+import type { CategoriaSecao } from '../../data/precos';
 import { BIBLIOTECA_SECOES } from './constants';
 
 interface Props {

@@ -1,50 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { ProgressBar } from './Etapas/ProgressBar';
+import { useEffect, useState } from 'react';
 import { Etapa1 } from './Etapas/Etapa1';
 import { Etapa2 } from './Etapas/Etapa2';
 import { Etapa3 } from './Etapas/Etapa3';
 import { Etapa4 } from './Etapas/Etapa4';
 import { Etapa5 } from './Etapas/Etapa5';
-import { Etapa6 } from './Etapas/Etapa6'; // <-- IMPORTAÇÃO DA NOVA ETAPA
-
-import { PACOTES, calcularValorProjeto } from '../data/precos';
-import type { Pacote } from '../data/precos';
+import { Etapa6 } from './Etapas/Etapa6';
+import { ProgressBar } from './Etapas/ProgressBar';
+import {
+  INFO_SITE_INICIAL,
+  PACOTES,
+  calcularValorProjeto,
+  ehPacoteEcommerce,
+  type InfoSite,
+  type Pacote,
+  type SecaoNoSite
+} from '../data/precos';
 import { abrirWhatsAppFormulario } from '../utils/whatsappFormulario';
 
-export type CategoriaSecao = 'capa' | 'sobre' | 'servicos' | 'depoimentos' | 'faq' | 'blog' | 'formulario' | 'video' | 'mapa' | 'galeria';
-
-export interface SecaoNoSite {
-  id: string;
-  categoria: CategoriaSecao;
-  modelo: string;
-}
-
-export interface InfoSite {
-  nome: string;
-  cores: [string, string, string];
-  status_logo?: string;      
-  estilo_marca?: string[];   
-  paginas_extras?: string[]; 
-  extras_integracoes?: string[];
-  ecommerce_extras?: string[]; // <-- NOVO: Armazena extras de E-commerce
-  tem_hospedagem_dominio?: boolean;
-}
+type EtapaFormulario = 1 | 2 | 3 | 4 | 5 | 6;
 
 export function Formulario() {
-  // <-- ATUALIZADO: Agora suporta estados de 1 até 6
-  const [etapaAtual, setEtapaAtual] = useState<1 | 2 | 3 | 4 | 5 | 6>(1); 
+  const [etapaAtual, setEtapaAtual] = useState<EtapaFormulario>(1);
   const [pacoteEscolhido, setPacoteEscolhido] = useState<Pacote | null>(null);
-  
-  const [infoSite, setInfoSite] = useState<InfoSite>({ 
-    nome: '', 
-    cores: ['#2563eb', '#1e40af', '#ffffff'],
-    status_logo: '',
-    estilo_marca: [],
-    paginas_extras: [],
-    extras_integracoes: [],
-    ecommerce_extras: [],
-    tem_hospedagem_dominio: true
-  });
+  const [infoSite, setInfoSite] = useState<InfoSite>(INFO_SITE_INICIAL);
   const [site, setSite] = useState<SecaoNoSite[]>([]);
   const [etapa3ResetKey, setEtapa3ResetKey] = useState(0);
 
@@ -52,7 +30,7 @@ export function Formulario() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [etapaAtual]);
 
-  const obterValorTotal = (): number => {
+  const obterValorTotal = () => {
     if (!pacoteEscolhido) return 0;
 
     return calcularValorProjeto({
@@ -70,8 +48,8 @@ export function Formulario() {
     setEtapaAtual(2);
   };
 
-  const avancarParaEtapa3 = (e: React.FormEvent) => {
-    e.preventDefault();
+  const avancarParaEtapa3 = (event: React.FormEvent) => {
+    event.preventDefault();
     if (infoSite.nome.trim() !== '') setEtapaAtual(3);
   };
 
@@ -79,16 +57,13 @@ export function Formulario() {
   const avancarParaEtapa5 = () => setEtapaAtual(5);
   const avancarParaEtapa6 = () => setEtapaAtual(6);
 
-  // <-- LÓGICA CONDICIONAL: Decide se vai para Etapa 6 ou finaliza
   const avancarDaEtapa5 = () => {
-    const ehEcommerce = pacoteEscolhido?.nome.toLowerCase().includes('loja') || 
-                        pacoteEscolhido?.nome.toLowerCase().includes('e-commerce');
-
-    if (ehEcommerce) {
+    if (ehPacoteEcommerce(pacoteEscolhido)) {
       setEtapaAtual(6);
-    } else {
-      enviarFormularioWhatsApp();
+      return;
     }
+
+    enviarFormularioWhatsApp();
   };
 
   const voltarEtapa = () => {
@@ -109,7 +84,7 @@ export function Formulario() {
         ...atual,
         paginas_extras: [],
         extras_integracoes: [],
-        ecommerce_extras: [],
+        ecommerce_extras: []
       }));
       setEtapa3ResetKey((prev) => prev + 1);
       setEtapaAtual(3);
@@ -123,7 +98,7 @@ export function Formulario() {
       infoSite,
       pacoteEscolhido,
       site,
-      valorTotal: obterValorTotal(),
+      valorTotal: obterValorTotal()
     });
   };
 
@@ -132,21 +107,43 @@ export function Formulario() {
       id="formulario"
       className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[72px] md:pt-[72px]"
     >
-      <ProgressBar 
-        etapaAtual={etapaAtual} 
-        pacoteEscolhido={pacoteEscolhido} 
-        listaPacotes={PACOTES} 
+      <ProgressBar
+        etapaAtual={etapaAtual}
+        pacoteEscolhido={pacoteEscolhido}
+        listaPacotes={PACOTES}
         valorTotal={obterValorTotal()}
         selecionarPacote={selecionarPacoteDireto}
       />
 
       <div className="w-full pt-8 md:pt-10 flex flex-col items-center">
         {etapaAtual === 1 && <Etapa1 avancarParaEtapa2={avancarParaEtapa2} />}
-        {etapaAtual === 2 && <Etapa2 infoSite={infoSite} setInfoSite={setInfoSite} avancarParaEtapa3={avancarParaEtapa3} voltarEtapa={voltarEtapa} />}
-        {etapaAtual === 3 && <Etapa3 key={etapa3ResetKey} infoSite={infoSite} pacoteEscolhido={pacoteEscolhido} site={site} setSite={setSite} onVoltarEtapaAnterior={voltarEtapa} onAvancarParaEtapa4={avancarParaEtapa4} />}
-        {etapaAtual === 4 && <Etapa4 infoSite={infoSite} setInfoSite={setInfoSite} voltarEtapa={voltarEtapa} finalizarProjeto={avancarParaEtapa5} />}
-        
-        {/* Etapa 5 agora usa avancarDaEtapa5 para decidir o próximo passo */}
+        {etapaAtual === 2 && (
+          <Etapa2
+            infoSite={infoSite}
+            setInfoSite={setInfoSite}
+            avancarParaEtapa3={avancarParaEtapa3}
+            voltarEtapa={voltarEtapa}
+          />
+        )}
+        {etapaAtual === 3 && (
+          <Etapa3
+            key={etapa3ResetKey}
+            infoSite={infoSite}
+            pacoteEscolhido={pacoteEscolhido}
+            site={site}
+            setSite={setSite}
+            onVoltarEtapaAnterior={voltarEtapa}
+            onAvancarParaEtapa4={avancarParaEtapa4}
+          />
+        )}
+        {etapaAtual === 4 && (
+          <Etapa4
+            infoSite={infoSite}
+            setInfoSite={setInfoSite}
+            voltarEtapa={voltarEtapa}
+            finalizarProjeto={avancarParaEtapa5}
+          />
+        )}
         {etapaAtual === 5 && (
           <Etapa5
             infoSite={infoSite}
@@ -157,8 +154,6 @@ export function Formulario() {
             finalizarProjeto={avancarDaEtapa5}
           />
         )}
-
-        {/* Etapa 6 Condicional */}
         {etapaAtual === 6 && (
           <Etapa6
             infoSite={infoSite}

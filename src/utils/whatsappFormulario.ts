@@ -1,6 +1,16 @@
 import { getWhatsappLink } from '../data/config';
-import type { Pacote } from '../data/precos';
-import type { InfoSite, SecaoNoSite } from '../components/Formulario';
+import {
+  mapearTitulosEstiloMarca,
+  mapearTitulosExtrasEcommerce,
+  mapearTitulosExtrasIntegracoes,
+  mapearTitulosPaginasExtras,
+  obterCategoriaSecaoConfig,
+  obterModeloSecaoConfig,
+  obterTituloStatusLogo,
+  type InfoSite,
+  type Pacote,
+  type SecaoNoSite
+} from '../data/precos';
 
 interface ResumoFormularioWhatsapp {
   infoSite: InfoSite;
@@ -9,10 +19,7 @@ interface ResumoFormularioWhatsapp {
   valorTotal: number;
 }
 
-const formatarMoeda = (valor: number) => {
-  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-};
-
+const formatarMoeda = (valor: number) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 const formatarSimNao = (valor?: boolean) => (valor ? 'Sim' : 'Nao');
 
 const formatarArray = (itens?: string[]) => {
@@ -26,9 +33,16 @@ export function montarMensagemFormularioWhatsapp({
   site,
   valorTotal
 }: ResumoFormularioWhatsapp) {
-  const secoes = site.length > 0
-    ? site.map((secao, index) => `${index + 1}. ${secao.categoria} - ${secao.modelo}`).join('\n')
-    : 'Nenhuma secao selecionada';
+  const secoes =
+    site.length > 0
+      ? site
+          .map((secao, index) => {
+            const categoria = obterCategoriaSecaoConfig(secao.categoria);
+            const modelo = obterModeloSecaoConfig(secao.modelo);
+            return `${index + 1}. ${categoria.nome} - ${modelo?.nome ?? secao.modelo}`;
+          })
+          .join('\n')
+      : 'Nenhuma secao selecionada';
 
   return [
     'Novo pedido de orcamento',
@@ -36,16 +50,16 @@ export function montarMensagemFormularioWhatsapp({
     `Projeto: ${infoSite.nome || 'Nao informado'}`,
     `Pacote: ${pacoteEscolhido.nome}`,
     `Total estimado: ${formatarMoeda(valorTotal)}`,
-    `Logo: ${infoSite.status_logo || 'Nao informado'}`,
+    `Logo: ${obterTituloStatusLogo(infoSite.status_logo)}`,
     `Hospedagem e dominio: ${formatarSimNao(infoSite.tem_hospedagem_dominio)}`,
     `Cores: ${(infoSite.cores || []).join(' | ')}`,
-    `Estilo da marca: ${formatarArray(infoSite.estilo_marca)}`,
-    `Paginas extras: ${formatarArray(infoSite.paginas_extras)}`,
-    `Integracoes extras: ${formatarArray(infoSite.extras_integracoes)}`,
-    `Extras e-commerce: ${formatarArray(infoSite.ecommerce_extras)}`,
+    `Estilo da marca: ${formatarArray(mapearTitulosEstiloMarca(infoSite.estilo_marca))}`,
+    `Paginas extras: ${formatarArray(mapearTitulosPaginasExtras(infoSite.paginas_extras))}`,
+    `Integracoes extras: ${formatarArray(mapearTitulosExtrasIntegracoes(infoSite.extras_integracoes))}`,
+    `Extras e-commerce: ${formatarArray(mapearTitulosExtrasEcommerce(infoSite.ecommerce_extras))}`,
     '',
     'Secoes selecionadas:',
-    secoes,
+    secoes
   ].join('\n');
 }
 
