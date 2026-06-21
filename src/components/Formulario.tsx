@@ -39,7 +39,8 @@ export function Formulario() {
       paginasExtras: infoSite.paginas_extras,
       extrasIntegracoes: infoSite.extras_integracoes,
       ecommerceExtras: infoSite.ecommerce_extras,
-      temHospedagemDominio: infoSite.tem_hospedagem_dominio
+      temHospedagemDominio: infoSite.tem_hospedagem_dominio,
+      statusLogo: infoSite.status_logo
     });
   };
 
@@ -123,6 +124,7 @@ export function Formulario() {
             setInfoSite={setInfoSite}
             avancarParaEtapa3={avancarParaEtapa3}
             voltarEtapa={voltarEtapa}
+            pacoteEscolhido={pacoteEscolhido}
           />
         )}
         {etapaAtual === 3 && (
@@ -142,6 +144,7 @@ export function Formulario() {
             setInfoSite={setInfoSite}
             voltarEtapa={voltarEtapa}
             finalizarProjeto={avancarParaEtapa5}
+            pacoteEscolhido={pacoteEscolhido}
           />
         )}
         {etapaAtual === 5 && (
@@ -160,6 +163,7 @@ export function Formulario() {
             setInfoSite={setInfoSite}
             voltarEtapa={voltarEtapa}
             finalizarProjeto={enviarFormularioWhatsApp}
+            pacoteEscolhido={pacoteEscolhido}
           />
         )}
       </div>

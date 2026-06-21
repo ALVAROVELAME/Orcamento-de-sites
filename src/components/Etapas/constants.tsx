@@ -1,5 +1,5 @@
 import type { ElementType } from 'react';
-import { CATALOGO_SECOES, LISTA_CATEGORIAS_SECOES, type CategoriaSecao, type ModeloSecaoId } from '../../data/precos';
+import { CATALOGO_SECOES, LISTA_CATEGORIAS_SECOES, type CategoriaSecao, type ModeloSecaoId, type ModeloSecaoPreview } from '../../data/precos';
 import { BlogModel1 } from '../sections/blog';
 import { CapaModel1 } from '../sections/capa';
 import { CarrosselAvaliacoes, DepoimentoTradicional, DepoimentosGoogleMaps } from '../sections/depoimentos';
@@ -27,12 +27,14 @@ export const RENDERIZADOR_COMPONENTES: Record<ModeloSecaoId, ElementType> = {
   GaleriaModel1
 };
 
-export const BIBLIOTECA_SECOES: Record<CategoriaSecao, { id: ModeloSecaoId; nome: string; thumb: string }[]> =
+export const BIBLIOTECA_SECOES: Record<CategoriaSecao, ModeloSecaoPreview[]> =
   LISTA_CATEGORIAS_SECOES.reduce((acc, categoria) => {
     acc[categoria] = CATALOGO_SECOES[categoria].modelos.map((modelo) => ({
       id: modelo.id,
       nome: modelo.nome,
-      thumb: modelo.thumb
+      thumb: modelo.thumb,
+      preco: modelo.preco,
+      incluidoNosPacotes: modelo.incluidoNosPacotes
     }));
     return acc;
-  }, {} as Record<CategoriaSecao, { id: ModeloSecaoId; nome: string; thumb: string }[]>);
+  }, {} as Record<CategoriaSecao, ModeloSecaoPreview[]>);

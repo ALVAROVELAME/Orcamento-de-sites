@@ -1,4 +1,5 @@
 import type { Pacote } from '../../../data/precos';
+import { obterTotalSecoesComCapa } from '../../../data/precos';
 
 interface PlanSelectionStepProps {
   titulo: string;
@@ -63,7 +64,7 @@ export function PlanSelectionStep({
               <p className="text-3xl md:text-4xl font-black text-indigo-600 mb-2">{formatarMoeda(pacote.precoBase)}</p>
 
               <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-6">
-                {prefixoLimiteSecoes} {pacote.limiteSecoes} {sufixoLimiteSecoes}
+                {prefixoLimiteSecoes} {pacote.limiteSecoes} {sufixoLimiteSecoes} (+ capa garantida, total {obterTotalSecoesComCapa(pacote)})
               </p>
 
               <button

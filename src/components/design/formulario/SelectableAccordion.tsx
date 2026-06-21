@@ -14,6 +14,7 @@ interface SelectableAccordionProps {
   children?: ReactNode;
   containerClassName?: string;
   titleClassName?: string;
+  metaLabel?: string | null;
 }
 
 const ACCENT_STYLES: Record<
@@ -25,6 +26,8 @@ const ACCENT_STYLES: Record<
     hoverBg: string;
     hoverText: string;
     unselectedHoverBorder: string;
+    metaText: string;
+    metaBg: string;
   }
 > = {
   indigo: {
@@ -33,7 +36,9 @@ const ACCENT_STYLES: Record<
     activeBg: 'bg-indigo-600',
     hoverBg: 'group-hover:bg-indigo-50',
     hoverText: 'group-hover:text-indigo-600',
-    unselectedHoverBorder: 'hover:border-indigo-400'
+    unselectedHoverBorder: 'hover:border-indigo-400',
+    metaText: 'text-indigo-700',
+    metaBg: 'bg-indigo-50'
   },
   emerald: {
     selectedBorder: 'border-emerald-600',
@@ -41,7 +46,9 @@ const ACCENT_STYLES: Record<
     activeBg: 'bg-emerald-600',
     hoverBg: 'group-hover:bg-emerald-50',
     hoverText: 'group-hover:text-emerald-600',
-    unselectedHoverBorder: 'hover:border-emerald-400'
+    unselectedHoverBorder: 'hover:border-emerald-400',
+    metaText: 'text-emerald-700',
+    metaBg: 'bg-emerald-50'
   }
 };
 
@@ -55,7 +62,8 @@ export function SelectableAccordion({
   accent = 'indigo',
   children,
   containerClassName = 'max-w-7xl mx-auto',
-  titleClassName = ''
+  titleClassName = '',
+  metaLabel
 }: SelectableAccordionProps) {
   const styles = ACCENT_STYLES[accent];
 
@@ -69,27 +77,28 @@ export function SelectableAccordion({
         className={`flex items-center justify-between p-5 bg-white cursor-pointer select-none group ${containerClassName}`}
         onClick={onToggleExpand}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-w-0">
           <div
-            className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-xl font-black text-xl transition-colors duration-300 ${
+            className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-xl font-black text-xl transition-colors duration-300 shrink-0 ${
               isExpanded ? `${styles.activeBg} text-white` : `bg-slate-100 text-slate-500 ${styles.hoverBg} ${styles.hoverText}`
             }`}
           >
             {isExpanded ? '-' : '+'}
           </div>
-          <span className={`font-bold text-slate-800 text-lg md:text-xl tracking-tight ${titleClassName}`}>
-            {titulo}
-          </span>
+
+          <div className="flex flex-col md:flex-row md:items-center gap-2 min-w-0">
+            <span className={`font-bold text-slate-800 text-lg md:text-xl tracking-tight ${titleClassName}`}>{titulo}</span>
+            {metaLabel ? (
+              <span className={`inline-flex items-center w-fit px-3 py-1 rounded-full text-sm md:text-base font-black border border-current/10 ${styles.metaText} ${styles.metaBg}`}>
+                {metaLabel}
+              </span>
+            ) : null}
+          </div>
         </div>
 
-        <div className="pl-4 flex items-center" onClick={(event) => event.stopPropagation()}>
+        <div className="pl-4 flex items-center shrink-0" onClick={(event) => event.stopPropagation()}>
           <label className="relative cursor-pointer flex items-center">
-            <input
-              type={selectionType}
-              checked={isSelected}
-              onChange={onToggleSelect}
-              className="peer sr-only"
-            />
+            <input type={selectionType} checked={isSelected} onChange={onToggleSelect} className="peer sr-only" />
             <div
               className={`w-6 h-6 md:w-7 md:h-7 transition-all flex items-center justify-center ${
                 selectionType === 'radio' ? 'rounded-full' : 'rounded'

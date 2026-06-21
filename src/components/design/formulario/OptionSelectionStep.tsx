@@ -1,10 +1,13 @@
 import { BotoesNavegacao } from '../../Etapas/BotoesNavegacao';
+import { obterRotuloPreco, type Pacote } from '../../../data/precos';
 import { SelectableAccordion } from './SelectableAccordion';
 
 interface OptionItem {
   id: string;
   titulo: string;
   descricao?: string;
+  preco?: number;
+  incluidoNosPacotes?: readonly ('cartao_3' | 'cartao_6' | 'institucional' | 'loja_pequena')[];
 }
 
 interface OptionSelectionStepProps {
@@ -20,6 +23,7 @@ interface OptionSelectionStepProps {
   textoProximo?: string;
   accent?: 'indigo' | 'emerald';
   contadorSelecionadas?: string;
+  pacoteEscolhido?: Pacote | null;
 }
 
 export function OptionSelectionStep({
@@ -34,7 +38,8 @@ export function OptionSelectionStep({
   onProximo,
   textoProximo,
   accent = 'indigo',
-  contadorSelecionadas
+  contadorSelecionadas,
+  pacoteEscolhido
 }: OptionSelectionStepProps) {
   const descricaoBorderClass = accent === 'emerald' ? 'border-emerald-500' : 'border-indigo-500';
 
@@ -61,18 +66,22 @@ export function OptionSelectionStep({
             <div className="flex flex-col gap-4 w-full mt-6">
               {opcoes.map((opcao) => {
                 const isSelected = selecionados.includes(opcao.id);
+                const metaLabel = obterRotuloPreco(opcao, pacoteEscolhido);
 
                 return (
                   <SelectableAccordion
                     key={opcao.id}
                     titulo={opcao.titulo}
+                    metaLabel={metaLabel}
                     isExpanded={expandido === opcao.id}
                     isSelected={isSelected}
                     onToggleExpand={() => onToggleExpandido(opcao.id)}
                     onToggleSelect={() => onToggleSelecionado(opcao.id)}
                     accent={accent}
                   >
-                    <div className={`p-6 md:p-8 bg-slate-50 text-slate-600 font-medium text-base md:text-lg border-l-4 ${descricaoBorderClass} ml-4 md:ml-6 my-4 rounded-r-lg`}>
+                    <div
+                      className={`p-6 md:p-8 bg-slate-50 text-slate-600 font-medium text-base md:text-lg border-l-4 ${descricaoBorderClass} ml-4 md:ml-6 my-4 rounded-r-lg`}
+                    >
                       {opcao.descricao}
                     </div>
                   </SelectableAccordion>
@@ -82,12 +91,7 @@ export function OptionSelectionStep({
           </div>
 
           <div className="mt-12 max-w-7xl mx-auto px-4">
-            <BotoesNavegacao
-              onVoltar={onVoltar}
-              onProximo={onProximo}
-              desabilitarProximo={false}
-              textoProximo={textoProximo}
-            />
+            <BotoesNavegacao onVoltar={onVoltar} onProximo={onProximo} desabilitarProximo={false} textoProximo={textoProximo} />
           </div>
         </div>
       </div>

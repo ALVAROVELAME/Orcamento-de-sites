@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FORMULARIO_CONFIG, type InfoSite } from '../../data/precos';
+import { FORMULARIO_CONFIG, type InfoSite, type Pacote } from '../../data/precos';
 import { OptionSelectionStep } from '../design/formulario';
 
 interface Etapa6Props {
@@ -7,9 +7,10 @@ interface Etapa6Props {
   setInfoSite: (info: InfoSite) => void;
   voltarEtapa: () => void;
   finalizarProjeto: () => void;
+  pacoteEscolhido: Pacote | null;
 }
 
-export function Etapa6({ infoSite, setInfoSite, voltarEtapa, finalizarProjeto }: Etapa6Props) {
+export function Etapa6({ infoSite, setInfoSite, voltarEtapa, finalizarProjeto, pacoteEscolhido }: Etapa6Props) {
   const [extraExpandido, setExtraExpandido] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export function Etapa6({ infoSite, setInfoSite, voltarEtapa, finalizarProjeto }:
       onProximo={finalizarProjeto}
       textoProximo={FORMULARIO_CONFIG.etapa6.textoProximo}
       accent="emerald"
+      pacoteEscolhido={pacoteEscolhido}
     />
   );
 }

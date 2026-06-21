@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react';
-import type { InfoSite } from '../../../data/precos';
+import { obterRotuloPreco, type InfoSite, type Pacote, type PacoteId } from '../../../data/precos';
 import { BotoesNavegacao } from '../../Etapas/BotoesNavegacao';
 
 interface IdentityVisualStepProps {
@@ -17,7 +17,7 @@ interface IdentityVisualStepProps {
     };
     logotipo: {
       titulo: string;
-      opcoes: readonly { id: string; titulo: string; destaque?: boolean }[];
+      opcoes: readonly { id: string; titulo: string; destaque?: boolean; preco?: number; incluidoNosPacotes?: readonly PacoteId[] }[];
       idQueLiberaDetalhes: string;
     };
     criacaoLogo: {
@@ -34,6 +34,7 @@ interface IdentityVisualStepProps {
   setInfoSite: (info: InfoSite) => void;
   onSubmit: (event: FormEvent) => void;
   onVoltar: () => void;
+  pacoteEscolhido?: Pacote | null;
 }
 
 function toggleValorArray<T extends string>(valores: readonly T[] | undefined, valor: T, checked: boolean) {
@@ -51,7 +52,8 @@ export function IdentityVisualStep({
   infoSite,
   setInfoSite,
   onSubmit,
-  onVoltar
+  onVoltar,
+  pacoteEscolhido
 }: IdentityVisualStepProps) {
   const statusLiberaDetalhes = infoSite.status_logo === config.logotipo.idQueLiberaDetalhes;
 
@@ -78,9 +80,7 @@ export function IdentityVisualStep({
           </div>
 
           <fieldset className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
-            <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">
-              {config.hospedagemDominio.titulo}
-            </legend>
+            <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">{config.hospedagemDominio.titulo}</legend>
             <p className="text-sm text-slate-600 clear-both">{config.hospedagemDominio.descricao}</p>
 
             <div className="space-y-4 pt-2 clear-both">
@@ -106,9 +106,7 @@ export function IdentityVisualStep({
           </fieldset>
 
           <fieldset className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
-            <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">
-              {config.logotipo.titulo}
-            </legend>
+            <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">{config.logotipo.titulo}</legend>
 
             <div className="space-y-4 pt-2 clear-both">
               {config.logotipo.opcoes.map((opcao) => (
@@ -122,7 +120,10 @@ export function IdentityVisualStep({
                     className="w-5 h-5 text-pink-600 focus:ring-pink-500 accent-pink-600"
                     required
                   />
-                  <span className={opcao.destaque ? 'font-extrabold text-pink-800' : ''}>{opcao.titulo}</span>
+                  <span className={opcao.destaque ? 'font-extrabold text-pink-800' : ''}>
+                    {opcao.titulo}
+                    {obterRotuloPreco(opcao, pacoteEscolhido) ? ` (${obterRotuloPreco(opcao, pacoteEscolhido)})` : ''}
+                  </span>
                 </label>
               ))}
             </div>

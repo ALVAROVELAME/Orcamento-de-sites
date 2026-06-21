@@ -1,3 +1,5 @@
+export type PacoteId = 'cartao_3' | 'cartao_6' | 'institucional' | 'loja_pequena';
+
 export type CategoriaSecao =
   | 'capa'
   | 'sobre'
@@ -35,7 +37,7 @@ export type EcommerceExtraId = 'pagamentos' | 'frete' | 'catalogo' | 'carrinho';
 export type FluxoPacote = 'padrao' | 'ecommerce';
 
 export interface Pacote {
-  id: string;
+  id: PacoteId;
   nome: string;
   descricao: string;
   precoBase: number;
@@ -64,22 +66,28 @@ export interface InfoSite {
 }
 
 export interface SelecaoPrecoProjeto {
-  pacoteId: string;
+  pacoteId: PacoteId;
   secoes?: Array<{ categoria: CategoriaSecao; modelo?: ModeloSecaoId }>;
   paginasExtras?: PaginaExtraId[];
   extrasIntegracoes?: ExtraIntegracaoId[];
   ecommerceExtras?: EcommerceExtraId[];
   temHospedagemDominio?: boolean;
+  statusLogo?: StatusLogoId | '';
 }
 
-export interface OpcaoFormulario {
+export interface Precificavel {
+  preco?: number;
+  incluidoNosPacotes?: readonly PacoteId[];
+}
+
+export interface OpcaoFormulario extends Precificavel {
   id: string;
   titulo: string;
   descricao?: string;
   destaque?: boolean;
 }
 
-export interface ModeloSecaoPreview {
+export interface ModeloSecaoPreview extends Precificavel {
   id: ModeloSecaoId;
   nome: string;
   thumb: string;
@@ -89,13 +97,14 @@ export interface CategoriaSecaoConfig {
   id: CategoriaSecao;
   nome: string;
   descricao: string;
+  precoBase?: number;
   modelos: readonly ModeloSecaoPreview[];
 }
 
 export const STATUS_LOGO_OPCOES = [
-  { id: 'logo_pronto', titulo: 'Ja tenho o logo em alta qualidade' },
-  { id: 'logo_imagem', titulo: 'Tenho apenas a imagem (PNG/JPG)' },
-  { id: 'logo_criacao', titulo: 'Quero que criem o logo para mim', destaque: true }
+  { id: 'logo_pronto', titulo: 'Ja tenho o logo em alta qualidade', preco: 0 },
+  { id: 'logo_imagem', titulo: 'Tenho apenas a imagem (PNG/JPG)', preco: 0 },
+  { id: 'logo_criacao', titulo: 'Quero que criem o logo para mim', destaque: true, preco: 20 }
 ] as const satisfies readonly OpcaoFormulario[];
 
 export const ESTILOS_MARCA_OPCOES = [
@@ -110,32 +119,39 @@ export const PAGINAS_EXTRAS_OPCOES = [
   {
     id: 'sobre_nos',
     titulo: 'Pagina Sobre Nos',
-    descricao: 'Uma pagina dedicada a contar a historia da sua empresa, sua missao, visao, valores e apresentar a equipe.'
+    descricao: 'Uma pagina dedicada a contar a historia da sua empresa, sua missao, visao, valores e apresentar a equipe.',
+    preco: 250
   },
   {
     id: 'privacidade',
     titulo: 'Politica de Privacidade',
-    descricao: 'Pagina essencial para adequacao a LGPD, explicando como os dados dos visitantes sao coletados e tratados.'
+    descricao: 'Pagina essencial para adequacao a LGPD, explicando como os dados dos visitantes sao coletados e tratados.',
+    preco: 120,
+    incluidoNosPacotes: ['cartao_3', 'cartao_6', 'institucional', 'loja_pequena']
   },
   {
     id: 'termos_uso',
     titulo: 'Termos de Uso',
-    descricao: 'Regras, direitos e diretrizes para o uso do seu site, servico ou e-commerce.'
+    descricao: 'Regras, direitos e diretrizes para o uso do seu site, servico ou e-commerce.',
+    preco: 120
   },
   {
     id: 'contato',
     titulo: 'Pagina de Contato Completa',
-    descricao: 'Pagina separada com formulario de contato, mapa de localizacao do Google Maps e links diretos para redes sociais e WhatsApp.'
+    descricao: 'Pagina separada com formulario de contato, mapa de localizacao do Google Maps e links diretos para redes sociais e WhatsApp.',
+    preco: 180
   },
   {
     id: 'faq',
     titulo: 'Pagina de Duvidas (FAQ)',
-    descricao: 'Uma pagina inteira dedicada a responder as perguntas mais frequentes dos seus clientes, ajudando a quebrar objecoes.'
+    descricao: 'Uma pagina inteira dedicada a responder as perguntas mais frequentes dos seus clientes, ajudando a quebrar objecoes.',
+    preco: 140
   },
   {
     id: 'erro_404',
     titulo: 'Pagina 404 Personalizada',
-    descricao: 'Pagina de erro com o design da sua marca e botoes de retorno, para nao perder o visitante que acessou um link quebrado.'
+    descricao: 'Pagina de erro com o design da sua marca e botoes de retorno, para nao perder o visitante que acessou um link quebrado.',
+    preco: 90
   }
 ] as const satisfies readonly OpcaoFormulario[];
 
@@ -143,27 +159,33 @@ export const EXTRAS_INTEGRACOES_OPCOES = [
   {
     id: 'whatsapp',
     titulo: 'Botao WhatsApp Flutuante',
-    descricao: 'Um botao flutuante para que seus visitantes iniciem conversas direto no seu WhatsApp.'
+    descricao: 'Um botao flutuante para que seus visitantes iniciem conversas direto no seu WhatsApp.',
+    preco: 80,
+    incluidoNosPacotes: ['cartao_3', 'institucional']
   },
   {
     id: 'analytics',
     titulo: 'Google Analytics',
-    descricao: 'Integracao completa para monitorar o comportamento dos visitantes, saber de onde vem e quais paginas acessam.'
+    descricao: 'Integracao completa para monitorar o comportamento dos visitantes, saber de onde vem e quais paginas acessam.',
+    preco: 150
   },
   {
     id: 'meta_pixel',
     titulo: 'Pixel Meta',
-    descricao: 'Essencial para rastrear conversoes, otimizar anuncios e criar publicos personalizados para campanhas no Facebook e Instagram.'
+    descricao: 'Essencial para rastrear conversoes, otimizar anuncios e criar publicos personalizados para campanhas no Facebook e Instagram.',
+    preco: 150
   },
   {
     id: 'agendamento',
     titulo: 'Sistema de Agendamento',
-    descricao: 'Ferramenta integrada para que seus clientes marquem horarios, consultas ou reunioes diretamente pelo site.'
+    descricao: 'Ferramenta integrada para que seus clientes marquem horarios, consultas ou reunioes diretamente pelo site.',
+    preco: 250
   },
   {
     id: 'seo_avancado',
     titulo: 'SEO Avancado',
-    descricao: 'Configuracao tecnica de palavras-chave, meta tags e sitemap para melhorar o posicionamento do seu site no Google.'
+    descricao: 'Configuracao tecnica de palavras-chave, meta tags e sitemap para melhorar o posicionamento do seu site no Google.',
+    preco: 300
   }
 ] as const satisfies readonly OpcaoFormulario[];
 
@@ -171,22 +193,29 @@ export const ECOMMERCE_EXTRAS_OPCOES = [
   {
     id: 'pagamentos',
     titulo: 'Meios de Pagamento',
-    descricao: 'Integracao com gateways como Mercado Pago, Pagar.me ou Stripe para processar cartoes, Pix e boletos de forma segura.'
+    descricao: 'Integracao com gateways como Mercado Pago, Pagar.me ou Stripe para processar cartoes, Pix e boletos de forma segura.',
+    preco: 600,
+    incluidoNosPacotes: ['loja_pequena']
   },
   {
     id: 'frete',
     titulo: 'Calculo de Frete (Correios/Melhor Envio)',
-    descricao: 'Automacao para calculo de frete em tempo real baseada no CEP do cliente e peso ou dimensoes dos produtos.'
+    descricao: 'Automacao para calculo de frete em tempo real baseada no CEP do cliente e peso ou dimensoes dos produtos.',
+    preco: 400
   },
   {
     id: 'catalogo',
     titulo: 'Gestao de Catalogo',
-    descricao: 'Painel para cadastro de produtos, controle de variacoes e gestao de estoque.'
+    descricao: 'Painel para cadastro de produtos, controle de variacoes e gestao de estoque.',
+    preco: 700,
+    incluidoNosPacotes: ['loja_pequena']
   },
   {
     id: 'carrinho',
     titulo: 'Carrinho de Compras Abandonado',
-    descricao: 'Sistema que envia lembretes automaticos para clientes que iniciaram a compra mas nao finalizaram.'
+    descricao: 'Sistema que envia lembretes automaticos para clientes que iniciaram a compra mas nao finalizaram.',
+    preco: 350,
+    incluidoNosPacotes: ['loja_pequena']
   }
 ] as const satisfies readonly OpcaoFormulario[];
 
@@ -195,68 +224,78 @@ export const CATALOGO_SECOES: Record<CategoriaSecao, CategoriaSecaoConfig> = {
     id: 'capa',
     nome: 'Capa',
     descricao: 'Bloco inicial com proposta principal, chamada de acao e destaque da marca.',
-    modelos: [{ id: 'CapaModel1', nome: 'Capa com Destaque', thumb: '🖼️' }]
+    precoBase: 0,
+    modelos: [{ id: 'CapaModel1', nome: 'Capa com Destaque', thumb: '🖼️', preco: 0, incluidoNosPacotes: ['cartao_3', 'cartao_6', 'institucional', 'loja_pequena'] }]
   },
   sobre: {
     id: 'sobre',
     nome: 'Sobre',
     descricao: 'Apresentacao da empresa, historia, diferenciais e posicionamento.',
-    modelos: [{ id: 'SobreModel1', nome: 'Sobre a Empresa', thumb: '🏢' }]
+    precoBase: 100,
+    modelos: [{ id: 'SobreModel1', nome: 'Sobre a Empresa', thumb: '🏢', preco: 0 }]
   },
   servicos: {
     id: 'servicos',
     nome: 'Servicos',
     descricao: 'Listagem dos servicos, entregas ou beneficios oferecidos no site.',
+    precoBase: 150,
     modelos: [
-      { id: 'ServicosModel1', nome: 'Servicos - Modelo 1', thumb: '⚙️' },
-      { id: 'ServicosModel2', nome: 'Servicos - Modelo 2', thumb: '⚙️' }
+      { id: 'ServicosModel1', nome: 'Servicos - Modelo 1', thumb: '⚙️', preco: 150 },
+      { id: 'ServicosModel2', nome: 'Servicos - Modelo 2', thumb: '⚙️', preco: 190 }
     ]
   },
   depoimentos: {
     id: 'depoimentos',
     nome: 'Depoimentos',
     descricao: 'Prova social com avaliacoes, relatos de clientes e confianca.',
+    precoBase: 90,
     modelos: [
-      { id: 'DepCarrossel', nome: 'Carrossel de Avaliacoes', thumb: '🎠' },
-      { id: 'DepGoogle', nome: 'Avaliacoes do Google', thumb: '🗺️' },
-      { id: 'DepTradicional', nome: 'Depoimento em Destaque', thumb: '💬' }
+      { id: 'DepCarrossel', nome: 'Carrossel de Avaliacoes', thumb: '🎠', preco: 0, incluidoNosPacotes: ['cartao_6'] },
+      { id: 'DepGoogle', nome: 'Avaliacoes do Google', thumb: '🗺️', preco: 120, incluidoNosPacotes: ['cartao_6'] },
+      { id: 'DepTradicional', nome: 'Depoimento em Destaque', thumb: '💬', preco: 95, incluidoNosPacotes: ['cartao_6'] }
     ]
   },
   faq: {
     id: 'faq',
     nome: 'FAQ',
     descricao: 'Perguntas frequentes para responder objecoes e orientar visitantes.',
-    modelos: [{ id: 'FaqModel1', nome: 'Perguntas Frequentes (FAQ)', thumb: '❓' }]
+    precoBase: 70,
+    modelos: [{ id: 'FaqModel1', nome: 'Perguntas Frequentes (FAQ)', thumb: '❓', preco: 70 }]
   },
   blog: {
     id: 'blog',
     nome: 'Blog',
     descricao: 'Area para artigos, conteudo organico e estrategia de SEO.',
-    modelos: [{ id: 'BlogModel1', nome: 'Grid de Artigos do Blog', thumb: '📝' }]
+    precoBase: 160,
+    modelos: [{ id: 'BlogModel1', nome: 'Grid de Artigos do Blog', thumb: '📝', preco: 160 }]
   },
   formulario: {
     id: 'formulario',
     nome: 'Formulario',
     descricao: 'Bloco para captacao de leads, contato ou reservas.',
-    modelos: [{ id: 'FormularioModel1', nome: 'Formulario de Contato/Reserva', thumb: '✉️' }]
+    precoBase: 110,
+    modelos: [{ id: 'FormularioModel1', nome: 'Formulario de Contato/Reserva', thumb: '✉️', preco: 110, incluidoNosPacotes: ['institucional'] }]
   },
   video: {
     id: 'video',
     nome: 'Video',
     descricao: 'Espaco para video institucional, demonstracao ou conteudo de destaque.',
-    modelos: [{ id: 'VideoModel1', nome: 'Video Institucional', thumb: '▶️' }]
+    precoBase: 120,
+    modelos: [{ id: 'VideoModel1', nome: 'Video Institucional', thumb: '▶️', preco: 120 }]
   },
   mapa: {
     id: 'mapa',
     nome: 'Mapa',
     descricao: 'Localizacao fisica da empresa com mapa interativo.',
-    modelos: [{ id: 'MapaModel1', nome: 'Localizacao', thumb: '📍' }]
+    precoBase: 60,
+    modelos: [{ id: 'MapaModel1', nome: 'Localizacao', thumb: '📍', preco: 60, incluidoNosPacotes: ['cartao_6'] }]
   },
   galeria: {
     id: 'galeria',
     nome: 'Galeria',
     descricao: 'Exibicao visual de fotos, projetos, ambiente ou produtos.',
-    modelos: [{ id: 'GaleriaModel1', nome: 'Galeria de Fotos', thumb: '📸' }]
+    precoBase: 140,
+    modelos: [{ id: 'GaleriaModel1', nome: 'Galeria de Fotos', thumb: '📸', preco: 140 }]
   }
 };
 
@@ -317,7 +356,10 @@ export const FORMULARIO_CONFIG = {
     },
     avisoLimite: {
       titulo: 'Limite do pacote atingido',
-      descricao: 'Seu pacote permite apenas {limite} secoes. Para adicionar mais opcoes, voce precisara alterar o plano escolhido.'
+      descricao: 'Seu pacote permite apenas {limite} secoes contando a capa garantida. Para adicionar mais opcoes, voce precisara alterar o plano escolhido.'
+    },
+    avisoSecoesRestantes: {
+      titulo: 'Voce ainda pode usar mais secoes'
     },
     textoPreviewIndisponivel: 'Previa indisponivel',
     textoModeloIndisponivel: 'Modelo indisponivel'
@@ -436,7 +478,7 @@ export const CATALOGO_PRECOS = {
     carrinho: 350
   },
   modelosSecoes: {
-    CapaModel1: 250,
+    CapaModel1: 0,
     SobreModel1: 100,
     ServicosModel1: 150,
     ServicosModel2: 190,
@@ -468,7 +510,7 @@ export const PRECOS_EXTRAS_INTEGRACOES = CATALOGO_PRECOS.extrasIntegracoes;
 export const PRECOS_ECOMMERCE_EXTRAS = CATALOGO_PRECOS.ecommerceExtras;
 export const PRECO_HOSPEDAGEM_DOMINIO = CATALOGO_PRECOS.adicionais.hospedagemDominio;
 
-export function obterPacotePorId(pacoteId: string) {
+export function obterPacotePorId(pacoteId: PacoteId | string) {
   return CATALOGO_PRECOS.pacotes[pacoteId as keyof typeof CATALOGO_PRECOS.pacotes] ?? null;
 }
 
@@ -482,6 +524,56 @@ export function obterModeloSecaoConfig(modeloId: ModeloSecaoId) {
 
 export function ehPacoteEcommerce(pacote?: Pacote | null) {
   return pacote?.fluxo === 'ecommerce';
+}
+
+export function obterTotalSecoesComCapa(pacote?: Pacote | null) {
+  if (!pacote) return 1;
+  return pacote.limiteSecoes + 1;
+}
+
+export function obterQuantidadeSecoesSelecionaveis(pacote?: Pacote | null) {
+  return pacote?.limiteSecoes ?? 0;
+}
+
+export function itemEstaIncluidoNoPacote(item: Precificavel | undefined, pacote?: Pacote | null) {
+  if (!item || !pacote) return false;
+  return item.incluidoNosPacotes?.includes(pacote.id) ?? false;
+}
+
+export function obterPrecoExibicao(item: Precificavel | undefined, pacote?: Pacote | null) {
+  if (!item) return 0;
+  if (itemEstaIncluidoNoPacote(item, pacote)) return 0;
+  return item.preco ?? 0;
+}
+
+export function obterRotuloPreco(item: Precificavel | undefined, pacote?: Pacote | null) {
+  if (itemEstaIncluidoNoPacote(item, pacote)) return 'Incluido no pacote';
+  if (!item || typeof item.preco !== 'number') return null;
+  if (item.preco === 0) return 'Sem custos';
+  if (item.preco < 0) return null;
+  return `+ ${item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+}
+
+export function obterRotuloFaixaPrecoCategoria(categoria: CategoriaSecao, pacote?: Pacote | null) {
+  const categoriaConfig = obterCategoriaSecaoConfig(categoria);
+  if (categoriaConfig.modelos.length === 0) return null;
+
+  if (pacote && categoriaConfig.modelos.every((modelo) => itemEstaIncluidoNoPacote(modelo, pacote))) {
+    return 'Incluido no pacote';
+  }
+
+  const precos = categoriaConfig.modelos.map((modelo) => obterPrecoExibicao(modelo, pacote));
+  const menorPreco = Math.min(...precos);
+  const maiorPreco = Math.max(...precos);
+
+  if (maiorPreco === 0) return 'Sem custos';
+
+  const formatarMoeda = (valor: number) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  if (categoriaConfig.modelos.length === 1 || menorPreco === maiorPreco) {
+    return `A partir de ${formatarMoeda(menorPreco)}`;
+  }
+
+  return `A partir de ${formatarMoeda(menorPreco)} ate ${formatarMoeda(maiorPreco)}`;
 }
 
 function criarMapaTitulos<T extends { id: string; titulo: string }>(opcoes: readonly T[]) {
@@ -518,36 +610,55 @@ export function mapearTitulosExtrasEcommerce(ids?: readonly EcommerceExtraId[]) 
   return (ids ?? []).map((id) => MAPA_ECOMMERCE_EXTRAS[id] ?? id);
 }
 
+function obterOpcaoStatusLogo(id: StatusLogoId | '') {
+  return STATUS_LOGO_OPCOES.find((opcao) => opcao.id === id);
+}
+
+function obterOpcaoPaginaExtra(id: PaginaExtraId) {
+  return PAGINAS_EXTRAS_OPCOES.find((opcao) => opcao.id === id);
+}
+
+function obterOpcaoExtraIntegracao(id: ExtraIntegracaoId) {
+  return EXTRAS_INTEGRACOES_OPCOES.find((opcao) => opcao.id === id);
+}
+
+function obterOpcaoExtraEcommerce(id: EcommerceExtraId) {
+  return ECOMMERCE_EXTRAS_OPCOES.find((opcao) => opcao.id === id);
+}
+
 export function calcularValorProjeto({
   pacoteId,
   secoes = [],
   paginasExtras = [],
   extrasIntegracoes = [],
   ecommerceExtras = [],
-  temHospedagemDominio = true
+  temHospedagemDominio = true,
+  statusLogo = ''
 }: SelecaoPrecoProjeto): number {
   const pacote = obterPacotePorId(pacoteId);
   if (!pacote) return 0;
 
   const valorSecoes = secoes.reduce((total, secao) => {
-    const precoModelo = secao.modelo ? PRECOS_MODELOS_SECOES[secao.modelo as keyof typeof PRECOS_MODELOS_SECOES] : undefined;
+    const modelo = secao.modelo ? obterModeloSecaoConfig(secao.modelo) : null;
+    const precoModelo = obterPrecoExibicao(modelo ?? undefined, pacote);
     const precoCategoria = PRECOS_SECOES[secao.categoria];
-    return total + (precoModelo ?? precoCategoria ?? 0);
+    return total + (modelo ? precoModelo : precoCategoria ?? 0);
   }, 0);
 
   const valorPaginasExtras = paginasExtras.reduce((total, pagina) => {
-    return total + (PRECOS_PAGINAS_EXTRAS[pagina as keyof typeof PRECOS_PAGINAS_EXTRAS] ?? 0);
+    return total + obterPrecoExibicao(obterOpcaoPaginaExtra(pagina), pacote);
   }, 0);
 
   const valorExtrasIntegracoes = extrasIntegracoes.reduce((total, extra) => {
-    return total + (PRECOS_EXTRAS_INTEGRACOES[extra as keyof typeof PRECOS_EXTRAS_INTEGRACOES] ?? 0);
+    return total + obterPrecoExibicao(obterOpcaoExtraIntegracao(extra), pacote);
   }, 0);
 
   const valorEcommerceExtras = ecommerceExtras.reduce((total, extra) => {
-    return total + (PRECOS_ECOMMERCE_EXTRAS[extra as keyof typeof PRECOS_ECOMMERCE_EXTRAS] ?? 0);
+    return total + obterPrecoExibicao(obterOpcaoExtraEcommerce(extra), pacote);
   }, 0);
 
   const valorHospedagemDominio = temHospedagemDominio ? 0 : PRECO_HOSPEDAGEM_DOMINIO;
+  const valorLogo = obterPrecoExibicao(obterOpcaoStatusLogo(statusLogo), pacote);
 
-  return pacote.precoBase + valorSecoes + valorPaginasExtras + valorExtrasIntegracoes + valorEcommerceExtras + valorHospedagemDominio;
+  return pacote.precoBase + valorSecoes + valorPaginasExtras + valorExtrasIntegracoes + valorEcommerceExtras + valorHospedagemDominio + valorLogo;
 }

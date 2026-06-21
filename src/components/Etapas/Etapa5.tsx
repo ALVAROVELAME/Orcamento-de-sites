@@ -48,6 +48,7 @@ export function Etapa5({
       onVoltar={voltarEtapa}
       onProximo={ecommerce ? proximaEtapa : finalizarProjeto}
       textoProximo={ecommerce ? FORMULARIO_CONFIG.etapa5.textoProximoEcommerce : FORMULARIO_CONFIG.etapa5.textoProximoPadrao}
+      pacoteEscolhido={pacoteEscolhido}
     />
   );
 }

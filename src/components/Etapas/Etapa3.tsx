@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import {
   FORMULARIO_CONFIG,
   LISTA_CATEGORIAS_SECOES,
+  obterRotuloFaixaPrecoCategoria,
+  obterRotuloPreco,
+  obterTotalSecoesComCapa,
   obterCategoriaSecaoConfig,
   type CategoriaSecao,
   type InfoSite,
@@ -40,8 +43,9 @@ export function Etapa3({
   const [modeloExpandido, setModeloExpandido] = useState<ModeloSecaoId | null>(null);
   const [modeloSelecionado, setModeloSelecionado] = useState<ModeloSecaoId | null>(null);
   const [mostrarAvisoLimite, setMostrarAvisoLimite] = useState(false);
+  const [mostrarAvisoSeccoesRestantes, setMostrarAvisoSeccoesRestantes] = useState(false);
 
-  const limiteDoPlano = pacoteEscolhido?.limiteSecoes ?? 5;
+  const limiteDoPlano = obterTotalSecoesComCapa(pacoteEscolhido);
   const config = FORMULARIO_CONFIG.etapa3;
 
   useEffect(() => {
@@ -57,6 +61,16 @@ export function Etapa3({
 
     return () => clearTimeout(timer);
   }, [mostrarAvisoLimite]);
+
+  useEffect(() => {
+    if (!mostrarAvisoSeccoesRestantes) return undefined;
+
+    const timer = setTimeout(() => {
+      setMostrarAvisoSeccoesRestantes(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [mostrarAvisoSeccoesRestantes]);
 
   useEffect(() => {
     if (fase !== 'selecao_inicial' || TODAS_CATEGORIAS.length === 0) return undefined;
@@ -157,6 +171,9 @@ export function Etapa3({
 
   const tratarAcaoProximo = () => {
     if (fase === 'selecao_inicial') {
+      if (categoriasSelecionadas.length < limiteDoPlano) {
+        setMostrarAvisoSeccoesRestantes(true);
+      }
       iniciarEscolhaDeModelos();
       return;
     }
@@ -172,11 +189,24 @@ export function Etapa3({
   const proximoDesabilitado =
     fase === 'selecao_inicial' ? categoriasSelecionadas.length === 0 : fase === 'escolha_modelos' ? !modeloSelecionado : false;
 
-  const removerSecao = (idParaRemover: string) => {
-    setSite(site.filter((secao) => secao.id !== idParaRemover));
+  const voltarAoInicioDaEtapa3 = () => {
+    setFase('selecao_inicial');
+    setIndiceAtual(0);
+    setModeloExpandido(null);
+    setModeloSelecionado(null);
+  };
+
+  const sincronizarSecaoAtualNoSite = (modeloId: ModeloSecaoId) => {
+    const categoriaAtual = categoriasPendentes[indiceAtual];
+    if (!categoriaAtual) return;
+
+    const siteFiltrado = site.filter((secao) => secao.categoria !== categoriaAtual);
+    const novaSecao: SecaoNoSite = { id: crypto.randomUUID(), categoria: categoriaAtual, modelo: modeloId };
+    setSite([...siteFiltrado, novaSecao]);
   };
 
   const avisoLimiteDescricao = config.avisoLimite.descricao.replace('{limite}', String(limiteDoPlano));
+  const avisoSecoesRestantesDescricao = `Voce ainda pode escolher ${limiteDoPlano - categoriasSelecionadas.length} secao(oes) a mais. A capa ja esta incluida no pacote.`;
   const categoriaAtual = categoriasPendentes[indiceAtual];
   const categoriaAtualConfig = categoriaAtual ? obterCategoriaSecaoConfig(categoriaAtual) : null;
 
@@ -215,6 +245,34 @@ export function Etapa3({
         </div>
       </div>
 
+      <div
+        className={`fixed top-4 left-4 md:top-8 md:left-8 z-50 transition-all duration-500 transform ${
+          mostrarAvisoSeccoesRestantes ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="bg-indigo-600 text-white p-4 rounded-xl shadow-xl flex items-start gap-4 border border-indigo-500 max-w-sm">
+          <div className="mt-0.5">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20.5A8.5 8.5 0 1 0 12 3.5a8.5 8.5 0 0 0 0 17Z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h4 className="font-bold text-md mb-1">{config.avisoSecoesRestantes.titulo}</h4>
+            <p className="text-sm text-indigo-100">{avisoSecoesRestantesDescricao}</p>
+          </div>
+          <button
+            onClick={() => setMostrarAvisoSeccoesRestantes(false)}
+            aria-label="Fechar aviso de secoes restantes"
+            title="Fechar aviso de secoes restantes"
+            className="p-1 hover:bg-indigo-700 rounded transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
       <div className="w-full max-w-none px-0 animate-fade-in delay-[300ms] fill-mode-both relative">
         <div className={`bg-white w-full p-4 md:p-6 relative ${fase === 'escolha_modelos' ? 'shadow-none bg-transparent' : 'shadow-sm border-b border-slate-200'}`}>
           {fase === 'selecao_inicial' && (
@@ -244,6 +302,7 @@ export function Etapa3({
                     <SelectableAccordion
                       key={categoria}
                       titulo={categoriaConfig.nome}
+                      metaLabel={obterRotuloFaixaPrecoCategoria(categoria, pacoteEscolhido)}
                       titleClassName="capitalize"
                       isExpanded={categoriaExpandida === categoria}
                       isSelected={isSelected}
@@ -252,12 +311,14 @@ export function Etapa3({
                         if (isSelected) {
                           setCategoriasSelecionadas(categoriasSelecionadas.filter((item) => item !== categoria));
                           setMostrarAvisoLimite(false);
+                          setMostrarAvisoSeccoesRestantes(false);
                           return;
                         }
 
                         if (categoriasSelecionadas.length < limiteDoPlano) {
                           setCategoriasSelecionadas([...categoriasSelecionadas, categoria]);
                           setMostrarAvisoLimite(false);
+                          setMostrarAvisoSeccoesRestantes(false);
                           return;
                         }
 
@@ -298,11 +359,13 @@ export function Etapa3({
                     <SelectableAccordion
                       key={modelo.id}
                       titulo={modelo.nome}
+                      metaLabel={obterRotuloPreco(modelo, pacoteEscolhido)}
                       isExpanded={modeloExpandido === modelo.id}
                       isSelected={modeloSelecionado === modelo.id}
                       onToggleExpand={() => setModeloExpandido(modeloExpandido === modelo.id ? null : modelo.id)}
                       onToggleSelect={() => {
                         setModeloSelecionado(modelo.id);
+                        sincronizarSecaoAtualNoSite(modelo.id);
                         if (modeloExpandido !== modelo.id) setModeloExpandido(modelo.id);
                       }}
                       selectionType="radio"
@@ -343,10 +406,10 @@ export function Etapa3({
                             {index + 1}. {categoriaConfig.nome}
                           </span>
                           <button
-                            onClick={() => removerSecao(secao.id)}
+                            onClick={voltarAoInicioDaEtapa3}
                             className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-sm transition-colors"
                           >
-                            {config.resumo.textoBotaoRemover}
+                            Voltar
                           </button>
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react';
-import { FORMULARIO_CONFIG, type InfoSite } from '../../data/precos';
+import { FORMULARIO_CONFIG, type InfoSite, type Pacote } from '../../data/precos';
 import { IdentityVisualStep } from '../design/formulario';
 
 interface Etapa2Props {
@@ -7,9 +7,10 @@ interface Etapa2Props {
   setInfoSite: (info: InfoSite) => void;
   avancarParaEtapa3: (event: FormEvent) => void;
   voltarEtapa: () => void;
+  pacoteEscolhido: Pacote | null;
 }
 
-export function Etapa2({ infoSite, setInfoSite, avancarParaEtapa3, voltarEtapa }: Etapa2Props) {
+export function Etapa2({ infoSite, setInfoSite, avancarParaEtapa3, voltarEtapa, pacoteEscolhido }: Etapa2Props) {
   return (
     <IdentityVisualStep
       config={FORMULARIO_CONFIG.etapa2}
@@ -17,6 +18,7 @@ export function Etapa2({ infoSite, setInfoSite, avancarParaEtapa3, voltarEtapa }
       setInfoSite={setInfoSite}
       onSubmit={avancarParaEtapa3}
       onVoltar={voltarEtapa}
+      pacoteEscolhido={pacoteEscolhido}
     />
   );
 }
