@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
 import { type InfoSite, type Pacote } from '../../data/precos';
 import { OptionSelectionStep } from '../design/formulario';
+import { alternarItemSelecionado, useScrollToTopOnMount } from './helpers';
 
 interface Etapa4Props {
   infoSite: InfoSite;
@@ -13,18 +14,13 @@ interface Etapa4Props {
 
 export function Etapa4({ infoSite, setInfoSite, voltarEtapa, finalizarProjeto, pacoteEscolhido }: Etapa4Props) {
   const [paginaExpandida, setPaginaExpandida] = useState<string | null>(null);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  useScrollToTopOnMount();
 
   const handleTogglePagina = (id: string) => {
-    const selecionadasAtuais = infoSite.paginas_extras || [];
-    const novasSelecionadas = selecionadasAtuais.includes(id as never)
-      ? selecionadasAtuais.filter((item) => item !== id)
-      : [...selecionadasAtuais, id as never];
-
-    setInfoSite({ ...infoSite, paginas_extras: novasSelecionadas });
+    setInfoSite({
+      ...infoSite,
+      paginas_extras: alternarItemSelecionado(infoSite.paginas_extras, id as never)
+    });
   };
 
   return (

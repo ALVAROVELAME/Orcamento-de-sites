@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
 import type { InfoSite, Pacote } from '../../data/precos';
 import { OptionSelectionStep } from '../design/formulario';
+import { alternarItemSelecionado, useScrollToTopOnMount } from './helpers';
 
 interface Etapa5Props {
   infoSite: InfoSite;
@@ -19,18 +20,13 @@ export function Etapa5({
   finalizarProjeto
 }: Etapa5Props) {
   const [extraExpandido, setExtraExpandido] = useState<string | null>(null);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  useScrollToTopOnMount();
 
   const handleToggleExtra = (id: string) => {
-    const selecionadosAtuais = infoSite.extras_integracoes || [];
-    const novosSelecionados = selecionadosAtuais.includes(id as never)
-      ? selecionadosAtuais.filter((item) => item !== id)
-      : [...selecionadosAtuais, id as never];
-
-    setInfoSite({ ...infoSite, extras_integracoes: novosSelecionados });
+    setInfoSite({
+      ...infoSite,
+      extras_integracoes: alternarItemSelecionado(infoSite.extras_integracoes, id as never)
+    });
   };
 
   return (

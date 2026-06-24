@@ -11,31 +11,44 @@ export type CategoriaSecao =
   | 'blog'
   | 'formulario'
   | 'video'
-  | 'mapa'
   | 'galeria';
 
 export type CategoriaSecaoPreco = CategoriaSecao;
-export type TipoPreviewSecao = 'componente' | 'imagem';
+export type TipoPreviewSecao = 'componente' | 'imagem' | 'texto';
 
 export type ModeloSecaoId =
   | 'CapaModel1'
+  | 'CapaModel2'
+  | 'CapaModel3'
   | 'SobreModel1'
+  | 'SobreModel2'
+  | 'SobreModel3'
   | 'ServicosModel1'
   | 'ServicosModel2'
+  | 'ServicosModel3'
   | 'DepCarrossel'
   | 'DepGoogle'
   | 'DepTradicional'
   | 'FaqModel1'
+  | 'FaqModel2'
+  | 'FaqModel3'
   | 'BlogModel1'
+  | 'BlogModel2'
+  | 'BlogModel3'
   | 'FormularioModel1'
+  | 'FormularioModel2'
+  | 'FormularioModel3'
   | 'VideoModel1'
-  | 'MapaModel1'
-  | 'GaleriaModel1';
+  | 'VideoModel2'
+  | 'VideoModel3'
+  | 'GaleriaModel1'
+  | 'GaleriaModel2'
+  | 'GaleriaModel3';
 
 export type StatusLogoId = 'logo_pronto' | 'logo_imagem' | 'logo_criacao';
 export type EstiloMarcaId = 'moderna' | 'classica_seria' | 'divertida' | 'luxuosa' | 'minimalista';
 export type PaginaExtraId = 'sobre_nos' | 'privacidade' | 'termos_uso' | 'contato' | 'faq' | 'erro_404';
-export type ExtraIntegracaoId = 'whatsapp' | 'analytics' | 'meta_pixel' | 'agendamento' | 'seo_avancado';
+export type ExtraIntegracaoId = 'whatsapp' | 'analytics' | 'meta_pixel' | 'agendamento' | 'seo_avancado' | 'mapa';
 export type EcommerceExtraId = 'pagamentos' | 'frete' | 'catalogo' | 'carrinho';
 export type FluxoPacote = 'padrao' | 'ecommerce';
 

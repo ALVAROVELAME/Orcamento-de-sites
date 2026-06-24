@@ -63,7 +63,7 @@ export function OptionSelectionStep({
               ) : null}
             </div>
 
-            <div className="flex flex-col gap-4 w-full mt-6">
+            <div className="flex flex-col gap-4 w-full mt-6 xl:max-w-5xl xl:mx-auto">
               {opcoes.map((opcao) => {
                 const isSelected = selecionados.includes(opcao.id);
                 const metaLabel = obterRotuloPreco(opcao, pacoteEscolhido);
@@ -90,7 +90,7 @@ export function OptionSelectionStep({
             </div>
           </div>
 
-          <div className="mt-12 max-w-7xl mx-auto px-4">
+          <div className="mt-12 max-w-7xl xl:max-w-5xl mx-auto px-4">
             <BotoesNavegacao onVoltar={onVoltar} onProximo={onProximo} desabilitarProximo={false} textoProximo={textoProximo} />
           </div>
         </div>

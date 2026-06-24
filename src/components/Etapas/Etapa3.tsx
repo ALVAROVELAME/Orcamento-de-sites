@@ -7,6 +7,7 @@ import {
   obterRotuloPreco,
   obterTotalSecoesComCapa,
   obterCategoriaSecaoConfig,
+  itemEstaIncluidoNoPacote,
   type CategoriaSecao,
   type InfoSite,
   type ModeloSecaoId,
@@ -19,6 +20,52 @@ import { BotoesNavegacao } from './BotoesNavegacao';
 import { PreviewSecao } from './PreviewSecao';
 
 const TODAS_CATEGORIAS = LISTA_CATEGORIAS_SECOES;
+const TEMPO_AUTO_ABRIR_MS = 400;
+const TEMPO_AUTO_FECHAR_MS = 1500;
+
+function obterCategoriasIncluidasNoPacote(pacote: Pacote | null) {
+  if (!pacote) return [];
+
+  return TODAS_CATEGORIAS.filter((categoria) => {
+    const categoriaConfig = obterCategoriaSecaoConfig(categoria);
+    return categoriaConfig.modelos.some((modelo) => itemEstaIncluidoNoPacote(modelo, pacote));
+  });
+}
+
+function obterModeloIncluidoNaCategoria(categoria: CategoriaSecao, pacote: Pacote | null) {
+  if (!pacote) return null;
+
+  const categoriaConfig = obterCategoriaSecaoConfig(categoria);
+  return categoriaConfig.modelos.find((modelo) => itemEstaIncluidoNoPacote(modelo, pacote))?.id ?? null;
+}
+
+function useAutoExpandirTemporariamente<TId extends string>(
+  ativo: boolean,
+  itemId: TId | null | undefined,
+  setExpandido: (item: TId | null) => void
+) {
+  useEffect(() => {
+    if (!ativo || !itemId) return undefined;
+
+    let fecharTimer: ReturnType<typeof setTimeout>;
+
+    const abrirTimer = setTimeout(() => {
+      setExpandido(itemId);
+      fecharTimer = setTimeout(() => setExpandido(null), TEMPO_AUTO_FECHAR_MS);
+    }, TEMPO_AUTO_ABRIR_MS);
+
+    return () => {
+      clearTimeout(abrirTimer);
+      if (fecharTimer) clearTimeout(fecharTimer);
+    };
+  }, [ativo, itemId, setExpandido]);
+}
+
+function atualizarSecaoNoSite(site: SecaoNoSite[], categoria: CategoriaSecao, modelo: ModeloSecaoId) {
+  const siteFiltrado = site.filter((secao) => secao.categoria !== categoria);
+  const novaSecao: SecaoNoSite = { id: crypto.randomUUID(), categoria, modelo };
+  return [...siteFiltrado, novaSecao];
+}
 
 interface Etapa3Props {
   infoSite: InfoSite;
@@ -40,10 +87,11 @@ export function Etapa3({
   const [fase, setFase] = useState<'selecao_inicial' | 'escolha_modelos' | 'resumo'>('selecao_inicial');
   const [categoriasPendentes, setCategoriasPendentes] = useState<CategoriaSecao[]>([]);
   const [indiceAtual, setIndiceAtual] = useState(0);
-  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<CategoriaSecao[]>([]);
+  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<CategoriaSecao[]>(() => obterCategoriasIncluidasNoPacote(pacoteEscolhido));
   const [categoriaExpandida, setCategoriaExpandida] = useState<CategoriaSecao | null>(null);
   const [modeloExpandido, setModeloExpandido] = useState<ModeloSecaoId | null>(null);
   const [modeloSelecionado, setModeloSelecionado] = useState<ModeloSecaoId | null>(null);
+  const [resumoExpandido, setResumoExpandido] = useState<string | null>(null);
   const [mostrarAvisoLimite, setMostrarAvisoLimite] = useState(false);
   const [mostrarAvisoSeccoesRestantes, setMostrarAvisoSeccoesRestantes] = useState(false);
 
@@ -64,70 +112,28 @@ export function Etapa3({
     return () => clearTimeout(timer);
   }, [mostrarAvisoLimite]);
 
-  useEffect(() => {
-    if (!mostrarAvisoSeccoesRestantes) return undefined;
+  const categoriaAtual = categoriasPendentes[indiceAtual];
+  const primeiroModeloDaCategoriaAtual = categoriaAtual ? BIBLIOTECA_SECOES[categoriaAtual]?.[0]?.id ?? null : null;
+  const primeiraSecaoResumo = site[0]?.id ?? null;
 
-    const timer = setTimeout(() => {
-      setMostrarAvisoSeccoesRestantes(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [mostrarAvisoSeccoesRestantes]);
-
-  useEffect(() => {
-    if (fase !== 'selecao_inicial' || TODAS_CATEGORIAS.length === 0) return undefined;
-
-    const primeiraCategoria = TODAS_CATEGORIAS[0];
-    let fecharTimer: ReturnType<typeof setTimeout>;
-
-    const abrirTimer = setTimeout(() => {
-      setCategoriaExpandida(primeiraCategoria);
-      fecharTimer = setTimeout(() => setCategoriaExpandida(null), 1500);
-    }, 400);
-
-    return () => {
-      clearTimeout(abrirTimer);
-      if (fecharTimer) clearTimeout(fecharTimer);
-    };
-  }, [fase]);
-
-  useEffect(() => {
-    if (fase !== 'escolha_modelos' || !categoriasPendentes[indiceAtual]) return undefined;
-
-    const modelosDaCategoria = BIBLIOTECA_SECOES[categoriasPendentes[indiceAtual]];
-    if (!modelosDaCategoria || modelosDaCategoria.length === 0) return undefined;
-
-    const primeiroModeloId = modelosDaCategoria[0].id;
-    let fecharTimer: ReturnType<typeof setTimeout>;
-
-    const abrirTimer = setTimeout(() => {
-      setModeloExpandido(primeiroModeloId);
-      fecharTimer = setTimeout(() => setModeloExpandido(null), 1500);
-    }, 400);
-
-    return () => {
-      clearTimeout(abrirTimer);
-      if (fecharTimer) clearTimeout(fecharTimer);
-    };
-  }, [fase, indiceAtual, categoriasPendentes]);
+  useAutoExpandirTemporariamente(fase === 'selecao_inicial', TODAS_CATEGORIAS[0] ?? null, setCategoriaExpandida);
+  useAutoExpandirTemporariamente(fase === 'escolha_modelos', primeiroModeloDaCategoriaAtual, setModeloExpandido);
+  useAutoExpandirTemporariamente(fase === 'resumo', primeiraSecaoResumo, setResumoExpandido);
 
   const iniciarEscolhaDeModelos = () => {
     if (categoriasSelecionadas.length === 0) return;
     setCategoriasPendentes(categoriasSelecionadas);
     setIndiceAtual(0);
     setModeloExpandido(null);
-    setModeloSelecionado(null);
+    setModeloSelecionado(obterModeloIncluidoNaCategoria(categoriasSelecionadas[0], pacoteEscolhido));
     setSite([]);
     setFase('escolha_modelos');
   };
 
   const avancarParaProximaCategoria = () => {
-    if (!modeloSelecionado) return;
+    if (!modeloSelecionado || !categoriaAtual) return;
 
-    const categoriaAtual = categoriasPendentes[indiceAtual];
-    const siteFiltrado = site.filter((secao) => secao.categoria !== categoriaAtual);
-    const novaSecao: SecaoNoSite = { id: crypto.randomUUID(), categoria: categoriaAtual, modelo: modeloSelecionado };
-    const novoSite = [...siteFiltrado, novaSecao];
+    const novoSite = atualizarSecaoNoSite(site, categoriaAtual, modeloSelecionado);
     setSite(novoSite);
 
     if (indiceAtual + 1 < categoriasPendentes.length) {
@@ -139,6 +145,7 @@ export function Etapa3({
       return;
     }
 
+    setResumoExpandido(null);
     setFase('resumo');
   };
 
@@ -196,20 +203,17 @@ export function Etapa3({
     setIndiceAtual(0);
     setModeloExpandido(null);
     setModeloSelecionado(null);
+    setResumoExpandido(null);
   };
 
   const sincronizarSecaoAtualNoSite = (modeloId: ModeloSecaoId) => {
-    const categoriaAtual = categoriasPendentes[indiceAtual];
     if (!categoriaAtual) return;
 
-    const siteFiltrado = site.filter((secao) => secao.categoria !== categoriaAtual);
-    const novaSecao: SecaoNoSite = { id: crypto.randomUUID(), categoria: categoriaAtual, modelo: modeloId };
-    setSite([...siteFiltrado, novaSecao]);
+    setSite(atualizarSecaoNoSite(site, categoriaAtual, modeloId));
   };
 
   const avisoLimiteDescricao = config.avisoLimite.descricao.replace('{limite}', String(limiteDoPlano));
   const avisoSecoesRestantesDescricao = `Voce ainda pode escolher ${limiteDoPlano - categoriasSelecionadas.length} secao(oes) a mais. A capa ja esta incluida no pacote.`;
-  const categoriaAtual = categoriasPendentes[indiceAtual];
   const categoriaAtualConfig = categoriaAtual ? obterCategoriaSecaoConfig(categoriaAtual) : null;
 
   return (
@@ -292,7 +296,7 @@ export function Etapa3({
                 </div>
               </div>
 
-              <div className="flex flex-col gap-6 w-full mt-6">
+              <div className="flex flex-col gap-6 w-full mt-6 xl:max-w-5xl xl:mx-auto">
                 {TODAS_CATEGORIAS.map((categoria) => {
                   const categoriaConfig = obterCategoriaSecaoConfig(categoria);
                   const modelosDaCategoria = BIBLIOTECA_SECOES[categoria];
@@ -348,7 +352,7 @@ export function Etapa3({
                 </div>
               </div>
 
-              <div className="flex flex-col gap-6 w-full">
+              <div className="flex flex-col gap-6 w-full xl:max-w-5xl xl:mx-auto">
                 {BIBLIOTECA_SECOES[categoriaAtual].map((modelo) => {
                   return (
                     <SelectableAccordion
@@ -378,45 +382,54 @@ export function Etapa3({
           )}
 
           {fase === 'resumo' && (
-            <div className="w-full mt-2">
-              <div className="max-w-7xl mx-auto px-4 flex flex-col mb-6 pb-4 border-b border-slate-100 gap-1">
+            <div className="w-full mt-2 xl:max-w-5xl xl:mx-auto">
+              <div className="max-w-7xl xl:max-w-5xl mx-auto px-4 flex flex-col mb-6 pb-4 border-b border-slate-100 gap-1">
                 <h3 className="text-2xl font-black text-slate-800">{config.resumo.titulo}</h3>
                 {infoSite.nome && <p className="text-sm text-indigo-600 font-semibold">{config.resumo.prefixoProjeto} {infoSite.nome}</p>}
               </div>
 
-              <div className="flex flex-col gap-6 w-full">
+              <div className="flex flex-col gap-4 w-full">
                 {site.map((secao, index) => {
                   const categoriaConfig = obterCategoriaSecaoConfig(secao.categoria);
                   const modeloConfig = obterModeloSecaoConfig(secao.modelo);
 
                   return (
-                    <div key={secao.id} className="relative bg-white border-y border-slate-200 overflow-hidden">
-                      <div className="bg-slate-800 p-4 flex justify-between items-center z-10 relative">
-                        <div className="max-w-7xl mx-auto w-full flex justify-between items-center px-4">
-                          <span className="text-indigo-300 font-black uppercase text-sm">
-                            {index + 1}. {categoriaConfig.nome}
-                          </span>
-                          <button
-                            onClick={voltarAoInicioDaEtapa3}
-                            className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-sm transition-colors"
-                          >
-                            Voltar
-                          </button>
+                    <SelectableAccordion
+                      key={secao.id}
+                      titulo={`${index + 1}. ${categoriaConfig.nome}`}
+                      metaLabel={modeloConfig?.nome ?? null}
+                      isExpanded={resumoExpandido === secao.id}
+                      isSelected={resumoExpandido === secao.id}
+                      onToggleExpand={() => setResumoExpandido(resumoExpandido === secao.id ? null : secao.id)}
+                      onToggleSelect={() => setResumoExpandido(resumoExpandido === secao.id ? null : secao.id)}
+                      mostrarSelecao={false}
+                      headerRightContent={(
+                        <button
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            voltarAoInicioDaEtapa3();
+                          }}
+                          className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-lg font-bold text-sm transition-colors"
+                        >
+                          Voltar
+                        </button>
+                      )}
+                      containerClassName="max-w-7xl xl:max-w-5xl mx-auto"
+                    >
+                      <div className="bg-white">
+                        <div className="pointer-events-none opacity-95 max-h-[600px] overflow-hidden relative">
+                          <PreviewSecao modelo={modeloConfig} fallbackText={config.resumo.textoVisualizacaoIndisponivel} />
+                          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent" />
                         </div>
                       </div>
-
-                      <div className="w-full pointer-events-none opacity-90 max-h-[600px] overflow-hidden relative">
-                        <PreviewSecao modelo={modeloConfig} fallbackText={config.resumo.textoVisualizacaoIndisponivel} />
-                        <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent" />
-                      </div>
-                    </div>
+                    </SelectableAccordion>
                   );
                 })}
               </div>
             </div>
           )}
 
-          <div className="mt-8 max-w-7xl mx-auto px-4">
+          <div className="mt-8 max-w-7xl xl:max-w-5xl mx-auto px-4">
             <BotoesNavegacao onVoltar={tratarAcaoVoltar} onProximo={tratarAcaoProximo} desabilitarProximo={proximoDesabilitado} />
           </div>
         </div>

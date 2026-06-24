@@ -1,6 +1,6 @@
 import { PREVIEW_IMAGENS_SECOES } from '../assets/previews/secoes';
 
-export type TipoPreviewConstrutor = 'componente' | 'imagem';
+export type TipoPreviewConstrutor = 'componente' | 'imagem' | 'texto';
 
 export interface EntradaTextoCategoria<TCategoria extends string> {
   id: TCategoria;
@@ -261,6 +261,12 @@ function resolverPreviewVisual<TModelo extends string>(nomeModelo: string, visua
   if (!visual.tipoPreview || visual.tipoPreview === 'componente') {
     return {
       tipoPreview: 'componente' as const
+    };
+  }
+
+  if (visual.tipoPreview === 'texto') {
+    return {
+      tipoPreview: 'texto' as const
     };
   }
 

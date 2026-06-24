@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
 import { type InfoSite, type Pacote } from '../../data/precos';
 import { OptionSelectionStep } from '../design/formulario';
+import { alternarItemSelecionado, useScrollToTopOnMount } from './helpers';
 
 interface Etapa6Props {
   infoSite: InfoSite;
@@ -11,20 +12,16 @@ interface Etapa6Props {
   pacoteEscolhido: Pacote | null;
 }
 
+// FUTURO: etapa de e-commerce preservada para reativacao do fluxo de loja virtual.
 export function Etapa6({ infoSite, setInfoSite, voltarEtapa, finalizarProjeto, pacoteEscolhido }: Etapa6Props) {
   const [extraExpandido, setExtraExpandido] = useState<string | null>(null);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  useScrollToTopOnMount();
 
   const handleToggleEcommerce = (id: string) => {
-    const selecionadosAtuais = infoSite.ecommerce_extras || [];
-    const novosSelecionados = selecionadosAtuais.includes(id as never)
-      ? selecionadosAtuais.filter((item) => item !== id)
-      : [...selecionadosAtuais, id as never];
-
-    setInfoSite({ ...infoSite, ecommerce_extras: novosSelecionados });
+    setInfoSite({
+      ...infoSite,
+      ecommerce_extras: alternarItemSelecionado(infoSite.ecommerce_extras, id as never)
+    });
   };
 
   return (

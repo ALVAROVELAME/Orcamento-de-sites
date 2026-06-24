@@ -1,18 +1,14 @@
 import { getWhatsappLink } from '../data/config';
 import {
-  ECOMMERCE_EXTRAS_OPCOES,
-  EXTRAS_INTEGRACOES_OPCOES,
-  PAGINAS_EXTRAS_OPCOES,
-  STATUS_LOGO_OPCOES,
   mapearTitulosEstiloMarca,
   obterCategoriaSecaoConfig,
   obterModeloSecaoConfig,
+  obterOpcaoExtraIntegracao,
+  obterOpcaoPaginaExtra,
+  obterOpcaoStatusLogo,
   obterRotuloPreco,
-  type EcommerceExtraId,
-  type ExtraIntegracaoId,
   type InfoSite,
   type Pacote,
-  type PaginaExtraId,
   type SecaoNoSite,
   type StatusLogoId
 } from '../data/precos';
@@ -43,37 +39,22 @@ function formatarListaSimples(itens?: string[], fallback = 'Nenhum selecionado')
 function formatarStatusLogo(status?: StatusLogoId | '') {
   if (!status) return '- Nao informado';
 
-  const opcao = STATUS_LOGO_OPCOES.find((item) => item.id === status);
+  const opcao = obterOpcaoStatusLogo(status);
   if (!opcao) return `- ${status}`;
 
   return criarLinhaLista(opcao.titulo, obterRotuloPreco(opcao));
 }
 
-function formatarPaginasExtras(ids: readonly PaginaExtraId[] | undefined, pacoteEscolhido: Pacote) {
-  if (!ids || ids.length === 0) return ['- Nenhuma selecionada'];
+function formatarOpcoesComPreco<TId extends string>(
+  ids: readonly TId[] | undefined,
+  pacoteEscolhido: Pacote,
+  fallback: string,
+  obterOpcao: (id: TId) => { titulo: string; preco?: number; incluidoNosPacotes?: readonly Pacote['id'][] } | undefined
+) {
+  if (!ids || ids.length === 0) return [`- ${fallback}`];
 
   return ids.map((id) => {
-    const opcao = PAGINAS_EXTRAS_OPCOES.find((item) => item.id === id);
-    if (!opcao) return `- ${id}`;
-    return criarLinhaLista(opcao.titulo, obterRotuloPreco(opcao, pacoteEscolhido));
-  });
-}
-
-function formatarExtrasIntegracoes(ids: readonly ExtraIntegracaoId[] | undefined, pacoteEscolhido: Pacote) {
-  if (!ids || ids.length === 0) return ['- Nenhuma selecionada'];
-
-  return ids.map((id) => {
-    const opcao = EXTRAS_INTEGRACOES_OPCOES.find((item) => item.id === id);
-    if (!opcao) return `- ${id}`;
-    return criarLinhaLista(opcao.titulo, obterRotuloPreco(opcao, pacoteEscolhido));
-  });
-}
-
-function formatarExtrasEcommerce(ids: readonly EcommerceExtraId[] | undefined, pacoteEscolhido: Pacote) {
-  if (!ids || ids.length === 0) return ['- Nenhum selecionado'];
-
-  return ids.map((id) => {
-    const opcao = ECOMMERCE_EXTRAS_OPCOES.find((item) => item.id === id);
+    const opcao = obterOpcao(id);
     if (!opcao) return `- ${id}`;
     return criarLinhaLista(opcao.titulo, obterRotuloPreco(opcao, pacoteEscolhido));
   });
@@ -122,15 +103,11 @@ export function montarMensagemFormularioWhatsapp({
     ]),
     ...criarBloco('PAGINAS EXTRAS', [
       `- Quantidade selecionada: ${(infoSite.paginas_extras || []).length}`,
-      ...formatarPaginasExtras(infoSite.paginas_extras, pacoteEscolhido)
+      ...formatarOpcoesComPreco(infoSite.paginas_extras, pacoteEscolhido, 'Nenhuma selecionada', obterOpcaoPaginaExtra)
     ]),
     ...criarBloco('EXTRAS E INTEGRACOES', [
       `- Quantidade selecionada: ${(infoSite.extras_integracoes || []).length}`,
-      ...formatarExtrasIntegracoes(infoSite.extras_integracoes, pacoteEscolhido)
-    ]),
-    ...criarBloco('EXTRAS DE E-COMMERCE', [
-      `- Quantidade selecionada: ${(infoSite.ecommerce_extras || []).length}`,
-      ...formatarExtrasEcommerce(infoSite.ecommerce_extras, pacoteEscolhido)
+      ...formatarOpcoesComPreco(infoSite.extras_integracoes, pacoteEscolhido, 'Nenhuma selecionada', obterOpcaoExtraIntegracao)
     ])
   ];
 

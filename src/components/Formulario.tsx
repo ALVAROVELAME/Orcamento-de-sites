@@ -5,10 +5,11 @@ import { Etapa3 } from './Etapas/Etapa3';
 import { Etapa4 } from './Etapas/Etapa4';
 import { Etapa5 } from './Etapas/Etapa5';
 import { ProgressBar } from './Etapas/ProgressBar';
-import { INFO_SITE_INICIAL } from '../data/configuracaoFormulario';
+import { FORMULARIO_CONFIG, INFO_SITE_INICIAL } from '../data/configuracaoFormulario';
 import {
   PACOTES,
   calcularValorProjeto,
+  itemEstaIncluidoNoPacote,
   type InfoSite,
   type Pacote,
   type SecaoNoSite
@@ -23,6 +24,30 @@ export function Formulario() {
   const [infoSite, setInfoSite] = useState<InfoSite>(INFO_SITE_INICIAL);
   const [site, setSite] = useState<SecaoNoSite[]>([]);
   const [etapa3ResetKey, setEtapa3ResetKey] = useState(0);
+
+  const obterIdsInclusosNoPacote = <TId extends string>(
+    opcoes: readonly { id: TId; incluidoNosPacotes?: readonly Pacote['id'][] }[],
+    pacote: Pacote
+  ): TId[] => {
+    return opcoes
+      .filter((opcao) => itemEstaIncluidoNoPacote(opcao, pacote))
+      .map((opcao) => opcao.id);
+  };
+
+  const mesclarIdsUnicos = <TId extends string>(atuais: readonly TId[] | undefined, inclusos: readonly TId[]) => {
+    return [...new Set([...(atuais ?? []), ...inclusos])] as TId[];
+  };
+
+  const aplicarItensInclusosDoPacote = (atual: InfoSite, pacote: Pacote): InfoSite => {
+    const paginasExtrasInclusas = obterIdsInclusosNoPacote(FORMULARIO_CONFIG.etapa4.opcoes, pacote);
+    const extrasIntegracoesInclusos = obterIdsInclusosNoPacote(FORMULARIO_CONFIG.etapa5.opcoes, pacote);
+
+    return {
+      ...atual,
+      paginas_extras: mesclarIdsUnicos(atual.paginas_extras, paginasExtrasInclusas),
+      extras_integracoes: mesclarIdsUnicos(atual.extras_integracoes, extrasIntegracoesInclusos)
+    };
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -44,6 +69,7 @@ export function Formulario() {
 
   const avancarParaEtapa2 = (pacote: Pacote) => {
     setPacoteEscolhido(pacote);
+    setInfoSite((atual) => aplicarItensInclusosDoPacote(atual, pacote));
     setEtapaAtual(2);
   };
 
@@ -71,16 +97,21 @@ export function Formulario() {
     const mudouPacote = pacoteEscolhido?.id !== pacote.id;
     setPacoteEscolhido(pacote);
 
-    if (mudouPacote && etapaAtual >= 3) {
+    if (mudouPacote) {
       setSite([]);
-      setInfoSite((atual) => ({
-        ...atual,
-        paginas_extras: [],
-        extras_integracoes: [],
-        ecommerce_extras: []
-      }));
+      setInfoSite((atual) =>
+        aplicarItensInclusosDoPacote({
+          ...atual,
+          paginas_extras: [],
+          extras_integracoes: [],
+          ecommerce_extras: []
+        }, pacote)
+      );
       setEtapa3ResetKey((prev) => prev + 1);
-      setEtapaAtual(3);
+
+      if (etapaAtual >= 3) {
+        setEtapaAtual(3);
+      }
     }
   };
 

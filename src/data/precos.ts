@@ -54,11 +54,20 @@ export type {
   TipoPreviewSecao
 } from './tipos';
 
-const PRECOS_PACOTES_BASE: Record<PacoteId, number> = {
+const PRECOS_PACOTES_ATIVOS_BASE: Record<Exclude<PacoteId, 'loja_pequena'>, number> = {
   cartao_3: 200,
   cartao_6: 400,
-  institucional: 1200,
+  institucional: 1200
+};
+
+// FUTURO: dados de e-commerce/loja pequena mantidos para atualizacao posterior.
+const PRECOS_PACOTES_FUTUROS_BASE: Record<Extract<PacoteId, 'loja_pequena'>, number> = {
   loja_pequena: 4000
+};
+
+const PRECOS_PACOTES_BASE: Record<PacoteId, number> = {
+  ...PRECOS_PACOTES_ATIVOS_BASE,
+  ...PRECOS_PACOTES_FUTUROS_BASE
 };
 
 const STATUS_LOGO_PRECOS = [
@@ -89,9 +98,11 @@ const EXTRAS_INTEGRACOES_PRECOS = [
   { id: 'analytics', preco: 150 },
   { id: 'meta_pixel', preco: 150 },
   { id: 'agendamento', preco: 250 },
-  { id: 'seo_avancado', preco: 300 }
+  { id: 'seo_avancado', preco: 300 },
+  { id: 'mapa', preco: 60, incluidoNosPacotes: ['cartao_6'] }
 ] as const;
 
+// FUTURO: dados de e-commerce/loja pequena mantidos para atualizacao posterior.
 const ECOMMERCE_EXTRAS_PRECOS = [
   { id: 'pagamentos', preco: 600, incluidoNosPacotes: ['loja_pequena'] },
   { id: 'frete', preco: 400 },
@@ -108,24 +119,37 @@ const PRECOS_CATEGORIAS_SECOES = [
   { id: 'blog', precoBase: 160 },
   { id: 'formulario', precoBase: 110 },
   { id: 'video', precoBase: 120 },
-  { id: 'mapa', precoBase: 60 },
   { id: 'galeria', precoBase: 140 }
 ] as const;
 
 const PRECOS_MODELOS_SECOES_ENTRADAS = [
   { id: 'CapaModel1', valor: 0, incluidoNosPacotes: ['cartao_3', 'cartao_6', 'institucional', 'loja_pequena'] },
+  { id: 'CapaModel2', valor: 30 },
+  { id: 'CapaModel3', valor: 60 },
   { id: 'SobreModel1', valor: 0 },
+  { id: 'SobreModel2', valor: 30 },
+  { id: 'SobreModel3', valor: 60 },
   { id: 'ServicosModel1', valor: 0 },
   { id: 'ServicosModel2', valor: 30 },
+  { id: 'ServicosModel3', valor: 60 },
   { id: 'DepCarrossel', valor: 0, incluidoNosPacotes: ['cartao_6'] },
   { id: 'DepGoogle', valor: 30, incluidoNosPacotes: ['cartao_6'] },
   { id: 'DepTradicional', valor: 60, incluidoNosPacotes: ['cartao_6'] },
   { id: 'FaqModel1', valor: 70 },
+  { id: 'FaqModel2', valor: 100 },
+  { id: 'FaqModel3', valor: 130 },
   { id: 'BlogModel1', valor: 160 },
+  { id: 'BlogModel2', valor: 190 },
+  { id: 'BlogModel3', valor: 220 },
   { id: 'FormularioModel1', valor: 110, incluidoNosPacotes: ['institucional'] },
+  { id: 'FormularioModel2', valor: 140 },
+  { id: 'FormularioModel3', valor: 170 },
   { id: 'VideoModel1', valor: 120 },
-  { id: 'MapaModel1', valor: 60, incluidoNosPacotes: ['cartao_6'] },
-  { id: 'GaleriaModel1', valor: 140 }
+  { id: 'VideoModel2', valor: 150 },
+  { id: 'VideoModel3', valor: 180 },
+  { id: 'GaleriaModel1', valor: 140 },
+  { id: 'GaleriaModel2', valor: 170 },
+  { id: 'GaleriaModel3', valor: 200 }
 ] as const;
 
 function criarMapaPorId<TId extends string, TEntrada extends { id: TId }, TValor>(
@@ -331,16 +355,16 @@ export function mapearTitulosExtrasEcommerce(ids?: readonly EcommerceExtraId[]) 
   return [];
 }
 
-function obterOpcaoStatusLogo(id: StatusLogoId | '') {
+export function obterOpcaoStatusLogo(id: StatusLogoId | '') {
   if (!id) return undefined;
   return STATUS_LOGO_POR_ID[id];
 }
 
-function obterOpcaoPaginaExtra(id: PaginaExtraId) {
+export function obterOpcaoPaginaExtra(id: PaginaExtraId) {
   return PAGINAS_EXTRAS_POR_ID[id];
 }
 
-function obterOpcaoExtraIntegracao(id: ExtraIntegracaoId) {
+export function obterOpcaoExtraIntegracao(id: ExtraIntegracaoId) {
   return EXTRAS_INTEGRACOES_POR_ID[id];
 }
 

@@ -15,6 +15,8 @@ interface SelectableAccordionProps {
   containerClassName?: string;
   titleClassName?: string;
   metaLabel?: string | null;
+  mostrarSelecao?: boolean;
+  headerRightContent?: ReactNode;
 }
 
 const ACCENT_STYLES: Record<
@@ -63,7 +65,9 @@ export function SelectableAccordion({
   children,
   containerClassName = 'max-w-7xl mx-auto',
   titleClassName = '',
-  metaLabel
+  metaLabel,
+  mostrarSelecao = true,
+  headerRightContent
 }: SelectableAccordionProps) {
   const styles = ACCENT_STYLES[accent];
 
@@ -96,28 +100,32 @@ export function SelectableAccordion({
           </div>
         </div>
 
-        <div className="pl-4 flex items-center shrink-0" onClick={(event) => event.stopPropagation()}>
-          <label className="relative cursor-pointer flex items-center">
-            <input type={selectionType} checked={isSelected} onChange={onToggleSelect} className="peer sr-only" />
-            <div
-              className={`w-6 h-6 md:w-7 md:h-7 transition-all flex items-center justify-center ${
-                selectionType === 'radio' ? 'rounded-full' : 'rounded'
-              } ${
-                isSelected
-                  ? `${styles.selectedBorder} ${styles.activeBg}`
-                  : `border-slate-300 bg-white ${styles.unselectedHoverBorder}`
-              } border-2`}
-            >
-              {isSelected &&
-                (selectionType === 'radio' ? (
-                  <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white" />
-                ) : (
-                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
+        <div className="pl-4 flex items-center gap-3 shrink-0" onClick={(event) => event.stopPropagation()}>
+          {headerRightContent ? <div className="flex items-center">{headerRightContent}</div> : null}
+
+          {mostrarSelecao ? (
+            <label className="relative cursor-pointer flex items-center">
+              <input type={selectionType} checked={isSelected} onChange={onToggleSelect} className="peer sr-only" />
+              <div
+                className={`w-6 h-6 md:w-7 md:h-7 transition-all flex items-center justify-center ${
+                  selectionType === 'radio' ? 'rounded-full' : 'rounded'
+                } ${
+                  isSelected
+                    ? `${styles.selectedBorder} ${styles.activeBg}`
+                    : `border-slate-300 bg-white ${styles.unselectedHoverBorder}`
+                } border-2`}
+              >
+                {isSelected &&
+                  (selectionType === 'radio' ? (
+                    <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-white" />
+                  ) : (
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
                 ))}
-            </div>
-          </label>
+              </div>
+            </label>
+          ) : null}
         </div>
       </div>
 
@@ -126,7 +134,13 @@ export function SelectableAccordion({
           isExpanded ? 'grid-rows-[1fr] opacity-100 border-t border-slate-100' : 'grid-rows-[0fr] opacity-0'
         }`}
       >
-        <div className="overflow-hidden">{children}</div>
+        <div
+          className={`overflow-hidden transform transition-all duration-700 ease-out ${
+            isExpanded ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
+          }`}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
