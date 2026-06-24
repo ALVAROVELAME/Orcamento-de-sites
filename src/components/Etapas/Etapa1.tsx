@@ -1,4 +1,5 @@
-import { FORMULARIO_CONFIG, PACOTES, type Pacote } from '../../data/precos';
+import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
+import { PACOTES, type Pacote } from '../../data/precos';
 import { PlanSelectionStep } from '../design/formulario';
 
 interface Etapa1Props {

@@ -1,0 +1,20 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="48" fill="#FFF7ED"/>
+  <rect x="72" y="72" width="1456" height="756" rx="40" fill="#FFFFFF"/>
+  <rect x="148" y="154" width="224" height="28" rx="14" fill="#F97316" fill-opacity="0.18"/>
+  <rect x="148" y="210" width="480" height="96" rx="24" fill="#111827"/>
+  <g>
+    <rect x="148" y="390" width="416" height="286" rx="32" fill="#FDBA74"/>
+    <rect x="592" y="390" width="416" height="286" rx="32" fill="#FB923C"/>
+    <rect x="1036" y="390" width="416" height="286" rx="32" fill="#EA580C"/>
+  </g>
+  <g fill="#FFFFFF" fill-opacity="0.84">
+    <circle cx="262" cy="474" r="28"/>
+    <path d="M216 626L314 522L396 594L456 534L532 626H216Z"/>
+    <circle cx="706" cy="474" r="28"/>
+    <path d="M660 626L758 522L840 594L900 534L976 626H660Z"/>
+    <circle cx="1150" cy="474" r="28"/>
+    <path d="M1104 626L1202 522L1284 594L1344 534L1420 626H1104Z"/>
+  </g>
+  <text x="148" y="792" fill="#9A3412" font-family="Arial, sans-serif" font-size="52" font-weight="700">Galeria e portfolio</text>
+</svg>

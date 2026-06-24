@@ -4,13 +4,11 @@ import { Etapa2 } from './Etapas/Etapa2';
 import { Etapa3 } from './Etapas/Etapa3';
 import { Etapa4 } from './Etapas/Etapa4';
 import { Etapa5 } from './Etapas/Etapa5';
-import { Etapa6 } from './Etapas/Etapa6';
 import { ProgressBar } from './Etapas/ProgressBar';
+import { INFO_SITE_INICIAL } from '../data/configuracaoFormulario';
 import {
-  INFO_SITE_INICIAL,
   PACOTES,
   calcularValorProjeto,
-  ehPacoteEcommerce,
   type InfoSite,
   type Pacote,
   type SecaoNoSite
@@ -56,14 +54,8 @@ export function Formulario() {
 
   const avancarParaEtapa4 = () => setEtapaAtual(4);
   const avancarParaEtapa5 = () => setEtapaAtual(5);
-  const avancarParaEtapa6 = () => setEtapaAtual(6);
-
   const avancarDaEtapa5 = () => {
-    if (ehPacoteEcommerce(pacoteEscolhido)) {
-      setEtapaAtual(6);
-      return;
-    }
-
+    // Loja virtual desativada temporariamente: encerramos o fluxo aqui.
     enviarFormularioWhatsApp();
   };
 
@@ -153,17 +145,7 @@ export function Formulario() {
             setInfoSite={setInfoSite}
             pacoteEscolhido={pacoteEscolhido}
             voltarEtapa={voltarEtapa}
-            proximaEtapa={avancarParaEtapa6}
             finalizarProjeto={avancarDaEtapa5}
-          />
-        )}
-        {etapaAtual === 6 && (
-          <Etapa6
-            infoSite={infoSite}
-            setInfoSite={setInfoSite}
-            voltarEtapa={voltarEtapa}
-            finalizarProjeto={enviarFormularioWhatsApp}
-            pacoteEscolhido={pacoteEscolhido}
           />
         )}
       </div>

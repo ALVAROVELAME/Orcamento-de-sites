@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FORMULARIO_CONFIG, type InfoSite, type Pacote } from '../../data/precos';
+import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
+import { type InfoSite, type Pacote } from '../../data/precos';
 import { OptionSelectionStep } from '../design/formulario';
 
 interface Etapa6Props {

@@ -33,6 +33,9 @@ export const BIBLIOTECA_SECOES: Record<CategoriaSecao, ModeloSecaoPreview[]> =
       id: modelo.id,
       nome: modelo.nome,
       thumb: modelo.thumb,
+      tipoPreview: modelo.tipoPreview,
+      previewImagemSrc: modelo.previewImagemSrc,
+      previewImagemAlt: modelo.previewImagemAlt,
       preco: modelo.preco,
       incluidoNosPacotes: modelo.incluidoNosPacotes
     }));

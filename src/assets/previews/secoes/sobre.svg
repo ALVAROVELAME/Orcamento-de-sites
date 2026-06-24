@@ -1,0 +1,20 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="48" fill="#FFF7ED"/>
+  <rect x="72" y="72" width="1456" height="756" rx="40" fill="#FFFFFF"/>
+  <circle cx="316" cy="390" r="168" fill="#FDBA74"/>
+  <circle cx="316" cy="324" r="76" fill="#FB923C"/>
+  <rect x="470" y="196" width="250" height="28" rx="14" fill="#EA580C" fill-opacity="0.2"/>
+  <rect x="470" y="252" width="584" height="104" rx="24" fill="#111827"/>
+  <rect x="470" y="392" width="684" height="28" rx="14" fill="#D1D5DB"/>
+  <rect x="470" y="442" width="624" height="28" rx="14" fill="#D1D5DB"/>
+  <rect x="470" y="492" width="668" height="28" rx="14" fill="#D1D5DB"/>
+  <rect x="470" y="562" width="248" height="56" rx="28" fill="#F97316"/>
+  <rect x="1104" y="182" width="278" height="470" rx="32" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+  <rect x="1142" y="226" width="202" height="18" rx="9" fill="#C2410C" fill-opacity="0.2"/>
+  <rect x="1142" y="272" width="164" height="164" rx="28" fill="#FDBA74"/>
+  <rect x="1142" y="466" width="202" height="20" rx="10" fill="#E5E7EB"/>
+  <rect x="1142" y="502" width="182" height="20" rx="10" fill="#E5E7EB"/>
+  <rect x="1142" y="560" width="128" height="42" rx="21" fill="#FB923C"/>
+  <text x="136" y="150" fill="#9A3412" font-family="Arial, sans-serif" font-size="34" font-weight="700">Preview em imagem</text>
+  <text x="136" y="728" fill="#111827" font-family="Arial, sans-serif" font-size="52" font-weight="700">Sobre a empresa</text>
+</svg>

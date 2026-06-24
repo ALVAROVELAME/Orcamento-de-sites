@@ -1,5 +1,6 @@
 import type { FormEvent } from 'react';
-import { FORMULARIO_CONFIG, type InfoSite, type Pacote } from '../../data/precos';
+import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
+import { type InfoSite, type Pacote } from '../../data/precos';
 import { IdentityVisualStep } from '../design/formulario';
 
 interface Etapa2Props {

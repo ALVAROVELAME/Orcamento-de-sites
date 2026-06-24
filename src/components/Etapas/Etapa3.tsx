@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
 import {
-  FORMULARIO_CONFIG,
   LISTA_CATEGORIAS_SECOES,
   obterRotuloFaixaPrecoCategoria,
+  obterModeloSecaoConfig,
   obterRotuloPreco,
   obterTotalSecoesComCapa,
   obterCategoriaSecaoConfig,
@@ -13,8 +14,9 @@ import {
   type SecaoNoSite
 } from '../../data/precos';
 import { SelectableAccordion } from '../design/formulario';
-import { BIBLIOTECA_SECOES, RENDERIZADOR_COMPONENTES } from './constants';
+import { BIBLIOTECA_SECOES } from './constants';
 import { BotoesNavegacao } from './BotoesNavegacao';
+import { PreviewSecao } from './PreviewSecao';
 
 const TODAS_CATEGORIAS = LISTA_CATEGORIAS_SECOES;
 
@@ -295,7 +297,6 @@ export function Etapa3({
                   const categoriaConfig = obterCategoriaSecaoConfig(categoria);
                   const modelosDaCategoria = BIBLIOTECA_SECOES[categoria];
                   const primeiroModelo = modelosDaCategoria[0];
-                  const ComponentePreview = primeiroModelo ? RENDERIZADOR_COMPONENTES[primeiroModelo.id] : undefined;
                   const isSelected = categoriasSelecionadas.includes(categoria);
 
                   return (
@@ -327,11 +328,7 @@ export function Etapa3({
                     >
                       <div className="p-0 bg-white w-full overflow-x-auto">
                         <div className="w-full bg-white pointer-events-none">
-                          {ComponentePreview ? (
-                            <ComponentePreview />
-                          ) : (
-                            <div className="p-8 text-center font-bold text-slate-400">{config.textoPreviewIndisponivel}</div>
-                          )}
+                          <PreviewSecao modelo={primeiroModelo} fallbackText={config.textoPreviewIndisponivel} />
                         </div>
                       </div>
                     </SelectableAccordion>
@@ -353,8 +350,6 @@ export function Etapa3({
 
               <div className="flex flex-col gap-6 w-full">
                 {BIBLIOTECA_SECOES[categoriaAtual].map((modelo) => {
-                  const ComponentePreview = RENDERIZADOR_COMPONENTES[modelo.id];
-
                   return (
                     <SelectableAccordion
                       key={modelo.id}
@@ -372,11 +367,7 @@ export function Etapa3({
                     >
                       <div className="p-0 bg-white w-full overflow-x-auto">
                         <div className="w-full bg-white pointer-events-none">
-                          {ComponentePreview ? (
-                            <ComponentePreview />
-                          ) : (
-                            <div className="p-8 text-center font-bold text-slate-400">{config.textoModeloIndisponivel}</div>
-                          )}
+                          <PreviewSecao modelo={modelo} fallbackText={config.textoModeloIndisponivel} />
                         </div>
                       </div>
                     </SelectableAccordion>
@@ -395,8 +386,8 @@ export function Etapa3({
 
               <div className="flex flex-col gap-6 w-full">
                 {site.map((secao, index) => {
-                  const ComponentePreview = RENDERIZADOR_COMPONENTES[secao.modelo];
                   const categoriaConfig = obterCategoriaSecaoConfig(secao.categoria);
+                  const modeloConfig = obterModeloSecaoConfig(secao.modelo);
 
                   return (
                     <div key={secao.id} className="relative bg-white border-y border-slate-200 overflow-hidden">
@@ -415,11 +406,7 @@ export function Etapa3({
                       </div>
 
                       <div className="w-full pointer-events-none opacity-90 max-h-[600px] overflow-hidden relative">
-                        {ComponentePreview ? (
-                          <ComponentePreview />
-                        ) : (
-                          <div className="p-10 text-center text-slate-500 font-bold bg-slate-50">{config.resumo.textoVisualizacaoIndisponivel}</div>
-                        )}
+                        <PreviewSecao modelo={modeloConfig} fallbackText={config.resumo.textoVisualizacaoIndisponivel} />
                         <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent" />
                       </div>
                     </div>

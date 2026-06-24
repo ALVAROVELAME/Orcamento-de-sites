@@ -1,0 +1,32 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="48" fill="#ECFEFF"/>
+  <rect x="72" y="72" width="1456" height="756" rx="40" fill="url(#bg)"/>
+  <rect x="138" y="146" width="264" height="28" rx="14" fill="#0F172A" fill-opacity="0.2"/>
+  <rect x="138" y="206" width="566" height="96" rx="24" fill="#0F172A"/>
+  <rect x="138" y="338" width="674" height="26" rx="13" fill="#475569" fill-opacity="0.42"/>
+  <g fill="#FFFFFF">
+    <rect x="138" y="430" width="362" height="258" rx="28"/>
+    <rect x="530" y="430" width="362" height="258" rx="28"/>
+    <rect x="922" y="430" width="362" height="258" rx="28"/>
+  </g>
+  <g fill="#06B6D4">
+    <rect x="178" y="472" width="70" height="70" rx="18"/>
+    <rect x="570" y="472" width="70" height="70" rx="18"/>
+    <rect x="962" y="472" width="70" height="70" rx="18"/>
+  </g>
+  <g fill="#CBD5E1">
+    <rect x="178" y="572" width="204" height="22" rx="11"/>
+    <rect x="178" y="612" width="248" height="22" rx="11"/>
+    <rect x="570" y="572" width="204" height="22" rx="11"/>
+    <rect x="570" y="612" width="248" height="22" rx="11"/>
+    <rect x="962" y="572" width="204" height="22" rx="11"/>
+    <rect x="962" y="612" width="248" height="22" rx="11"/>
+  </g>
+  <text x="138" y="782" fill="#0F172A" font-family="Arial, sans-serif" font-size="52" font-weight="700">Servicos em cards</text>
+  <defs>
+    <linearGradient id="bg" x1="72" y1="72" x2="1528" y2="828" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A5F3FC"/>
+      <stop offset="1" stop-color="#E0F2FE"/>
+    </linearGradient>
+  </defs>
+</svg>

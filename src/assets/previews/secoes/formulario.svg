@@ -1,0 +1,19 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="48" fill="#F0FDF4"/>
+  <rect x="72" y="72" width="1456" height="756" rx="40" fill="#FFFFFF"/>
+  <rect x="148" y="154" width="254" height="28" rx="14" fill="#22C55E" fill-opacity="0.18"/>
+  <rect x="148" y="210" width="526" height="96" rx="24" fill="#111827"/>
+  <rect x="148" y="392" width="580" height="344" rx="36" fill="#F8FAFC" stroke="#DCFCE7" stroke-width="2"/>
+  <g fill="#E2E8F0">
+    <rect x="198" y="452" width="480" height="56" rx="18"/>
+    <rect x="198" y="536" width="480" height="56" rx="18"/>
+    <rect x="198" y="620" width="480" height="56" rx="18"/>
+  </g>
+  <rect x="198" y="694" width="210" height="56" rx="28" fill="#22C55E"/>
+  <rect x="832" y="392" width="558" height="344" rx="36" fill="#14532D"/>
+  <rect x="882" y="454" width="196" height="22" rx="11" fill="#BBF7D0"/>
+  <rect x="882" y="506" width="360" height="18" rx="9" fill="#DCFCE7" fill-opacity="0.85"/>
+  <rect x="882" y="542" width="318" height="18" rx="9" fill="#DCFCE7" fill-opacity="0.85"/>
+  <rect x="882" y="612" width="220" height="52" rx="26" fill="#4ADE80"/>
+  <text x="148" y="792" fill="#14532D" font-family="Arial, sans-serif" font-size="52" font-weight="700">Formulario de contato</text>
+</svg>

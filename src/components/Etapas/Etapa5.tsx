@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FORMULARIO_CONFIG, ehPacoteEcommerce, type InfoSite, type Pacote } from '../../data/precos';
+import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
+import type { InfoSite, Pacote } from '../../data/precos';
 import { OptionSelectionStep } from '../design/formulario';
 
 interface Etapa5Props {
@@ -7,7 +8,6 @@ interface Etapa5Props {
   setInfoSite: (info: InfoSite) => void;
   pacoteEscolhido: Pacote | null;
   voltarEtapa: () => void;
-  proximaEtapa: () => void;
   finalizarProjeto: () => void;
 }
 
@@ -16,7 +16,6 @@ export function Etapa5({
   setInfoSite,
   pacoteEscolhido,
   voltarEtapa,
-  proximaEtapa,
   finalizarProjeto
 }: Etapa5Props) {
   const [extraExpandido, setExtraExpandido] = useState<string | null>(null);
@@ -34,8 +33,6 @@ export function Etapa5({
     setInfoSite({ ...infoSite, extras_integracoes: novosSelecionados });
   };
 
-  const ecommerce = ehPacoteEcommerce(pacoteEscolhido);
-
   return (
     <OptionSelectionStep
       titulo={FORMULARIO_CONFIG.etapa5.titulo}
@@ -46,8 +43,9 @@ export function Etapa5({
       onToggleExpandido={(id) => setExtraExpandido(extraExpandido === id ? null : id)}
       onToggleSelecionado={handleToggleExtra}
       onVoltar={voltarEtapa}
-      onProximo={ecommerce ? proximaEtapa : finalizarProjeto}
-      textoProximo={ecommerce ? FORMULARIO_CONFIG.etapa5.textoProximoEcommerce : FORMULARIO_CONFIG.etapa5.textoProximoPadrao}
+      // Loja virtual desativada temporariamente: sempre finaliza o projeto nesta etapa.
+      onProximo={finalizarProjeto}
+      textoProximo={FORMULARIO_CONFIG.etapa5.textoProximoPadrao}
       pacoteEscolhido={pacoteEscolhido}
     />
   );

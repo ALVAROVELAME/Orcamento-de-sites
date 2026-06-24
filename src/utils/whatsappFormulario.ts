@@ -35,11 +35,6 @@ function criarBloco(titulo: string, linhas: string[]) {
   return [`*${titulo}*`, ...linhas, ''];
 }
 
-function formatarCores(cores?: string[]) {
-  if (!cores || cores.length === 0) return 'Nao informado';
-  return cores.join(' | ');
-}
-
 function formatarListaSimples(itens?: string[], fallback = 'Nenhum selecionado') {
   if (!itens || itens.length === 0) return [`- ${fallback}`];
   return itens.map((item) => `- ${item}`);
@@ -116,7 +111,8 @@ export function montarMensagemFormularioWhatsapp({
     ...criarBloco('IDENTIDADE VISUAL', [
       `- Status do logo: ${formatarStatusLogo(infoSite.status_logo).replace(/^- /, '')}`,
       `- Hospedagem e dominio: ${formatarSimNao(infoSite.tem_hospedagem_dominio)}`,
-      `- Cores escolhidas: ${formatarCores(infoSite.cores)}`,
+      // Paleta de cores desativada temporariamente.
+      // `- Cores escolhidas: ${formatarCores(infoSite.cores)}`,
       `- Quantidade de estilos de marca: ${estilosMarca.length}`
     ]),
     ...criarBloco('ESTILO DA MARCA', formatarListaSimples(estilosMarca, 'Nenhum estilo informado')),

@@ -1,20 +1,6 @@
 export function CapaModel1() {
   return (
     <div className="font-sans bg-slate-50 min-h-screen">
-      {/* --- FAIXA DE AVISO (TOP BANNER) --- */}
-      <div className="bg-teal-700 text-white text-center py-2.5 px-4 text-xs md:text-sm relative z-10">
-        <div className="flex items-center justify-center gap-2 flex-wrap">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-          </svg>
-          <span>
-            Este é um modelo premium de alta conversão para Contabilidade. Quer este site com a sua marca?{' '}
-            <a href="#" className="font-bold underline hover:text-teal-100 transition-colors">
-              Fale com Álvaro Velame
-            </a>
-          </span>
-        </div>
-      </div>
 
       {/* --- CABEÇALHO (HEADER) --- */}
       <header className="bg-white flex flex-col md:flex-row justify-between items-center py-4 px-6 md:px-[5%] shadow-sm relative z-10 gap-4 md:gap-0">
