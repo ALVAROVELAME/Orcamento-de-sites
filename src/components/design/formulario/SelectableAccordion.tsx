@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { MetaPrecoExibicao } from '../../../data/precos';
 
 type Accent = 'indigo' | 'emerald';
 type SelectionType = 'checkbox' | 'radio';
@@ -14,7 +15,7 @@ interface SelectableAccordionProps {
   children?: ReactNode;
   containerClassName?: string;
   titleClassName?: string;
-  metaLabel?: string | null;
+  metaLabel?: string | MetaPrecoExibicao | null;
   mostrarSelecao?: boolean;
   headerRightContent?: ReactNode;
 }
@@ -70,6 +71,7 @@ export function SelectableAccordion({
   headerRightContent
 }: SelectableAccordionProps) {
   const styles = ACCENT_STYLES[accent];
+  const metaInfo = typeof metaLabel === 'string' ? { texto: metaLabel } : metaLabel;
 
   return (
     <div
@@ -92,10 +94,17 @@ export function SelectableAccordion({
 
           <div className="flex flex-col md:flex-row md:items-center gap-2 min-w-0">
             <span className={`font-bold text-slate-800 text-lg md:text-xl tracking-tight ${titleClassName}`}>{titulo}</span>
-            {metaLabel ? (
-              <span className={`inline-flex items-center w-fit px-3 py-1 rounded-full text-sm md:text-base font-black border border-current/10 ${styles.metaText} ${styles.metaBg}`}>
-                {metaLabel}
-              </span>
+            {metaInfo ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`inline-flex items-center w-fit px-3 py-1 rounded-full text-sm md:text-base font-black border border-current/10 ${styles.metaText} ${styles.metaBg}`}>
+                  {metaInfo.texto}
+                </span>
+                {metaInfo.precoOriginal ? (
+                  <span className="text-sm md:text-base font-black text-rose-600 line-through decoration-2 decoration-rose-600">
+                    {metaInfo.precoOriginal}
+                  </span>
+                ) : null}
+              </div>
             ) : null}
           </div>
         </div>

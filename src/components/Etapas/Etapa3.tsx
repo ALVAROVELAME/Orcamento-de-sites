@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { FORMULARIO_CONFIG } from '../../data/configuracaoFormulario';
 import {
   LISTA_CATEGORIAS_SECOES,
-  obterRotuloFaixaPrecoCategoria,
+  obterMetaFaixaPrecoCategoria,
   obterModeloSecaoConfig,
-  obterRotuloPreco,
+  obterMetaPreco,
   obterTotalSecoesComCapa,
   obterCategoriaSecaoConfig,
   itemEstaIncluidoNoPacote,
@@ -307,7 +307,7 @@ export function Etapa3({
                     <SelectableAccordion
                       key={categoria}
                       titulo={categoriaConfig.nome}
-                      metaLabel={obterRotuloFaixaPrecoCategoria(categoria, pacoteEscolhido)}
+                      metaLabel={obterMetaFaixaPrecoCategoria(categoria, pacoteEscolhido)}
                       titleClassName="capitalize"
                       isExpanded={categoriaExpandida === categoria}
                       isSelected={isSelected}
@@ -358,7 +358,7 @@ export function Etapa3({
                     <SelectableAccordion
                       key={modelo.id}
                       titulo={modelo.nome}
-                      metaLabel={obterRotuloPreco(modelo, pacoteEscolhido)}
+                      metaLabel={obterMetaPreco(modelo, pacoteEscolhido)}
                       isExpanded={modeloExpandido === modelo.id}
                       isSelected={modeloSelecionado === modelo.id}
                       onToggleExpand={() => setModeloExpandido(modeloExpandido === modelo.id ? null : modelo.id)}

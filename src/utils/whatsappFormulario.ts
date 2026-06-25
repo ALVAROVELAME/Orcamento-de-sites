@@ -2,11 +2,11 @@ import { getWhatsappLink } from '../data/config';
 import {
   mapearTitulosEstiloMarca,
   obterCategoriaSecaoConfig,
+  obterMetaPreco,
   obterModeloSecaoConfig,
   obterOpcaoExtraIntegracao,
   obterOpcaoPaginaExtra,
   obterOpcaoStatusLogo,
-  obterRotuloPreco,
   type InfoSite,
   type Pacote,
   type SecaoNoSite,
@@ -27,6 +27,12 @@ function criarLinhaLista(titulo: string, rotulo?: string | null) {
   return rotulo ? `- ${titulo} (${rotulo})` : `- ${titulo}`;
 }
 
+function formatarMetaPreco(rotulo?: { texto: string; precoOriginal?: string } | null) {
+  if (!rotulo) return null;
+  if (!rotulo.precoOriginal) return rotulo.texto;
+  return `${rotulo.texto} | ~${rotulo.precoOriginal}~`;
+}
+
 function criarBloco(titulo: string, linhas: string[]) {
   return [`*${titulo}*`, ...linhas, ''];
 }
@@ -42,7 +48,7 @@ function formatarStatusLogo(status?: StatusLogoId | '') {
   const opcao = obterOpcaoStatusLogo(status);
   if (!opcao) return `- ${status}`;
 
-  return criarLinhaLista(opcao.titulo, obterRotuloPreco(opcao));
+  return criarLinhaLista(opcao.titulo, formatarMetaPreco(obterMetaPreco(opcao)));
 }
 
 function formatarOpcoesComPreco<TId extends string>(
@@ -56,7 +62,7 @@ function formatarOpcoesComPreco<TId extends string>(
   return ids.map((id) => {
     const opcao = obterOpcao(id);
     if (!opcao) return `- ${id}`;
-    return criarLinhaLista(opcao.titulo, obterRotuloPreco(opcao, pacoteEscolhido));
+    return criarLinhaLista(opcao.titulo, formatarMetaPreco(obterMetaPreco(opcao, pacoteEscolhido)));
   });
 }
 
@@ -67,7 +73,7 @@ function formatarSecoes(site: SecaoNoSite[], pacoteEscolhido: Pacote) {
     const categoria = obterCategoriaSecaoConfig(secao.categoria);
     const modelo = obterModeloSecaoConfig(secao.modelo);
     const titulo = `${index + 1}. ${categoria.nome} - ${modelo?.nome ?? secao.modelo}`;
-    return criarLinhaLista(titulo, obterRotuloPreco(modelo ?? undefined, pacoteEscolhido));
+    return criarLinhaLista(titulo, formatarMetaPreco(obterMetaPreco(modelo ?? undefined, pacoteEscolhido)));
   });
 }
 

@@ -1,5 +1,5 @@
 import { BotoesNavegacao } from '../../Etapas/BotoesNavegacao';
-import { obterRotuloPreco, type Pacote } from '../../../data/precos';
+import { obterMetaPreco, type Pacote } from '../../../data/precos';
 import { SelectableAccordion } from './SelectableAccordion';
 
 interface OptionItem {
@@ -66,7 +66,7 @@ export function OptionSelectionStep({
             <div className="flex flex-col gap-4 w-full mt-6 xl:max-w-5xl xl:mx-auto">
               {opcoes.map((opcao) => {
                 const isSelected = selecionados.includes(opcao.id);
-                const metaLabel = obterRotuloPreco(opcao, pacoteEscolhido);
+                const metaLabel = obterMetaPreco(opcao, pacoteEscolhido);
 
                 return (
                   <SelectableAccordion

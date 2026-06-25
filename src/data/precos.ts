@@ -54,6 +54,11 @@ export type {
   TipoPreviewSecao
 } from './tipos';
 
+export interface MetaPrecoExibicao {
+  texto: string;
+  precoOriginal?: string;
+}
+
 const PRECOS_PACOTES_ATIVOS_BASE: Record<Exclude<PacoteId, 'loja_pequena'>, number> = {
   cartao_3: 200,
   cartao_6: 400,
@@ -135,9 +140,9 @@ const PRECOS_MODELOS_SECOES_ENTRADAS = [
   { id: 'CardapioModel1', valor: 10 },
   { id: 'CardapioModel2', valor: 50 },
   { id: 'CardapioModel3', valor: 90 },
-  { id: 'DepCarrossel', valor: 0, incluidoNosPacotes: ['cartao_6'] },
-  { id: 'DepGoogle', valor: 30, incluidoNosPacotes: ['cartao_6'] },
-  { id: 'DepTradicional', valor: 60, incluidoNosPacotes: ['cartao_6'] },
+  { id: 'DepCarrossel', valor: 0, incluidoNosPacotes: ['cartao_6', 'institucional'] },
+  { id: 'DepGoogle', valor: 30, incluidoNosPacotes: ['cartao_6', 'institucional'] },
+  { id: 'DepTradicional', valor: 60},
   { id: 'FaqModel1', valor: 0 },
   { id: 'FaqModel2', valor: 30 },
   { id: 'FaqModel3', valor: 60 },
@@ -296,12 +301,31 @@ export function obterPrecoExibicao(item: Precificavel | undefined, pacote?: Paco
   return item.preco ?? 0;
 }
 
+function formatarMoeda(valor: number) {
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function obterPrecoOriginalRiscado(item: Precificavel | undefined) {
+  if (!item || typeof item.preco !== 'number' || item.preco <= 0) return undefined;
+  return formatarMoeda(item.preco);
+}
+
 export function obterRotuloPreco(item: Precificavel | undefined, pacote?: Pacote | null) {
   if (itemEstaIncluidoNoPacote(item, pacote)) return 'Incluido no pacote';
   if (!item || typeof item.preco !== 'number') return null;
   if (item.preco === 0) return 'Sem custos';
   if (item.preco < 0) return null;
-  return `+ ${item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
+  return `+ ${formatarMoeda(item.preco)}`;
+}
+
+export function obterMetaPreco(item: Precificavel | undefined, pacote?: Pacote | null): MetaPrecoExibicao | null {
+  const texto = obterRotuloPreco(item, pacote);
+  if (!texto) return null;
+
+  return {
+    texto,
+    precoOriginal: itemEstaIncluidoNoPacote(item, pacote) ? obterPrecoOriginalRiscado(item) : undefined
+  };
 }
 
 export function obterRotuloFaixaPrecoCategoria(categoria: CategoriaSecao, pacote?: Pacote | null) {
@@ -318,12 +342,41 @@ export function obterRotuloFaixaPrecoCategoria(categoria: CategoriaSecao, pacote
 
   if (maiorPreco === 0) return 'Sem custos';
 
-  const formatarMoeda = (valor: number) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   if (categoriaConfig.modelos.length === 1 || menorPreco === maiorPreco) {
     return `A partir de ${formatarMoeda(menorPreco)}`;
   }
 
   return `A partir de ${formatarMoeda(menorPreco)} ate ${formatarMoeda(maiorPreco)}`;
+}
+
+export function obterMetaFaixaPrecoCategoria(categoria: CategoriaSecao, pacote?: Pacote | null): MetaPrecoExibicao | null {
+  const texto = obterRotuloFaixaPrecoCategoria(categoria, pacote);
+  if (!texto) return null;
+
+  const categoriaConfig = obterCategoriaSecaoConfig(categoria);
+  const todosIncluidos = pacote && categoriaConfig.modelos.every((modelo) => itemEstaIncluidoNoPacote(modelo, pacote));
+
+  if (!todosIncluidos) {
+    return { texto };
+  }
+
+  const precosOriginais = categoriaConfig.modelos
+    .map((modelo) => modelo.preco)
+    .filter((preco): preco is number => typeof preco === 'number' && preco > 0);
+
+  if (precosOriginais.length === 0) {
+    return { texto };
+  }
+
+  const menorPreco = Math.min(...precosOriginais);
+  const maiorPreco = Math.max(...precosOriginais);
+  const precoOriginal =
+    menorPreco === maiorPreco ? formatarMoeda(menorPreco) : `${formatarMoeda(menorPreco)} - ${formatarMoeda(maiorPreco)}`;
+
+  return {
+    texto,
+    precoOriginal
+  };
 }
 
 function criarMapaTitulos<T extends { id: string; titulo: string }>(opcoes: readonly T[]) {
