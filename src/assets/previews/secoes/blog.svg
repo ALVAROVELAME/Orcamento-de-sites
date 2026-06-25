@@ -1,25 +1,38 @@
 <svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1600" height="900" rx="48" fill="#FAF5FF"/>
-  <rect x="72" y="72" width="1456" height="756" rx="40" fill="#FFFFFF"/>
-  <rect x="148" y="150" width="220" height="28" rx="14" fill="#A855F7" fill-opacity="0.18"/>
-  <rect x="148" y="206" width="474" height="96" rx="24" fill="#111827"/>
+  <rect width="1600" height="900" rx="48" fill="#F5F3FF"/>
+  <rect x="56" y="56" width="1488" height="788" rx="40" fill="url(#blogBg)"/>
+  <circle cx="1316" cy="178" r="138" fill="#A78BFA" fill-opacity="0.18"/>
+  <circle cx="262" cy="744" r="210" fill="#C084FC" fill-opacity="0.14"/>
+  <rect x="128" y="132" width="232" height="26" rx="13" fill="#7C3AED" fill-opacity="0.18"/>
+  <rect x="128" y="188" width="520" height="92" rx="24" fill="#1F2937"/>
+  <rect x="128" y="322" width="458" height="24" rx="12" fill="#6D28D9" fill-opacity="0.24"/>
+  <rect x="128" y="392" width="430" height="328" rx="36" fill="#FFFFFF" fill-opacity="0.9"/>
+  <rect x="172" y="432" width="342" height="146" rx="24" fill="#DDD6FE"/>
+  <rect x="172" y="610" width="206" height="20" rx="10" fill="#A78BFA"/>
+  <rect x="172" y="644" width="286" height="18" rx="9" fill="#C4B5FD"/>
   <g>
-    <rect x="148" y="392" width="390" height="286" rx="30" fill="#F5D0FE"/>
-    <rect x="606" y="392" width="390" height="286" rx="30" fill="#E9D5FF"/>
-    <rect x="1064" y="392" width="390" height="286" rx="30" fill="#DDD6FE"/>
+    <rect x="620" y="392" width="352" height="152" rx="30" fill="#EDE9FE"/>
+    <rect x="1012" y="392" width="352" height="152" rx="30" fill="#DDD6FE"/>
+    <rect x="620" y="568" width="352" height="152" rx="30" fill="#DDD6FE"/>
+    <rect x="1012" y="568" width="352" height="152" rx="30" fill="#EDE9FE"/>
   </g>
   <g fill="#FFFFFF">
-    <rect x="188" y="430" width="310" height="126" rx="24"/>
-    <rect x="646" y="430" width="310" height="126" rx="24"/>
-    <rect x="1104" y="430" width="310" height="126" rx="24"/>
+    <rect x="652" y="424" width="288" height="66" rx="18"/>
+    <rect x="1044" y="424" width="288" height="66" rx="18"/>
+    <rect x="652" y="600" width="288" height="66" rx="18"/>
+    <rect x="1044" y="600" width="288" height="66" rx="18"/>
   </g>
-  <g fill="#6B7280">
-    <rect x="188" y="586" width="210" height="18" rx="9"/>
-    <rect x="188" y="620" width="248" height="18" rx="9"/>
-    <rect x="646" y="586" width="210" height="18" rx="9"/>
-    <rect x="646" y="620" width="248" height="18" rx="9"/>
-    <rect x="1104" y="586" width="210" height="18" rx="9"/>
-    <rect x="1104" y="620" width="248" height="18" rx="9"/>
+  <g fill="#8B5CF6">
+    <rect x="652" y="510" width="152" height="16" rx="8"/>
+    <rect x="1044" y="510" width="152" height="16" rx="8"/>
+    <rect x="652" y="686" width="152" height="16" rx="8"/>
+    <rect x="1044" y="686" width="152" height="16" rx="8"/>
   </g>
-  <text x="148" y="782" fill="#581C87" font-family="Arial, sans-serif" font-size="52" font-weight="700">Blog com grid de artigos</text>
+  <text x="128" y="786" fill="#4C1D95" font-family="Arial, sans-serif" font-size="52" font-weight="700">Blog com destaque editorial</text>
+  <defs>
+    <linearGradient id="blogBg" x1="56" y1="56" x2="1544" y2="844" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#EDE9FE"/>
+    </linearGradient>
+  </defs>
 </svg>

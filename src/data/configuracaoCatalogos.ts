@@ -140,19 +140,14 @@ export const EXTRAS_INTEGRACOES_TEXTOS: EntradaTextoOpcao<ExtraIntegracaoId>[] =
     descricao: 'Integracao completa para monitorar o comportamento dos visitantes, saber de onde vem e quais paginas acessam.'
   },
   {
-    id: 'meta_pixel',
-    titulo: 'Pixel Meta',
-    descricao: 'Essencial para rastrear conversoes, otimizar anuncios e criar publicos personalizados para campanhas no Facebook e Instagram.'
-  },
-  {
     id: 'agendamento',
     titulo: 'Sistema de Agendamento',
     descricao: 'Ferramenta integrada para que seus clientes marquem horarios, consultas ou reunioes diretamente pelo site.'
   },
   {
-    id: 'seo_avancado',
-    titulo: 'SEO Avancado',
-    descricao: 'Configuracao tecnica de palavras-chave, meta tags e sitemap para melhorar o posicionamento do seu site no Google.'
+    id: 'seo_essencial',
+    titulo: 'SEO essencial',
+    descricao: 'Configuracao basica de titulos, descricoes e estrutura tecnica inicial para ajudar seu site a ser encontrado no Google.'
   },
   {
     id: 'mapa',
@@ -186,51 +181,225 @@ export const ECOMMERCE_EXTRAS_TEXTOS: EntradaTextoOpcao<EcommerceExtraId>[] = [
 ];
 
 export const CATALOGO_TEXTOS_CATEGORIAS: EntradaTextoCategoria<CategoriaSecao>[] = [
-  { id: 'capa', nome: 'Capa', descricao: 'Primeira impressao do site, com mensagem principal, destaque da marca e chamada para a acao.' },
-  { id: 'sobre', nome: 'Sobre', descricao: 'Espaco para apresentar a empresa, contar sua historia e mostrar o que torna seu negocio diferente.' },
-  { id: 'servicos', nome: 'Servicos', descricao: 'Secao para explicar de forma clara os servicos, produtos ou solucoes que voce oferece.' },
-  { id: 'depoimentos', nome: 'Depoimentos', descricao: 'Bloco de prova social com avaliacoes e experiencias de clientes para gerar mais confianca.' },
-  { id: 'faq', nome: 'FAQ', descricao: 'Perguntas frequentes que ajudam a tirar duvidas, reduzir objecoes e facilitar a decisao do cliente.' },
-  { id: 'blog', nome: 'Blog', descricao: 'Area para publicar conteudos, fortalecer sua autoridade e atrair visitas pelo Google.' },
-  { id: 'formulario', nome: 'Formulario', descricao: 'Secao voltada para captacao de contatos, pedidos de orcamento, reservas ou mensagens.' },
-  { id: 'video', nome: 'Video', descricao: 'Espaco para destacar um video institucional, demonstrativo ou promocional da sua marca.' },
-  { id: 'galeria', nome: 'Galeria', descricao: 'Exibicao visual de fotos para apresentar projetos, produtos, ambiente ou resultados do negocio.' }
+  {
+    id: 'capa',
+    nome: 'Capa',
+    descricao: 'Secao para causar uma primeira impressao forte, destacar sua mensagem principal e incentivar o visitante a dar o proximo passo.'
+  },
+  {
+    id: 'sobre',
+    nome: 'Sobre',
+    descricao: 'Secao para apresentar sua empresa, contar sua historia e mostrar os diferenciais que tornam sua marca mais confiavel.'
+  },
+  {
+    id: 'servicos',
+    nome: 'Servicos',
+    descricao: 'Secao para explicar seus servicos, produtos ou solucoes de forma clara, ajudando o cliente a entender rapidamente o que voce oferece.'
+  },
+  {
+    id: 'cardapio_produtos',
+    nome: 'Cardapio de Produtos',
+    descricao: 'Secao para apresentar produtos, precos, promocoes ou itens de venda de forma visual, sem precisar de loja virtual completa.'
+  },
+  {
+    id: 'depoimentos',
+    nome: 'Depoimentos',
+    descricao: 'Secao para reunir avaliacoes, comentarios e experiencias de clientes, reforcando credibilidade e gerando mais confianca.'
+  },
+  {
+    id: 'faq',
+    nome: 'FAQ',
+    descricao: 'Secao para responder as perguntas mais frequentes, reduzir objecoes e facilitar a decisao do cliente.'
+  },
+  {
+    id: 'blog',
+    nome: 'Blog',
+    descricao: 'Secao para publicar conteudos, fortalecer sua autoridade e atrair novas visitas pelo Google de forma organica.'
+  },
+  {
+    id: 'formulario',
+    nome: 'Formulario',
+    descricao: 'Secao para captar contatos, pedidos de orcamento, reservas ou mensagens de forma pratica e organizada.'
+  },
+  {
+    id: 'video',
+    nome: 'Video',
+    descricao: 'Secao para destacar um video institucional, demonstrativo ou promocional, deixando sua apresentacao mais envolvente.'
+  },
+  {
+    id: 'galeria',
+    nome: 'Galeria',
+    descricao: 'Secao para mostrar fotos de produtos, projetos, ambiente ou resultados, valorizando visualmente o seu negocio.'
+  }
 ];
 
 export const CATALOGO_TEXTOS_MODELOS: EntradaTextoModelo<ModeloSecaoId>[] = [
-  { id: 'CapaModel1', nome: 'Capa com Destaque' },
-  { id: 'CapaModel2', nome: 'Capa com Chamada Central', descricao: 'Hero com foco em chamada principal, texto objetivo e acao direta para gerar mais cliques e contatos.' },
-  { id: 'CapaModel3', nome: 'Capa com Beneficios', descricao: 'Estrutura de abertura que combina chamada principal com lista de beneficios para apresentar valor logo no primeiro bloco.' },
-  { id: 'SobreModel1', nome: 'Sobre a Empresa' },
-  { id: 'SobreModel2', nome: 'Sobre com Diferenciais', descricao: 'Apresenta a historia da empresa junto com pontos fortes, autoridade e motivos para o cliente confiar na marca.' },
-  { id: 'SobreModel3', nome: 'Sobre em Linha do Tempo', descricao: 'Organiza a apresentacao da empresa em etapas ou marcos, ideal para contar evolucao, experiencia e conquistas.' },
-  { id: 'ServicosModel1', nome: 'Servicos - Modelo 1' },
-  { id: 'ServicosModel2', nome: 'Servicos - Modelo 2', descricao: 'Apresenta os servicos em um formato alternativo, com foco em leitura rapida e comparacao entre os destaques do negocio.' },
-  { id: 'ServicosModel3', nome: 'Servicos - Modelo 3', descricao: 'Mostra os servicos em blocos mais detalhados, com espaco para reforcar beneficios, diferencas e chamadas para acao.' },
-  { id: 'DepCarrossel', nome: 'Carrossel de Avaliacoes' },
-  { id: 'DepGoogle', nome: 'Avaliacoes do Google', descricao: 'Exibe comentarios com visual inspirado nas avaliacoes publicas, reforcando credibilidade e prova social.' },
-  { id: 'DepTradicional', nome: 'Depoimento em Destaque', descricao: 'Destaca um ou mais depoimentos em formato mais classico, valorizando a mensagem e a experiencia do cliente.' },
-  { id: 'FaqModel1', nome: 'Perguntas Frequentes (FAQ)' },
-  { id: 'FaqModel2', nome: 'FAQ em Blocos', descricao: 'Distribui perguntas e respostas em blocos mais destacados, facilitando a leitura e a escaneabilidade do conteudo.' },
-  { id: 'FaqModel3', nome: 'FAQ com Categorias', descricao: 'Organiza duvidas frequentes em grupos de assunto, ideal para negocios com objecoes e perguntas recorrentes mais variadas.' },
-  { id: 'BlogModel1', nome: 'Grid de Artigos do Blog' },
-  { id: 'BlogModel2', nome: 'Blog em Lista Editorial', descricao: 'Modelo com visual mais limpo e editorial, priorizando leitura, titulos e hierarquia de informacao.' },
-  { id: 'BlogModel3', nome: 'Blog com Artigo em Destaque', descricao: 'Estrutura que valoriza um conteudo principal no topo e apoia a navegacao para outros artigos relacionados.' },
-  { id: 'FormularioModel1', nome: 'Formulario de Contato/Reserva' },
-  { id: 'FormularioModel2', nome: 'Formulario Simplificado', descricao: 'Versao mais direta para captar mensagens e pedidos com poucos campos, favorecendo conversao rapida.' },
-  { id: 'FormularioModel3', nome: 'Formulario com Contexto', descricao: 'Modelo com espaco para reforcar orientacoes, beneficios e confianca antes do envio das informacoes.' },
-  { id: 'VideoModel1', nome: 'Video Institucional' },
-  { id: 'VideoModel2', nome: 'Video com Texto Lateral', descricao: 'Combina o video com uma coluna de apoio para reforcar mensagem, diferenciais e chamada para acao.' },
-  { id: 'VideoModel3', nome: 'Video com Beneficios', descricao: 'Destaca o conteudo em video junto com argumentos de venda, pontos fortes ou instrucoes para o visitante.' },
-  { id: 'GaleriaModel1', nome: 'Galeria de Fotos' }
-  ,{ id: 'GaleriaModel2', nome: 'Galeria em Mosaico', descricao: 'Distribui as imagens em um formato mais dinamico, ideal para destacar variedade visual e impacto estetico.' }
-  ,{ id: 'GaleriaModel3', nome: 'Galeria com Destaques', descricao: 'Organiza a galeria com foco em imagens principais e apoio visual complementar para valorizar projetos ou produtos.' }
+  {
+    id: 'CapaModel1',
+    nome: 'Capa Classica',
+    descricao: 'Mostra sua empresa logo na abertura do site, com mensagem principal, imagem de apoio e botao para incentivar o contato.'
+  },
+  {
+    id: 'CapaModel2',
+    nome: 'Capa Dividida',
+    descricao: 'Organiza texto e imagem lado a lado para apresentar sua proposta com mais clareza e transmitir um visual mais profissional.'
+  },
+  {
+    id: 'CapaModel3',
+    nome: 'Capa Premium com Destaques',
+    descricao: 'Cria uma abertura mais premium, usando destaques, numeros ou selos para reforcar valor e gerar impacto logo no primeiro olhar.'
+  },
+
+  {
+    id: 'SobreModel1',
+    nome: 'Sobre Classico',
+    descricao: 'Mostra quem voce e, o que faz e por que sua empresa existe, de forma direta, clara e facil de entender.'
+  },
+  {
+    id: 'SobreModel2',
+    nome: 'Sobre com Blocos Visuais',
+    descricao: 'Organiza sua apresentacao em blocos, icones ou cards para destacar diferenciais e deixar a leitura mais profissional.'
+  },
+  {
+    id: 'SobreModel3',
+    nome: 'Sobre Storytelling',
+    descricao: 'Conta a historia da sua empresa de forma mais envolvente, usando uma sequencia visual para transmitir experiencia e autoridade.'
+  },
+
+  {
+    id: 'ServicosModel1',
+    nome: 'Servicos em Lista',
+    descricao: 'Mostra seus servicos de forma simples e objetiva, ajudando o visitante a entender rapidamente o que voce oferece.'
+  },
+  {
+    id: 'ServicosModel2',
+    nome: 'Servicos em Cards',
+    descricao: 'Apresenta seus servicos em cards com icones e beneficios, deixando a apresentacao mais clara, bonita e atrativa.'
+  },
+  {
+    id: 'ServicosModel3',
+    nome: 'Servicos em Vitrine',
+    descricao: 'Cria uma vitrine mais comercial para destacar seus principais servicos e guiar o visitante para a acao.'
+  },
+
+  {
+    id: 'CardapioModel1',
+    nome: 'Cardapio em Lista',
+    descricao: 'Mostra seus produtos em uma lista limpa, com nome, descricao e preco, facilitando a consulta rapida pelo cliente.'
+  },
+  {
+    id: 'CardapioModel2',
+    nome: 'Cardapio em Cards',
+    descricao: 'Apresenta seus produtos em cards visuais com descricao, preco e destaque de contato, deixando o cardapio mais bonito e facil de vender.'
+  },
+  {
+    id: 'CardapioModel3',
+    nome: 'Cardapio Vitrine',
+    descricao: 'Cria um cardapio com aparencia mais premium, separando produtos por categorias e valorizando promocoes ou itens especiais.'
+  },
+
+  {
+    id: 'DepCarrossel',
+    nome: 'Depoimentos Simples',
+    descricao: 'Mostra comentarios de clientes de forma simples, ajudando a aumentar a confianca de quem visita o site.'
+  },
+  {
+    id: 'DepGoogle',
+    nome: 'Depoimentos em Cards Elegantes',
+    descricao: 'Apresenta avaliacoes em cards mais elegantes, reforcando credibilidade com um visual mais organizado e profissional.'
+  },
+  {
+    id: 'DepTradicional',
+    nome: 'Depoimento Principal com Apoios',
+    descricao: 'Cria mais destaque para a prova social, colocando um depoimento principal em evidencia e outros comentarios de apoio.'
+  },
+
+  {
+    id: 'FaqModel1',
+    nome: 'FAQ Limpo',
+    descricao: 'Responde as duvidas mais comuns de forma clara, ajudando o visitante a tomar decisoes com mais seguranca.'
+  },
+  {
+    id: 'FaqModel2',
+    nome: 'FAQ em Blocos',
+    descricao: 'Organiza as perguntas em blocos ou em formato abre-e-fecha, deixando a leitura mais limpa e profissional.'
+  },
+  {
+    id: 'FaqModel3',
+    nome: 'FAQ Organizado por Temas',
+    descricao: 'Separa as duvidas por temas, facilitando a navegacao e ajudando o cliente a encontrar respostas com mais rapidez.'
+  },
+
+  {
+    id: 'BlogModel1',
+    nome: 'Blog Simples',
+    descricao: 'Mostra seus conteudos, novidades ou artigos de forma simples, fortalecendo a presenca da marca no site.'
+  },
+  {
+    id: 'BlogModel2',
+    nome: 'Blog em Grade Visual',
+    descricao: 'Organiza os conteudos em uma grade visual com titulos e resumos, deixando o blog mais atrativo e facil de navegar.'
+  },
+  {
+    id: 'BlogModel3',
+    nome: 'Blog com Destaque Editorial',
+    descricao: 'Cria uma area editorial mais profissional, destacando um conteudo principal e apoiando com outros artigos menores.'
+  },
+
+  {
+    id: 'FormularioModel1',
+    nome: 'Contato Simples',
+    descricao: 'Facilita o contato do visitante por WhatsApp ou formulario simples, tornando mais rapido pedir orcamento ou tirar duvidas.'
+  },
+  {
+    id: 'FormularioModel2',
+    nome: 'Contato com Area de Apoio',
+    descricao: 'Acompanha o formulario com informacoes uteis, icones e orientacoes, deixando o contato mais claro e transmitindo mais confianca.'
+  },
+  {
+    id: 'FormularioModel3',
+    nome: 'Contato com Layout de Conversao',
+    descricao: 'Cria uma area de contato mais persuasiva, com beneficios, mensagens de confianca e chamada forte para incentivar a conversao.'
+  },
+
+  {
+    id: 'VideoModel1',
+    nome: 'Video Simples',
+    descricao: 'Mostra um video institucional, promocional ou demonstrativo de forma simples dentro do site.'
+  },
+  {
+    id: 'VideoModel2',
+    nome: 'Video com Texto de Apoio',
+    descricao: 'Combina o video com um texto de apoio, ajudando o visitante a entender melhor sua proposta, servico ou produto.'
+  },
+  {
+    id: 'VideoModel3',
+    nome: 'Video com Secao de Destaques',
+    descricao: 'Transforma o video em uma secao mais comercial, com beneficios, chamada para acao e destaques que ajudam na conversao.'
+  },
+
+  {
+    id: 'GaleriaModel1',
+    nome: 'Galeria em Grade',
+    descricao: 'Mostra fotos de produtos, ambiente, projetos ou resultados em uma grade simples e organizada.'
+  },
+  {
+    id: 'GaleriaModel2',
+    nome: 'Galeria em Mosaico',
+    descricao: 'Apresenta as imagens em um mosaico mais visual, criando uma experiencia mais bonita e valorizando melhor as fotos.'
+  },
+  {
+    id: 'GaleriaModel3',
+    nome: 'Galeria Portfolio',
+    descricao: 'Cria uma galeria com aparencia de portfolio, destacando imagens importantes e transmitindo mais profissionalismo para a marca.'
+  }
 ];
 
 export const CATALOGO_RELACAO_CATEGORIAS: EntradaRelacaoCategoria<CategoriaSecao, ModeloSecaoId>[] = [
   { id: 'capa', modelos: ['CapaModel1', 'CapaModel2', 'CapaModel3'] },
   { id: 'sobre', modelos: ['SobreModel1', 'SobreModel2', 'SobreModel3'] },
   { id: 'servicos', modelos: ['ServicosModel1', 'ServicosModel2', 'ServicosModel3'] },
+  { id: 'cardapio_produtos', modelos: ['CardapioModel1', 'CardapioModel2', 'CardapioModel3'] },
   { id: 'depoimentos', modelos: ['DepCarrossel', 'DepGoogle', 'DepTradicional'] },
   { id: 'faq', modelos: ['FaqModel1', 'FaqModel2', 'FaqModel3'] },
   { id: 'blog', modelos: ['BlogModel1', 'BlogModel2', 'BlogModel3'] },

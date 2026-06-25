@@ -11,6 +11,9 @@ export const CATALOGO_VISUAL_MODELOS: EntradaVisualModelo<ModeloSecaoId>[] = [
   { id: 'ServicosModel1', thumb: '⚙️', tipoPreview: 'imagem', alt: 'Preview em imagem do modelo 1 da secao de servicos', imagemId: 'ServicosModel1' },
   { id: 'ServicosModel2', thumb: '⚙️', tipoPreview: 'texto' },
   { id: 'ServicosModel3', thumb: '⚙️', tipoPreview: 'texto' },
+  { id: 'CardapioModel1', thumb: '🍽️', tipoPreview: 'imagem', alt: 'Preview em imagem da secao de cardapio de produtos', imagemId: 'CardapioModel1' },
+  { id: 'CardapioModel2', thumb: '🍽️', tipoPreview: 'texto' },
+  { id: 'CardapioModel3', thumb: '🍽️', tipoPreview: 'texto' },
   { id: 'DepCarrossel', thumb: '🎠', tipoPreview: 'imagem', alt: 'Preview em imagem do carrossel de avaliacoes', imagemId: 'DepCarrossel' },
   { id: 'DepGoogle', thumb: '🗺️', tipoPreview: 'texto' },
   { id: 'DepTradicional', thumb: '💬', tipoPreview: 'texto' },
@@ -26,7 +29,7 @@ export const CATALOGO_VISUAL_MODELOS: EntradaVisualModelo<ModeloSecaoId>[] = [
   { id: 'VideoModel1', thumb: '▶️', tipoPreview: 'imagem', alt: 'Preview em imagem da secao de video institucional', imagemId: 'VideoModel1' },
   { id: 'VideoModel2', thumb: '▶️', tipoPreview: 'texto' },
   { id: 'VideoModel3', thumb: '▶️', tipoPreview: 'texto' },
-  { id: 'GaleriaModel1', thumb: '📸', tipoPreview: 'imagem', alt: 'Preview em imagem da secao de galeria', imagemId: 'GaleriaModel1' }
-  ,{ id: 'GaleriaModel2', thumb: '📸', tipoPreview: 'texto' }
-  ,{ id: 'GaleriaModel3', thumb: '📸', tipoPreview: 'texto' }
+  { id: 'GaleriaModel1', thumb: '📸', tipoPreview: 'imagem', alt: 'Preview em imagem da secao de galeria', imagemId: 'GaleriaModel1' },
+  { id: 'GaleriaModel2', thumb: '📸', tipoPreview: 'texto' },
+  { id: 'GaleriaModel3', thumb: '📸', tipoPreview: 'texto' }
 ];

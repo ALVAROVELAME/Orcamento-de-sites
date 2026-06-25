@@ -6,6 +6,7 @@ export type CategoriaSecao =
   | 'capa'
   | 'sobre'
   | 'servicos'
+  | 'cardapio_produtos'
   | 'depoimentos'
   | 'faq'
   | 'blog'
@@ -26,6 +27,9 @@ export type ModeloSecaoId =
   | 'ServicosModel1'
   | 'ServicosModel2'
   | 'ServicosModel3'
+  | 'CardapioModel1'
+  | 'CardapioModel2'
+  | 'CardapioModel3'
   | 'DepCarrossel'
   | 'DepGoogle'
   | 'DepTradicional'
@@ -48,7 +52,7 @@ export type ModeloSecaoId =
 export type StatusLogoId = 'logo_pronto' | 'logo_imagem' | 'logo_criacao';
 export type EstiloMarcaId = 'moderna' | 'classica_seria' | 'divertida' | 'luxuosa' | 'minimalista';
 export type PaginaExtraId = 'sobre_nos' | 'privacidade' | 'termos_uso' | 'contato' | 'faq' | 'erro_404';
-export type ExtraIntegracaoId = 'whatsapp' | 'analytics' | 'meta_pixel' | 'agendamento' | 'seo_avancado' | 'mapa';
+export type ExtraIntegracaoId = 'whatsapp' | 'analytics' | 'agendamento' | 'seo_essencial' | 'mapa';
 export type EcommerceExtraId = 'pagamentos' | 'frete' | 'catalogo' | 'carrinho';
 export type FluxoPacote = 'padrao' | 'ecommerce';
 

@@ -57,7 +57,7 @@ export type {
 const PRECOS_PACOTES_ATIVOS_BASE: Record<Exclude<PacoteId, 'loja_pequena'>, number> = {
   cartao_3: 200,
   cartao_6: 400,
-  institucional: 1200
+  institucional: 700
 };
 
 // FUTURO: dados de e-commerce/loja pequena mantidos para atualizacao posterior.
@@ -85,21 +85,20 @@ const ESTILOS_MARCA_PRECOS = [
 ] as const;
 
 const PAGINAS_EXTRAS_PRECOS = [
-  { id: 'sobre_nos', preco: 250 },
-  { id: 'privacidade', preco: 120, incluidoNosPacotes: ['cartao_3', 'cartao_6', 'institucional', 'loja_pequena'] },
-  { id: 'termos_uso', preco: 120 },
-  { id: 'contato', preco: 180 },
-  { id: 'faq', preco: 140 },
-  { id: 'erro_404', preco: 90 }
+  { id: 'sobre_nos', preco: 150, incluidoNosPacotes: ['institucional', 'loja_pequena'] },
+  { id: 'privacidade', preco: 100, incluidoNosPacotes: ['cartao_3', 'cartao_6', 'institucional', 'loja_pequena'] },
+  { id: 'termos_uso', preco: 100 },
+  { id: 'contato', preco: 170, incluidoNosPacotes: ['institucional', 'loja_pequena'] },
+  { id: 'faq', preco: 150 },
+  { id: 'erro_404', preco: 80 }
 ] as const;
 
 const EXTRAS_INTEGRACOES_PRECOS = [
-  { id: 'whatsapp', preco: 80, incluidoNosPacotes: ['cartao_3', 'institucional'] },
-  { id: 'analytics', preco: 150 },
-  { id: 'meta_pixel', preco: 150 },
-  { id: 'agendamento', preco: 250 },
-  { id: 'seo_avancado', preco: 300 },
-  { id: 'mapa', preco: 60, incluidoNosPacotes: ['cartao_6'] }
+  { id: 'whatsapp', preco: 40, incluidoNosPacotes: ['cartao_3', 'institucional'] },
+  { id: 'analytics', preco: 90 },
+  { id: 'agendamento', preco: 150 },
+  { id: 'seo_essencial', preco: 180 },
+  { id: 'mapa', preco: 30, incluidoNosPacotes: ['cartao_6'] }
 ] as const;
 
 // FUTURO: dados de e-commerce/loja pequena mantidos para atualizacao posterior.
@@ -114,6 +113,7 @@ const PRECOS_CATEGORIAS_SECOES = [
   { id: 'capa', precoBase: 0 },
   { id: 'sobre', precoBase: 100 },
   { id: 'servicos', precoBase: 150 },
+  { id: 'cardapio_produtos', precoBase: 140 },
   { id: 'depoimentos', precoBase: 90 },
   { id: 'faq', precoBase: 70 },
   { id: 'blog', precoBase: 160 },
@@ -132,24 +132,27 @@ const PRECOS_MODELOS_SECOES_ENTRADAS = [
   { id: 'ServicosModel1', valor: 0 },
   { id: 'ServicosModel2', valor: 30 },
   { id: 'ServicosModel3', valor: 60 },
+  { id: 'CardapioModel1', valor: 10 },
+  { id: 'CardapioModel2', valor: 50 },
+  { id: 'CardapioModel3', valor: 90 },
   { id: 'DepCarrossel', valor: 0, incluidoNosPacotes: ['cartao_6'] },
   { id: 'DepGoogle', valor: 30, incluidoNosPacotes: ['cartao_6'] },
   { id: 'DepTradicional', valor: 60, incluidoNosPacotes: ['cartao_6'] },
-  { id: 'FaqModel1', valor: 70 },
-  { id: 'FaqModel2', valor: 100 },
-  { id: 'FaqModel3', valor: 130 },
-  { id: 'BlogModel1', valor: 160 },
-  { id: 'BlogModel2', valor: 190 },
-  { id: 'BlogModel3', valor: 220 },
-  { id: 'FormularioModel1', valor: 110, incluidoNosPacotes: ['institucional'] },
-  { id: 'FormularioModel2', valor: 140 },
-  { id: 'FormularioModel3', valor: 170 },
-  { id: 'VideoModel1', valor: 120 },
-  { id: 'VideoModel2', valor: 150 },
-  { id: 'VideoModel3', valor: 180 },
-  { id: 'GaleriaModel1', valor: 140 },
-  { id: 'GaleriaModel2', valor: 170 },
-  { id: 'GaleriaModel3', valor: 200 }
+  { id: 'FaqModel1', valor: 0 },
+  { id: 'FaqModel2', valor: 30 },
+  { id: 'FaqModel3', valor: 60 },
+  { id: 'BlogModel1', valor: 30 },
+  { id: 'BlogModel2', valor: 70 },
+  { id: 'BlogModel3', valor: 120 },
+  { id: 'FormularioModel1', valor: 10, incluidoNosPacotes: ['institucional'] },
+  { id: 'FormularioModel2', valor: 50 },
+  { id: 'FormularioModel3', valor: 90 },
+  { id: 'VideoModel1', valor: 10 },
+  { id: 'VideoModel2', valor: 40 },
+  { id: 'VideoModel3', valor: 80 },
+  { id: 'GaleriaModel1', valor: 10 },
+  { id: 'GaleriaModel2', valor: 40 },
+  { id: 'GaleriaModel3', valor: 80 }
 ] as const;
 
 function criarMapaPorId<TId extends string, TEntrada extends { id: TId }, TValor>(
