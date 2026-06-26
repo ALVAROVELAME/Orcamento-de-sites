@@ -11,6 +11,7 @@ export const FORMULARIO_CONFIG = {
   etapa1: {
     titulo: 'Escolha seu plano',
     descricao: 'Secoes sao blocos dentro do site. Paginas sao telas separadas, como Contato ou Sobre Nos.',
+    descricaoExtra: 'Agora escolha o pacote que combina com o que voce precisa.',
     textoBotaoSelecionar: 'Escolher plano',
     prefixoLimiteSecoes: 'Este plano inclui:',
     sufixoLimiteSecoes: 'secoes principais'
