@@ -186,70 +186,70 @@ export const CATALOGO_TEXTOS_CATEGORIAS: EntradaTextoCategoria<CategoriaSecao>[]
   {
     id: 'capa',
     nome: 'Capa',
-    descricao: 'Secao para causar uma primeira impressao forte, destacar sua mensagem principal e incentivar o visitante a dar o proximo passo.'
+    descricao: 'Abertura principal do site, feita para apresentar sua empresa com impacto, destacar sua mensagem mais importante e levar o visitante para contato, orcamento ou compra.'
   },
   {
     id: 'cardapio_produtos',
     nome: 'Cardapio de Produtos',
-    descricao: 'Secao para apresentar produtos, precos, promocoes ou itens de venda de forma visual, sem precisar de loja virtual completa.'
+    descricao: 'Mostra produtos, servicos, precos ou promocoes de forma visual e organizada, ideal para vender sem precisar de uma loja virtual completa.'
   },
   {
     id: 'sobre',
-    nome: 'Sobre',
-    descricao: 'Secao para apresentar sua empresa, contar sua historia e mostrar os diferenciais que tornam sua marca mais confiavel.'
+    nome: 'Sobre a Empresa',
+    descricao: 'Apresenta sua historia, valores e diferenciais para aproximar o cliente da marca e aumentar a confianca no seu negocio.'
   },
   {
     id: 'servicos',
     nome: 'Servicos',
-    descricao: 'Secao para explicar seus servicos, produtos ou solucoes de forma clara, ajudando o cliente a entender rapidamente o que voce oferece.'
+    descricao: 'Explica o que sua empresa oferece de forma clara, ajudando o cliente a entender seus servicos e escolher a melhor solucao.'
   },
   {
     id: 'depoimentos',
     nome: 'Depoimentos',
-    descricao: 'Secao para reunir avaliacoes, comentarios e experiencias de clientes, reforcando credibilidade e gerando mais confianca.'
+    descricao: 'Exibe avaliacoes e experiencias de clientes para reforcar credibilidade, provar qualidade e aumentar a seguranca de quem esta visitando.'
   },
   {
     id: 'faq',
-    nome: 'FAQ',
-    descricao: 'Secao para responder as perguntas mais frequentes, reduzir objecoes e facilitar a decisao do cliente.'
+    nome: 'Perguntas Frequentes',
+    descricao: 'Responde duvidas comuns antes do contato, reduz objeccoes e ajuda o cliente a decidir com mais rapidez e confianca.'
   },
   {
     id: 'blog',
     nome: 'Blog',
-    descricao: 'Secao para publicar conteudos, fortalecer sua autoridade e atrair novas visitas pelo Google de forma organica.'
+    descricao: 'Publica conteudos para educar clientes, fortalecer autoridade da marca e atrair novas visitas pelo Google de forma organica.'
   },
   {
     id: 'formulario',
-    nome: 'Formulario',
-    descricao: 'Secao para captar contatos, pedidos de orcamento, reservas ou mensagens de forma pratica e organizada.'
+    nome: 'Formulario de Contato',
+    descricao: 'Facilita o envio de mensagens, pedidos de orcamento, reservas ou solicitacoes, organizando melhor o atendimento ao cliente.'
   },
   {
     id: 'video',
     nome: 'Video',
-    descricao: 'Secao para destacar um video institucional, demonstrativo ou promocional, deixando sua apresentacao mais envolvente.'
+    descricao: 'Destaca um video institucional, demonstrativo ou promocional para apresentar sua empresa de forma mais envolvente e convincente.'
   },
   {
     id: 'galeria',
     nome: 'Galeria',
-    descricao: 'Secao para mostrar fotos de produtos, projetos, ambiente ou resultados, valorizando visualmente o seu negocio.'
+    descricao: 'Mostra fotos de produtos, projetos, ambiente ou resultados para valorizar visualmente o negocio e despertar mais interesse.'
   }
 ];
 
 export const CATALOGO_TEXTOS_MODELOS: EntradaTextoModelo<ModeloSecaoId>[] = [
   {
     id: 'CapaModel1',
-    nome: 'Capa Classica',
-    descricao: 'Mostra sua empresa logo na abertura do site, com mensagem principal, imagem de apoio e botao para incentivar o contato.'
+    nome: 'Capa Essencial de Apresentacao',
+    descricao: 'Apresenta sua empresa de forma clara e objetiva logo na abertura do site, com titulo principal, texto curto, imagem ou fundo simples e botao de contato. Usa uma estrutura limpa, responsiva e facil de entender, ideal para quem precisa de uma presenca profissional direta.'
   },
   {
     id: 'CapaModel2',
-    nome: 'Capa Dividida',
-    descricao: 'Organiza texto e imagem lado a lado para apresentar sua proposta com mais clareza e transmitir um visual mais profissional.'
+    nome: 'Capa Profissional Animada',
+    descricao: 'Cria uma abertura mais moderna e visualmente trabalhada, combinando texto, imagem em destaque, botoes, fundo personalizado, formas decorativas e animacoes suaves. Exige mais composicao visual e melhora a primeira impressao do visitante, transmitindo mais profissionalismo e confianca.'
   },
   {
     id: 'CapaModel3',
-    nome: 'Capa Premium com Destaques',
-    descricao: 'Cria uma abertura mais premium, usando destaques, numeros ou selos para reforcar valor e gerar impacto logo no primeiro olhar.'
+    nome: 'Capa Premium de Conversao',
+    descricao: 'Desenvolve uma abertura de alto impacto, com elementos estrategicos como cards de beneficios, numeros, selos de confianca, prova de valor, microinteracoes e animacoes mais elaboradas. Ideal para aumentar a percepcao de valor da marca e incentivar o visitante a pedir orcamento, chamar no WhatsApp ou comprar.'
   },
 
   {

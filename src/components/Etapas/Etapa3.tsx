@@ -310,8 +310,7 @@ export function Etapa3({
               <div className="flex flex-col gap-6 w-full mt-6 xl:max-w-5xl xl:mx-auto">
                 {TODAS_CATEGORIAS.map((categoria) => {
                   const categoriaConfig = obterCategoriaSecaoConfig(categoria);
-                  const modelosDaCategoria = BIBLIOTECA_SECOES[categoria];
-                  const primeiroModelo = modelosDaCategoria[0];
+                  const primeiroModelo = BIBLIOTECA_SECOES[categoria][0];
                   const isSelected = categoriasSelecionadas.includes(categoria);
 
                   return (
@@ -343,7 +342,22 @@ export function Etapa3({
                     >
                       <div className="p-0 bg-white w-full overflow-x-auto">
                         <div className="w-full bg-white pointer-events-none">
-                          <PreviewSecao modelo={primeiroModelo} fallbackText={config.textoPreviewIndisponivel} />
+                          <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6 bg-slate-50 border-t border-slate-100 text-left">
+                            <p className="text-base md:text-lg text-slate-700 leading-relaxed max-w-3xl">
+                              {categoriaConfig.descricao}
+                            </p>
+                          </div>
+                          {primeiroModelo?.previewImagemSrc ? (
+                            <div className="px-5 pb-6 md:px-6 md:pb-8 bg-slate-50">
+                              <img
+                                src={primeiroModelo.previewImagemSrc}
+                                alt={primeiroModelo.previewImagemAlt ?? primeiroModelo.nome}
+                                className="block w-full max-w-4xl mx-auto h-auto rounded-md border border-slate-200 shadow-sm"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </SelectableAccordion>
