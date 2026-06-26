@@ -86,7 +86,7 @@ export function SelectableAccordion({
         <div className="flex items-center gap-4 min-w-0">
           <div
             className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-xl font-black text-xl transition-colors duration-300 shrink-0 ${
-              isExpanded ? `${styles.activeBg} text-white` : `bg-slate-100 text-slate-500 ${styles.hoverBg} ${styles.hoverText}`
+              isExpanded ? `${styles.activeBg} text-white` : `bg-slate-100 text-slate-700 ${styles.hoverBg} ${styles.hoverText}`
             }`}
           >
             {isExpanded ? '-' : '+'}
@@ -96,11 +96,11 @@ export function SelectableAccordion({
             <span className={`font-bold text-slate-800 text-lg md:text-xl tracking-tight ${titleClassName}`}>{titulo}</span>
             {metaInfo ? (
               <div className="flex flex-wrap items-center gap-2">
-                <span className={`inline-flex items-center w-fit px-3 py-1 rounded-full text-sm md:text-base font-black border border-current/10 ${styles.metaText} ${styles.metaBg}`}>
+                <span className={`inline-flex items-center w-fit px-3 py-1 rounded-full text-base font-black border border-current/10 ${styles.metaText} ${styles.metaBg}`}>
                   {metaInfo.texto}
                 </span>
                 {metaInfo.precoOriginal ? (
-                  <span className="text-sm md:text-base font-black text-rose-600 line-through decoration-2 decoration-rose-600">
+                  <span className="text-base font-black text-rose-700 line-through decoration-2 decoration-rose-700">
                     {metaInfo.precoOriginal}
                   </span>
                 ) : null}

@@ -11,6 +11,7 @@ export function Etapa1({ avancarParaEtapa2 }: Etapa1Props) {
     <PlanSelectionStep
       titulo={FORMULARIO_CONFIG.etapa1.titulo}
       descricao={FORMULARIO_CONFIG.etapa1.descricao}
+      descricaoExtra={FORMULARIO_CONFIG.etapa1.descricaoExtra}
       textoBotaoSelecionar={FORMULARIO_CONFIG.etapa1.textoBotaoSelecionar}
       prefixoLimiteSecoes={FORMULARIO_CONFIG.etapa1.prefixoLimiteSecoes}
       sufixoLimiteSecoes={FORMULARIO_CONFIG.etapa1.sufixoLimiteSecoes}

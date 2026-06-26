@@ -63,7 +63,7 @@ const AvaliacaoGoogle = ({
                 </span>
               ))}
             </div>
-            <span className="text-xs text-slate-500 whitespace-nowrap">• {data}</span>
+            <span className="text-sm text-slate-600 whitespace-nowrap">• {data}</span>
           </div>
         </div>
       </div>
@@ -130,7 +130,7 @@ export function DepoimentosGoogleMaps() {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-slate-500 text-sm flex items-center justify-center gap-2">
+          <p className="text-slate-700 text-base flex items-center justify-center gap-2">
             Baseado em <span className="font-semibold text-slate-700">1.247 avaliações</span>
             <span className="text-amber-400">★★★★★</span> 4.98
           </p>

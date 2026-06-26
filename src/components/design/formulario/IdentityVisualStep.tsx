@@ -81,7 +81,7 @@ export function IdentityVisualStep({
 
           <fieldset className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
             <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">{config.hospedagemDominio.titulo}</legend>
-            <p className="text-sm text-slate-600 clear-both">{config.hospedagemDominio.descricao}</p>
+            <p className="text-base text-slate-700 clear-both leading-relaxed">{config.hospedagemDominio.descricao}</p>
 
             <div className="space-y-4 pt-2 clear-both">
               {config.hospedagemDominio.opcoes.map((opcao) => {
@@ -176,7 +176,7 @@ export function IdentityVisualStep({
                             className="w-16 h-16 md:w-20 md:h-20 rounded-2xl cursor-pointer border-0 p-0 shadow-md transition-transform md:group-hover:scale-105"
                           />
                         </div>
-                        <span className="text-xs md:text-sm text-pink-900 font-mono font-bold uppercase">
+                        <span className="text-sm text-pink-950 font-mono font-bold uppercase">
                           {infoSite.cores?.[index] || config.paletaCores.corPadrao}
                         </span>
                       </div>

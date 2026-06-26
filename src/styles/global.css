@@ -5,12 +5,35 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 17px;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   @apply bg-[#FDFCFB] text-slate-900 antialiased;
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* Garante que nada que ultrapasse a largura seja visível */
   width: 100%;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  @apply outline-none ring-4 ring-indigo-600/25 ring-offset-2 ring-offset-[#FDFCFB];
+}
+
+::placeholder {
+  @apply text-slate-500;
 }
 
 /* 2. Utilitário para garantir espaçamento mínimo (Respiro Lateral) */

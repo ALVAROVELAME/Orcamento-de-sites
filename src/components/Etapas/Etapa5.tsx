@@ -22,6 +22,10 @@ export function Etapa5({
       campo="extras_integracoes"
       titulo={FORMULARIO_CONFIG.etapa5.titulo}
       descricao={FORMULARIO_CONFIG.etapa5.descricao}
+      textoAcaoAntesImagem={FORMULARIO_CONFIG.etapa5.textoAcaoAntesImagem}
+      imagemAcaoSrc={FORMULARIO_CONFIG.etapa5.imagemAcaoSrc}
+      imagemAcaoAlt={FORMULARIO_CONFIG.etapa5.imagemAcaoAlt}
+      textoAcaoDepoisImagem={FORMULARIO_CONFIG.etapa5.textoAcaoDepoisImagem}
       opcoes={FORMULARIO_CONFIG.etapa5.opcoes}
       infoSite={infoSite}
       setInfoSite={setInfoSite}

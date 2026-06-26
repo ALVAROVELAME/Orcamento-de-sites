@@ -38,7 +38,7 @@ export function ServicosModel2() {
 
       {/* Header Alinhado e Sofisticado */}
       <div className="mb-10 flex flex-col items-start gap-2 relative z-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-[11px] font-semibold tracking-wider text-orange-600 uppercase">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-xs font-semibold tracking-wider text-orange-700 uppercase">
           <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
           Diferenciais
         </div>
@@ -69,14 +69,14 @@ export function ServicosModel2() {
               </h3>
 
               {/* Descrição com melhor legibilidade e fluidez */}
-              <p className="text-xs text-stone-500 font-medium leading-relaxed mt-2.5 max-w-sm">
+              <p className="text-sm text-stone-700 font-medium leading-relaxed mt-2.5 max-w-sm">
                 {item.desc}
               </p>
             </div>
 
             {/* Ícone de ação elegante tipo "SaaS" que surge no hover */}
             <div className="relative z-10 flex justify-end mt-6">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 text-stone-400 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 text-stone-600 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </div>
             </div>

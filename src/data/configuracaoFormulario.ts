@@ -9,34 +9,34 @@ import type { InfoSite } from './tipos';
 
 export const FORMULARIO_CONFIG = {
   etapa1: {
-    titulo: 'Escolha o plano ideal',
-    descricao: 'Selecione o pacote que melhor atende ao seu projeto para liberarmos as secoes no construtor.',
-    textoBotaoSelecionar: 'Selecionar',
-    prefixoLimiteSecoes: 'Limite:',
-    sufixoLimiteSecoes: 'secoes basicas'
+    titulo: 'Escolha seu plano',
+    descricao: 'Secoes sao blocos dentro do site. Paginas sao telas separadas, como Contato ou Sobre Nos.',
+    textoBotaoSelecionar: 'Escolher plano',
+    prefixoLimiteSecoes: 'Este plano inclui:',
+    sufixoLimiteSecoes: 'secoes principais'
   },
   etapa2: {
     titulo: 'Identidade Visual',
-    descricao: 'Defina o nome da marca, as cores base e as preferencias visuais do seu novo site.',
+    descricao: 'Agora preencha as informacoes principais da sua marca para montarmos seu site do seu jeito.',
     campoNome: {
-      rotulo: 'Nome do Site / Empresa',
+      rotulo: 'Nome do site ou da empresa',
       placeholder: 'Ex: Tech Solucoes'
     },
     hospedagemDominio: {
-      titulo: 'Hospedagem e Dominio *',
-      descricao: 'Informe se voce ja possui hospedagem e dominio. Caso nao tenha, adicionaremos o custo de configuracao/contratacao no orcamento para que o site possa ser publicado.',
+      titulo: 'Hospedagem e dominio *',
+      descricao: 'Informe se voce ja tem hospedagem e dominio. Se ainda nao tiver, podemos incluir isso no seu orcamento.',
       opcoes: [
         { id: 'tem', titulo: 'Ja tenho hospedagem e dominio' },
-        { id: 'nao_tem', titulo: 'Nao tenho, quero incluir hospedagem/dominio no orcamento' }
+        { id: 'nao_tem', titulo: 'Ainda nao tenho e quero incluir no orcamento' }
       ]
     },
     logotipo: {
-      titulo: 'Sobre o Logotipo *',
+      titulo: 'Sobre o logotipo *',
       opcoes: STATUS_LOGO_OPCOES,
       idQueLiberaDetalhes: 'logo_criacao'
     },
     criacaoLogo: {
-      titulo: 'Como voce quer que a marca seja percebida?',
+      titulo: 'Como voce quer que sua marca seja vista pelas pessoas?',
       opcoes: ESTILOS_MARCA_OPCOES
     },
     paletaCores: {
@@ -49,7 +49,11 @@ export const FORMULARIO_CONFIG = {
   etapa3: {
     selecaoInicial: {
       titulo: 'Selecione as secoes desejadas',
-      descricao: 'Escolha os blocos de conteudo que farao parte da estrutura do seu site. Clique para ver uma previa de cada categoria.',
+      descricao: 'Escolha os blocos de conteudo que farao parte da estrutura do seu site.',
+      textoAcaoAntesImagem: 'Clique no Botão ',
+      imagemAcaoSrc: '/mais.webp',
+      imagemAcaoAlt: 'Simbolo de mais para abrir a previa',
+      textoAcaoDepoisImagem: 'ou na opcao desejada.',
       contadorSelecionadas: 'selecionadas'
     },
     escolhaModelos: {
@@ -72,24 +76,36 @@ export const FORMULARIO_CONFIG = {
     textoModeloIndisponivel: 'Modelo indisponivel'
   },
   etapa4: {
-    titulo: 'Paginas Adicionais',
-    descricao: 'Selecione quais paginas extras voce deseja incluir no seu projeto. Clique no + para ler os detalhes de cada uma.',
+    titulo: 'Paginas adicionais',
+    descricao: 'Escolha as paginas extras que voce quer adicionar ao seu site.',
+    textoAcaoAntesImagem: 'Clique no Botão ',
+    imagemAcaoSrc: '/mais.webp',
+    imagemAcaoAlt: 'Simbolo de mais para abrir os detalhes',
+    textoAcaoDepoisImagem: 'ou na opcao desejada.',
     contadorSelecionadas: 'selecionadas',
-    textoProximo: 'Proximo passo',
+    textoProximo: 'Continuar',
     opcoes: PAGINAS_EXTRAS_OPCOES
   },
   etapa5: {
-    titulo: 'Extras e Integracoes',
-    descricao: 'Selecione funcionalidades adicionais para potencializar o seu site.',
+    titulo: 'Extras e integracoes',
+    descricao: 'Escolha recursos extras para deixar seu site mais completo e mais util para seus clientes.',
+    textoAcaoAntesImagem: 'Clique no Botão ',
+    imagemAcaoSrc: '/mais.webp',
+    imagemAcaoAlt: 'Simbolo de mais para abrir os detalhes',
+    textoAcaoDepoisImagem: 'ou na opcao desejada.',
     opcoes: EXTRAS_INTEGRACOES_OPCOES,
-    textoProximoPadrao: 'Concluir Projeto',
-    textoProximoEcommerce: 'Proximo Passo'
+    textoProximoPadrao: 'Concluir projeto',
+    textoProximoEcommerce: 'Continuar'
   },
   etapa6: {
-    titulo: 'Configuracoes de E-commerce',
-    descricao: 'Personalize as funcionalidades da sua loja virtual para vender online.',
+    titulo: 'Configuracoes da loja virtual',
+    descricao: 'Escolha como sua loja virtual vai funcionar para vender seus produtos pela internet.',
+    textoAcaoAntesImagem: 'Clique no Botão ',
+    imagemAcaoSrc: '/mais.webp',
+    imagemAcaoAlt: 'Simbolo de mais para abrir os detalhes',
+    textoAcaoDepoisImagem: 'ou na opcao desejada.',
     opcoes: ECOMMERCE_EXTRAS_OPCOES,
-    textoProximo: 'Finalizar e Enviar Projeto'
+    textoProximo: 'Finalizar e enviar projeto'
   }
 } as const;
 

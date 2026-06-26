@@ -13,6 +13,10 @@ interface OptionItem {
 interface OptionSelectionStepProps {
   titulo: string;
   descricao: string;
+  textoAcaoAntesImagem?: string;
+  imagemAcaoSrc?: string;
+  imagemAcaoAlt?: string;
+  textoAcaoDepoisImagem?: string;
   opcoes: readonly OptionItem[];
   selecionados: string[];
   expandido: string | null;
@@ -29,6 +33,10 @@ interface OptionSelectionStepProps {
 export function OptionSelectionStep({
   titulo,
   descricao,
+  textoAcaoAntesImagem,
+  imagemAcaoSrc,
+  imagemAcaoAlt,
+  textoAcaoDepoisImagem,
   opcoes,
   selecionados,
   expandido,
@@ -51,12 +59,25 @@ export function OptionSelectionStep({
             <div className="mb-6 pb-4 border-b border-slate-100 flex justify-between items-end gap-4">
               <div>
                 <h3 className="text-2xl md:text-3xl font-black text-slate-800">{titulo}</h3>
-                <p className="text-sm md:text-base text-slate-500 mt-1">{descricao}</p>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-base md:text-lg text-slate-700 leading-relaxed">
+                  <span>{descricao}</span>
+                  {textoAcaoAntesImagem ? <span className="font-bold text-slate-900">{textoAcaoAntesImagem}</span> : null}
+                  {imagemAcaoSrc ? (
+                    <img
+                      src={imagemAcaoSrc}
+                      alt={imagemAcaoAlt ?? 'Imagem de ajuda'}
+                      className="inline-block h-12 w-12 md:h-14 md:w-14 rounded-sm align-middle"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : null}
+                  {textoAcaoDepoisImagem ? <span className="font-bold text-slate-900">{textoAcaoDepoisImagem}</span> : null}
+                </div>
               </div>
 
               {contadorSelecionadas ? (
                 <div className="text-right hidden sm:block">
-                  <span className="text-sm font-bold text-indigo-600">
+                  <span className="text-base font-bold text-indigo-700">
                     {selecionados.length} {contadorSelecionadas}
                   </span>
                 </div>

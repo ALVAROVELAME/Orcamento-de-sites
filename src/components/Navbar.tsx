@@ -47,7 +47,9 @@ export function Navbar() {
           <button 
             onClick={() => setIsOpen(!isOpen)}
             className="p-2 text-slate-700 hover:text-blue-600 focus:outline-none rounded-xl hover:bg-slate-50"
-            aria-label="Toggle Menu"
+            aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={isOpen}
+            aria-controls="menu-mobile-principal"
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {isOpen ? (
@@ -61,7 +63,10 @@ export function Navbar() {
       </div>
 
       {/* Menu Gaveta Mobile */}
-      <div className={`md:hidden transition-all duration-300 ease-in-out border-t border-red-50 bg-white ${isOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+      <div
+        id="menu-mobile-principal"
+        className={`md:hidden transition-all duration-300 ease-in-out border-t border-red-50 bg-white ${isOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
+      >
         <div className="px-4 pt-2 pb-4 space-y-3 shadow-inner">
           <button
             type="button"

@@ -17,6 +17,10 @@ interface EtapaSelecaoOpcoesProps {
   campo: CampoSelecaoInfoSite;
   titulo: string;
   descricao: string;
+  textoAcaoAntesImagem?: string;
+  imagemAcaoSrc?: string;
+  imagemAcaoAlt?: string;
+  textoAcaoDepoisImagem?: string;
   opcoes: readonly OpcaoSelecao[];
   infoSite: InfoSite;
   setInfoSite: (info: InfoSite) => void;
@@ -32,6 +36,10 @@ export function EtapaSelecaoOpcoes({
   campo,
   titulo,
   descricao,
+  textoAcaoAntesImagem,
+  imagemAcaoSrc,
+  imagemAcaoAlt,
+  textoAcaoDepoisImagem,
   opcoes,
   infoSite,
   setInfoSite,
@@ -58,6 +66,10 @@ export function EtapaSelecaoOpcoes({
     <OptionSelectionStep
       titulo={titulo}
       descricao={descricao}
+      textoAcaoAntesImagem={textoAcaoAntesImagem}
+      imagemAcaoSrc={imagemAcaoSrc}
+      imagemAcaoAlt={imagemAcaoAlt}
+      textoAcaoDepoisImagem={textoAcaoDepoisImagem}
       opcoes={opcoes}
       selecionados={[...selecionados]}
       expandido={itemExpandido}

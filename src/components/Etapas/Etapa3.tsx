@@ -236,7 +236,7 @@ export function Etapa3({
           </div>
           <div className="flex-1">
             <h4 className="font-bold text-md mb-1">{config.avisoLimite.titulo}</h4>
-            <p className="text-sm text-rose-100">{avisoLimiteDescricao}</p>
+            <p className="text-base text-rose-50">{avisoLimiteDescricao}</p>
           </div>
           <button
             onClick={() => setMostrarAvisoLimite(false)}
@@ -264,7 +264,7 @@ export function Etapa3({
           </div>
           <div className="flex-1">
             <h4 className="font-bold text-md mb-1">{config.avisoSecoesRestantes.titulo}</h4>
-            <p className="text-sm text-indigo-100">{avisoSecoesRestantesDescricao}</p>
+            <p className="text-base text-indigo-50">{avisoSecoesRestantesDescricao}</p>
           </div>
           <button
             onClick={() => setMostrarAvisoSeccoesRestantes(false)}
@@ -286,13 +286,24 @@ export function Etapa3({
               <div className="mb-6 pb-4 border-b border-slate-100 flex justify-between items-end gap-4">
                 <div>
                   <h3 className="text-2xl md:text-3xl font-black text-slate-800">{config.selecaoInicial.titulo}</h3>
-                  <p className="text-sm text-slate-500 mt-1">{config.selecaoInicial.descricao}</p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-base text-slate-700 leading-relaxed">
+                    <span>{config.selecaoInicial.descricao}</span>
+                    <span className="font-bold text-slate-900">{config.selecaoInicial.textoAcaoAntesImagem}</span>
+                    <img
+                      src={config.selecaoInicial.imagemAcaoSrc}
+                      alt={config.selecaoInicial.imagemAcaoAlt}
+                      className="inline-block h-12 w-12 md:h-14 md:w-14 rounded-sm align-middle"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span className="font-bold text-slate-900">{config.selecaoInicial.textoAcaoDepoisImagem}</span>
+                  </div>
                 </div>
                 <div className="text-right">
                   <span className={`text-sm font-bold ${categoriasSelecionadas.length >= limiteDoPlano ? 'text-rose-500' : 'text-indigo-600'}`}>
                     {categoriasSelecionadas.length} / {limiteDoPlano}
                   </span>
-                  <p className="text-xs text-slate-400">{config.selecaoInicial.contadorSelecionadas}</p>
+                  <p className="text-sm text-slate-600">{config.selecaoInicial.contadorSelecionadas}</p>
                 </div>
               </div>
 
@@ -385,7 +396,7 @@ export function Etapa3({
             <div className="w-full mt-2 xl:max-w-5xl xl:mx-auto">
               <div className="max-w-7xl xl:max-w-5xl mx-auto px-4 flex flex-col mb-6 pb-4 border-b border-slate-100 gap-1">
                 <h3 className="text-2xl font-black text-slate-800">{config.resumo.titulo}</h3>
-                {infoSite.nome && <p className="text-sm text-indigo-600 font-semibold">{config.resumo.prefixoProjeto} {infoSite.nome}</p>}
+                {infoSite.nome && <p className="text-base text-indigo-700 font-semibold">{config.resumo.prefixoProjeto} {infoSite.nome}</p>}
               </div>
 
               <div className="flex flex-col gap-4 w-full">

@@ -22,7 +22,7 @@ export function MapaModel1() {
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
             Nossa Localização
           </h2>
-          <p className="text-lg text-slate-500">
+          <p className="text-lg text-slate-700">
             Fácil acesso e excelente infraestrutura para receber você.
           </p>
         </div>
@@ -39,7 +39,7 @@ export function MapaModel1() {
               title="Mapa interativo mostrando a localização da empresa"
             />
           ) : (
-            <div className="w-full h-full bg-slate-100 animate-pulse flex items-center justify-center text-slate-400">
+            <div className="w-full h-full bg-slate-100 animate-pulse flex items-center justify-center text-slate-600">
               Carregando mapa...
             </div>
           )}

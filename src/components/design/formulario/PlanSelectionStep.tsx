@@ -4,6 +4,7 @@ import { obterTotalSecoesComCapa } from '../../../data/precos';
 interface PlanSelectionStepProps {
   titulo: string;
   descricao: string;
+  descricaoExtra?: string;
   textoBotaoSelecionar: string;
   prefixoLimiteSecoes: string;
   sufixoLimiteSecoes: string;
@@ -16,6 +17,7 @@ const formatarMoeda = (valor: number) => valor.toLocaleString('pt-BR', { style: 
 export function PlanSelectionStep({
   titulo,
   descricao,
+  descricaoExtra,
   textoBotaoSelecionar,
   prefixoLimiteSecoes,
   sufixoLimiteSecoes,
@@ -30,9 +32,14 @@ export function PlanSelectionStep({
       <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-3 md:mb-4 text-center tracking-tight">
         {titulo}
       </h1>
-      <p className="text-base md:text-lg text-slate-500 mb-8 md:mb-12 text-center max-w-2xl font-medium">
+      <p className="text-lg md:text-xl text-slate-700 mb-8 md:mb-12 text-center max-w-2xl font-medium">
         {descricao}
       </p>
+      {descricaoExtra ? (
+        <p className="-mt-4 mb-8 md:mb-12 text-base md:text-lg text-slate-600 text-center max-w-2xl font-medium leading-relaxed">
+          {descricaoExtra}
+        </p>
+      ) : null}
 
       <div className={`grid grid-cols-1 gap-6 md:gap-8 w-full ${gridClassName}`}>
         {pacotes.map((pacote) => (
@@ -47,11 +54,11 @@ export function PlanSelectionStep({
 
               <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{pacote.nome}</h3>
 
-              <p className="text-sm text-slate-500 mb-6 font-medium">{pacote.descricao}</p>
+              <p className="text-base text-slate-700 mb-6 font-medium leading-relaxed">{pacote.descricao}</p>
 
               <ul className="mb-8 space-y-3 md:space-y-4">
                 {pacote.detalhes.map((detalhe, index) => (
-                  <li key={`${pacote.id}-${index}`} className="flex items-center text-sm text-slate-600 font-medium">
+                  <li key={`${pacote.id}-${index}`} className="flex items-center text-base text-slate-700 font-medium">
                     <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3 shrink-0">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -66,7 +73,7 @@ export function PlanSelectionStep({
             <div>
               <p className="text-3xl md:text-4xl font-black text-indigo-600 mb-2">{formatarMoeda(pacote.precoBase)}</p>
 
-              <p className="text-xs text-slate-400 font-bold uppercase tracking-wider mb-6">
+              <p className="text-sm text-slate-600 font-bold uppercase tracking-wider mb-6 leading-relaxed">
                 {prefixoLimiteSecoes} {pacote.limiteSecoes} {sufixoLimiteSecoes} (+ capa garantida, total {obterTotalSecoesComCapa(pacote)})
               </p>
 

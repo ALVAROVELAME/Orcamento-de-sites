@@ -17,7 +17,7 @@ export function VideoModel1() {
     <div className="space-y-6 p-6 max-w-2xl mx-auto w-full">
       {/* Seletor de Cores */}
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-slate-500">Tema:</span>
+        <span className="text-base font-medium text-slate-700">Tema:</span>
         {accentColorOptions.map((color) => (
           <button
             key={color}
@@ -46,12 +46,12 @@ export function VideoModel1() {
       
       {/* Informações */}
       <div className="space-y-2">
-        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold ${colors[accentColor].bg} ${colors[accentColor].text}`}>
+        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-bold ${colors[accentColor].bg} ${colors[accentColor].text}`}>
           <span className={`w-2 h-2 rounded-full ${colors[accentColor].text.replace('text-', 'bg-')}`}></span>
           Conteúdo Educativo
         </div>
         <h3 className="text-xl font-bold text-slate-900">Como funciona a Web</h3>
-        <p className="text-sm text-slate-600 leading-relaxed">
+        <p className="text-base text-slate-700 leading-relaxed">
           Uma visão geral sobre os bastidores da internet. Entenda o papel de domínios, servidores e a conexão necessária para uma presença digital robusta.
         </p>
       </div>

@@ -51,7 +51,13 @@ export type ModeloSecaoId =
 
 export type StatusLogoId = 'logo_pronto' | 'logo_imagem' | 'logo_criacao';
 export type EstiloMarcaId = 'moderna' | 'classica_seria' | 'divertida' | 'luxuosa' | 'minimalista';
-export type PaginaExtraId = 'sobre_nos' | 'privacidade' | 'termos_uso' | 'contato' | 'faq' | 'erro_404';
+export type PaginaExtraId =
+  | 'sobre_nos'
+  | 'privacidade'
+  // | 'termos_uso' // FUTURO: opcao guardada para reativacao posterior.
+  | 'contato'
+  | 'faq'
+  | 'erro_404';
 export type ExtraIntegracaoId = 'whatsapp' | 'analytics' | 'agendamento' | 'seo_essencial' | 'mapa';
 export type EcommerceExtraId = 'pagamentos' | 'frete' | 'catalogo' | 'carrinho';
 export type FluxoPacote = 'padrao' | 'ecommerce';

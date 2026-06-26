@@ -42,13 +42,13 @@ export function FaqModel1() {
       
       {/* Cabeçalho da Seção */}
       <div className="text-center max-w-2xl mx-auto mb-10">
-        <span className="inline-flex items-center text-[10px] font-extrabold text-indigo-600 uppercase tracking-widest bg-indigo-50/70 border border-indigo-100/50 px-3 py-1 rounded-full">
+        <span className="inline-flex items-center text-xs font-extrabold text-indigo-700 uppercase tracking-widest bg-indigo-50/70 border border-indigo-100/50 px-3 py-1 rounded-full">
           💬 Dúvidas Frequentes
         </span>
         <h3 className="text-xl md:text-2xl font-black text-slate-900 mt-3 tracking-tight">
           Perguntas Respondidas
         </h3>
-        <p className="text-slate-500 text-sm mt-2">
+        <p className="text-slate-700 text-base mt-2 leading-relaxed">
           Esclareça as principais dúvidas sobre o desenvolvimento da sua nova presença digital.
         </p>
       </div>
@@ -71,7 +71,7 @@ export function FaqModel1() {
               <button
                 type="button"
                 onClick={() => toggleFaq(item.id)}
-                className="w-full px-5 py-4 md:px-6 md:py-5 flex items-center justify-between gap-4 text-left font-bold text-slate-800 text-sm md:text-base cursor-pointer select-none"
+                className="w-full px-5 py-4 md:px-6 md:py-5 flex items-center justify-between gap-4 text-left font-bold text-slate-900 text-base md:text-lg cursor-pointer select-none"
               >
                 <span className={`transition-colors duration-200 ${isAberto ? 'text-indigo-600' : 'text-slate-800'}`}>
                   {item.pergunta}
@@ -79,7 +79,7 @@ export function FaqModel1() {
                 
                 {/* Ícone Chevron Customizado com Rotação */}
                 <div className={`w-7 h-7 flex items-center justify-center rounded-xl transition-all duration-300 shrink-0 ${
-                  isAberto ? 'bg-indigo-600 text-white rotate-180' : 'bg-slate-100 text-slate-500'
+                  isAberto ? 'bg-indigo-600 text-white rotate-180' : 'bg-slate-100 text-slate-700'
                 }`}>
                   <svg 
                     className="w-3.5 h-3.5" 
@@ -99,7 +99,7 @@ export function FaqModel1() {
                   isAberto ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
                 }`}
               >
-                <div className="px-5 pb-5 md:px-6 md:pb-6 text-xs md:text-sm text-slate-600 leading-relaxed border-t border-indigo-100/30 pt-3">
+                <div className="px-5 pb-5 md:px-6 md:pb-6 text-base text-slate-700 leading-relaxed border-t border-indigo-100/30 pt-3">
                   {item.resposta}
                 </div>
               </div>
@@ -110,7 +110,7 @@ export function FaqModel1() {
 
       {/* Rodapé de Ajuda Rápida */}
       <div className="mt-10 pt-6 border-t border-slate-100 text-center">
-        <p className="text-xs text-slate-400 font-medium">
+        <p className="text-sm text-slate-600 font-medium">
           Ainda tem alguma dúvida específica?{' '}
           <span className="text-indigo-600 font-bold hover:underline cursor-pointer">
             Fale conosco direto pelo chat

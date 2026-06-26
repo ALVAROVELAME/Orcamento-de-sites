@@ -31,7 +31,7 @@ export function SobreModel1() {
         
         {/* Lado Esquerdo: Texto Institucional */}
         <div className="lg:col-span-7 flex flex-col items-start gap-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 border border-sky-100 text-[11px] font-semibold tracking-wider text-sky-600 uppercase">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 border border-sky-100 text-xs font-semibold tracking-wider text-sky-700 uppercase">
             <MapPin className="w-3 h-3 text-sky-500" />
             Quem Somos
           </div>
@@ -40,7 +40,7 @@ export function SobreModel1() {
             Criamos pontes entre você e os destinos mais <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">extraordinários</span> do mundo
           </h2>
           
-          <p className="text-xs md:text-sm text-stone-500 font-medium leading-relaxed max-w-xl">
+          <p className="text-sm md:text-base text-stone-700 font-medium leading-relaxed max-w-xl">
             Desde 2018, transformamos simples viagens em jornadas inesquecíveis. Não vendemos apenas passagens ou hospedagens; desenhamos experiências autênticas, imersões culturais e momentos que ficam guardados para sempre na memória.
           </p>
 
@@ -54,7 +54,7 @@ export function SobreModel1() {
                 <h3 className="text-sm font-bold text-stone-900 tracking-tight">
                   {item.title}
                 </h3>
-                <p className="text-[11px] text-stone-400 font-medium leading-relaxed">
+                <p className="text-sm text-stone-600 font-medium leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -69,8 +69,8 @@ export function SobreModel1() {
           <div className="bg-white p-5 rounded-xl border border-stone-100 shadow-xs flex flex-col justify-between h-28 group hover:border-sky-200 transition-all duration-300">
             <span className="text-2xl md:text-3xl font-black text-stone-900 group-hover:text-sky-600 transition-colors">+50</span>
             <div>
-              <p className="text-xs font-bold text-stone-800">Países Catalogados</p>
-              <p className="text-[10px] text-stone-400 font-medium">Do exótico ao clássico.</p>
+              <p className="text-sm font-bold text-stone-900">Países Catalogados</p>
+              <p className="text-xs text-stone-600 font-medium">Do exótico ao clássico.</p>
             </div>
           </div>
 
@@ -78,15 +78,15 @@ export function SobreModel1() {
           <div className="bg-white p-5 rounded-xl border border-stone-100 shadow-xs flex flex-col justify-between h-28 group hover:border-sky-200 transition-all duration-300">
             <span className="text-2xl md:text-3xl font-black text-stone-900 group-hover:text-sky-600 transition-colors">12k</span>
             <div>
-              <p className="text-xs font-bold text-stone-800">Clientes Felizes</p>
-              <p className="text-[10px] text-stone-400 font-medium">Histórias compartilhadas.</p>
+              <p className="text-sm font-bold text-stone-900">Clientes Felizes</p>
+              <p className="text-xs text-stone-600 font-medium">Histórias compartilhadas.</p>
             </div>
           </div>
 
           {/* Card Grande Call to Action Integrado */}
           <div className="col-span-2 bg-gradient-to-br from-sky-900 to-stone-950 p-5 rounded-xl text-white flex items-center justify-between group cursor-pointer hover:shadow-lg hover:shadow-sky-950/20 transition-all duration-300">
             <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-sky-400 text-[10px] font-bold tracking-widest uppercase">
+              <div className="flex items-center gap-1.5 text-sky-300 text-xs font-bold tracking-widest uppercase">
                 <Sparkles className="w-3 h-3" /> Comece a planejar
               </div>
               <p className="text-sm font-bold tracking-tight">Pronto para o próximo carimbo?</p>

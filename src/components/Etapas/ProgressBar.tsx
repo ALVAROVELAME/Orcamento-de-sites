@@ -84,19 +84,19 @@ export function ProgressBar({
                   </option>
                 ))}
               </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover:text-slate-700 transition-colors">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-600 group-hover:text-slate-800 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
             </div>
           ) : (
-            <span className="text-base text-slate-400 font-medium italic">Selecione o plano...</span>
+            <span className="text-base text-slate-600 font-medium italic">Selecione o plano...</span>
           )}
         </div>
 
         <div className="col-span-2 md:col-span-1 flex flex-row items-center gap-3 justify-center text-center bg-slate-50 md:bg-transparent py-3 md:py-0 rounded-xl border border-slate-100 md:border-none">
-          <span className="text-xs md:text-sm text-slate-500 font-bold uppercase tracking-wider">Total Estimado:</span>
+          <span className="text-sm md:text-base text-slate-700 font-bold uppercase tracking-wider">Total Estimado:</span>
           <span className="text-2xl md:text-3xl font-black text-indigo-600 tracking-tight">{formatarMoeda(valorTotal)}</span>
         </div>
       </div>

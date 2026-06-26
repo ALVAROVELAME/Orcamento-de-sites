@@ -92,7 +92,7 @@ const ESTILOS_MARCA_PRECOS = [
 const PAGINAS_EXTRAS_PRECOS = [
   { id: 'sobre_nos', preco: 150, incluidoNosPacotes: ['institucional', 'loja_pequena'] },
   { id: 'privacidade', preco: 100, incluidoNosPacotes: ['cartao_3', 'cartao_6', 'institucional', 'loja_pequena'] },
-  { id: 'termos_uso', preco: 100 },
+  // { id: 'termos_uso', preco: 100 }, // FUTURO: opcao guardada para reativacao posterior.
   { id: 'contato', preco: 170, incluidoNosPacotes: ['institucional', 'loja_pequena'] },
   { id: 'faq', preco: 150 },
   { id: 'erro_404', preco: 80 }
@@ -116,9 +116,9 @@ const ECOMMERCE_EXTRAS_PRECOS = [
 
 const PRECOS_CATEGORIAS_SECOES = [
   { id: 'capa', precoBase: 0 },
+  { id: 'cardapio_produtos', precoBase: 140 },
   { id: 'sobre', precoBase: 100 },
   { id: 'servicos', precoBase: 150 },
-  { id: 'cardapio_produtos', precoBase: 140 },
   { id: 'depoimentos', precoBase: 90 },
   { id: 'faq', precoBase: 70 },
   { id: 'blog', precoBase: 160 },

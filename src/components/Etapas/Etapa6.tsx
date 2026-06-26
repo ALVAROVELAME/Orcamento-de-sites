@@ -17,6 +17,10 @@ export function Etapa6({ infoSite, setInfoSite, voltarEtapa, finalizarProjeto, p
       campo="ecommerce_extras"
       titulo={FORMULARIO_CONFIG.etapa6.titulo}
       descricao={FORMULARIO_CONFIG.etapa6.descricao}
+      textoAcaoAntesImagem={FORMULARIO_CONFIG.etapa6.textoAcaoAntesImagem}
+      imagemAcaoSrc={FORMULARIO_CONFIG.etapa6.imagemAcaoSrc}
+      imagemAcaoAlt={FORMULARIO_CONFIG.etapa6.imagemAcaoAlt}
+      textoAcaoDepoisImagem={FORMULARIO_CONFIG.etapa6.textoAcaoDepoisImagem}
       opcoes={FORMULARIO_CONFIG.etapa6.opcoes}
       infoSite={infoSite}
       setInfoSite={setInfoSite}

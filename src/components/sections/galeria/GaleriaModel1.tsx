@@ -48,7 +48,7 @@ export function GaleriaModel1() {
       {/* Header */}
       <div className="mb-4 flex items-end justify-between gap-2 relative z-10">
         <div className="flex flex-col items-start gap-0.5">
-          <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-50 border border-sky-100 text-[9px] font-bold tracking-wider text-sky-600 uppercase">
+          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-50 border border-sky-100 text-xs font-bold tracking-wider text-sky-700 uppercase">
             <Sparkles className="w-2.5 h-2.5 text-sky-500" />
             Álbum
           </div>
@@ -82,7 +82,7 @@ export function GaleriaModel1() {
               
               {/* Topo do card */}
               <div className="flex justify-between items-start w-full">
-                <span className="bg-white/95 backdrop-blur-md px-1.5 py-0.5 rounded text-[8px] md:text-[9px] font-black text-stone-800 tracking-wide shadow-3xs max-w-[85%] truncate">
+                <span className="bg-white/95 backdrop-blur-md px-2 py-1 rounded text-xs font-black text-stone-900 tracking-wide shadow-3xs max-w-[85%] truncate">
                   {foto.tag}
                 </span>
                 
@@ -95,7 +95,7 @@ export function GaleriaModel1() {
               <div className="flex items-end justify-between w-full">
                 <div className="flex items-center gap-0.5 md:gap-1 text-white truncate max-w-full">
                   <MapPin className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-sky-400 shrink-0" />
-                  <span className="text-[9px] md:text-xs font-bold tracking-wide drop-shadow-sm truncate">
+                  <span className="text-sm font-bold tracking-wide drop-shadow-sm truncate">
                     {foto.title}
                   </span>
                 </div>

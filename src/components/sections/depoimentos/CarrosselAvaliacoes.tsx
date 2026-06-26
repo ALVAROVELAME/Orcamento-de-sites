@@ -78,7 +78,7 @@ export function CarrosselAvaliacoes() {
                       />
                       <div>
                         <h4 className="font-semibold text-slate-900 text-sm md:text-base">{item.nome}</h4>
-                        <p className="text-xs md:text-sm text-indigo-600 font-medium">{item.cargo}</p>
+                        <p className="text-sm text-indigo-700 font-medium">{item.cargo}</p>
                       </div>
                     </div>
                   </motion.div>
@@ -91,7 +91,7 @@ export function CarrosselAvaliacoes() {
           <div className="flex items-center justify-center gap-4 mt-10 md:mt-12">
             <button
               onClick={prev}
-              className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-slate-200 hover:border-slate-300 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-all active:scale-95"
+              className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-slate-200 hover:border-slate-300 flex items-center justify-center text-slate-700 hover:text-slate-900 transition-all active:scale-95"
             >
               ←
             </button>
@@ -110,7 +110,7 @@ export function CarrosselAvaliacoes() {
 
             <button
               onClick={next}
-              className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-slate-200 hover:border-slate-300 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-all active:scale-95"
+              className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-slate-200 hover:border-slate-300 flex items-center justify-center text-slate-700 hover:text-slate-900 transition-all active:scale-95"
             >
               →
             </button>

@@ -106,11 +106,13 @@ export const PAGINAS_EXTRAS_TEXTOS: EntradaTextoOpcao<PaginaExtraId>[] = [
     titulo: 'Politica de Privacidade',
     descricao: 'Pagina essencial para adequacao a LGPD, explicando como os dados dos visitantes sao coletados e tratados.'
   },
+  /*
   {
     id: 'termos_uso',
     titulo: 'Termos de Uso',
     descricao: 'Regras, direitos e diretrizes para o uso do seu site, servico ou e-commerce.'
   },
+  */
   {
     id: 'contato',
     titulo: 'Pagina de Contato Completa',
@@ -187,6 +189,11 @@ export const CATALOGO_TEXTOS_CATEGORIAS: EntradaTextoCategoria<CategoriaSecao>[]
     descricao: 'Secao para causar uma primeira impressao forte, destacar sua mensagem principal e incentivar o visitante a dar o proximo passo.'
   },
   {
+    id: 'cardapio_produtos',
+    nome: 'Cardapio de Produtos',
+    descricao: 'Secao para apresentar produtos, precos, promocoes ou itens de venda de forma visual, sem precisar de loja virtual completa.'
+  },
+  {
     id: 'sobre',
     nome: 'Sobre',
     descricao: 'Secao para apresentar sua empresa, contar sua historia e mostrar os diferenciais que tornam sua marca mais confiavel.'
@@ -195,11 +202,6 @@ export const CATALOGO_TEXTOS_CATEGORIAS: EntradaTextoCategoria<CategoriaSecao>[]
     id: 'servicos',
     nome: 'Servicos',
     descricao: 'Secao para explicar seus servicos, produtos ou solucoes de forma clara, ajudando o cliente a entender rapidamente o que voce oferece.'
-  },
-  {
-    id: 'cardapio_produtos',
-    nome: 'Cardapio de Produtos',
-    descricao: 'Secao para apresentar produtos, precos, promocoes ou itens de venda de forma visual, sem precisar de loja virtual completa.'
   },
   {
     id: 'depoimentos',
@@ -397,9 +399,9 @@ export const CATALOGO_TEXTOS_MODELOS: EntradaTextoModelo<ModeloSecaoId>[] = [
 
 export const CATALOGO_RELACAO_CATEGORIAS: EntradaRelacaoCategoria<CategoriaSecao, ModeloSecaoId>[] = [
   { id: 'capa', modelos: ['CapaModel1', 'CapaModel2', 'CapaModel3'] },
+  { id: 'cardapio_produtos', modelos: ['CardapioModel1', 'CardapioModel2', 'CardapioModel3'] },
   { id: 'sobre', modelos: ['SobreModel1', 'SobreModel2', 'SobreModel3'] },
   { id: 'servicos', modelos: ['ServicosModel1', 'ServicosModel2', 'ServicosModel3'] },
-  { id: 'cardapio_produtos', modelos: ['CardapioModel1', 'CardapioModel2', 'CardapioModel3'] },
   { id: 'depoimentos', modelos: ['DepCarrossel', 'DepGoogle', 'DepTradicional'] },
   { id: 'faq', modelos: ['FaqModel1', 'FaqModel2', 'FaqModel3'] },
   { id: 'blog', modelos: ['BlogModel1', 'BlogModel2', 'BlogModel3'] },

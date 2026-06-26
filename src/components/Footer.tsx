@@ -5,7 +5,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-slate-900 text-gray-400 py-16 border-t border-slate-800">
+    <footer className="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
       <div className="max-w-6xl mx-auto px-6">
         
         {/* Logo */}
@@ -22,32 +22,39 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-12 text-center md:text-left mb-12">
           
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-sm">Sobre</h4>
-            <p className="text-sm leading-relaxed">
+            <h4 className="text-white font-bold mb-4 uppercase text-base">Sobre</h4>
+            <p className="text-base leading-relaxed">
               Criamos sites profissionais e orçamentos personalizados para pequenos negócios.
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-sm">Links Rápidos</h4>
-            <ul className="space-y-2 text-sm">
-              <li 
-                onClick={scrollToFormulario}
-                className="hover:text-blue-400 cursor-pointer transition-colors"
-              >
-                Solicitar Orçamento
+            <h4 className="text-white font-bold mb-4 uppercase text-base">Links Rápidos</h4>
+            <ul className="space-y-2 text-base">
+              <li>
+                <button
+                  type="button"
+                  onClick={scrollToFormulario}
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  Solicitar Orçamento
+                </button>
               </li>
-              <li className="hover:text-blue-400 cursor-pointer transition-colors"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                Voltar ao topo
+              <li>
+                <button
+                  type="button"
+                  className="hover:text-blue-400 transition-colors"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Voltar ao topo
+                </button>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase text-sm">Contato</h4>
-            <div className="space-y-2 text-sm">
+            <h4 className="text-white font-bold mb-4 uppercase text-base">Contato</h4>
+            <div className="space-y-2 text-base">
               <p>📧 contato@orcamentoweb.com</p>
               <p>📱 (11) 99999-9999</p>
             </div>
@@ -58,7 +65,7 @@ export function Footer() {
         <div className="border-t border-slate-700 my-8"></div>
 
         {/* Copyright */}
-        <div className="text-center text-sm text-slate-500">
+        <div className="text-center text-base text-slate-300">
           <p>&copy; 2024 OrçamentoWeb. Todos os direitos reservados.</p>
         </div>
       </div>
