@@ -127,7 +127,7 @@ export function Formulario() {
   };
 
   return (
-    <div
+    <main
       id="formulario"
       className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[72px] md:pt-[72px]"
     >
@@ -180,6 +180,6 @@ export function Formulario() {
           />
         )}
       </div>
-    </div>
+    </main>
   );
 }

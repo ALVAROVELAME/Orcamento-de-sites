@@ -52,7 +52,7 @@ export function PlanSelectionStep({
                 {pacote.icone}
               </div>
 
-              <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{pacote.nome}</h3>
+              <h2 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{pacote.nome}</h2>
 
               <p className="text-base text-slate-700 mb-6 font-medium leading-relaxed">{pacote.descricao}</p>
 
