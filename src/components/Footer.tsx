@@ -1,7 +1,8 @@
+import { scrollParaElemento, scrollParaTopo } from '../utils/scroll';
+
 export function Footer() {
   const scrollToFormulario = () => {
-    const elemento = document.getElementById('formulario');
-    elemento?.scrollIntoView({ behavior: 'smooth' });
+    scrollParaElemento('formulario');
   };
 
   return (
@@ -44,7 +45,7 @@ export function Footer() {
                 <button
                   type="button"
                   className="hover:text-blue-400 transition-colors"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  onClick={scrollParaTopo}
                 >
                   Voltar ao topo
                 </button>

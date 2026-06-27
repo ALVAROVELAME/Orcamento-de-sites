@@ -1,5 +1,6 @@
 import type { FormEvent } from 'react';
 import { obterRotuloPreco, type InfoSite, type Pacote, type PacoteId } from '../../../data/precos';
+import { definirItem } from '../../../utils/colecoes';
 import { BotoesNavegacao } from '../../Etapas/BotoesNavegacao';
 
 interface IdentityVisualStepProps {
@@ -13,6 +14,7 @@ interface IdentityVisualStepProps {
     hospedagemDominio: {
       titulo: string;
       descricao: string;
+      descricaoAbaixoOpcoes?: string;
       opcoes: readonly { id: string; titulo: string }[];
     };
     logotipo: {
@@ -35,16 +37,6 @@ interface IdentityVisualStepProps {
   onSubmit: (event: FormEvent) => void;
   onVoltar: () => void;
   pacoteEscolhido?: Pacote | null;
-}
-
-function toggleValorArray<T extends string>(valores: readonly T[] | undefined, valor: T, checked: boolean) {
-  const listaAtual = [...(valores ?? [])];
-
-  if (checked) {
-    return listaAtual.includes(valor) ? listaAtual : [...listaAtual, valor];
-  }
-
-  return listaAtual.filter((item) => item !== valor);
 }
 
 export function IdentityVisualStep({
@@ -103,29 +95,39 @@ export function IdentityVisualStep({
                 );
               })}
             </div>
+
+            {config.hospedagemDominio.descricaoAbaixoOpcoes ? (
+              <p className="text-sm md:text-base text-slate-600 leading-relaxed">
+                {config.hospedagemDominio.descricaoAbaixoOpcoes}
+              </p>
+            ) : null}
           </fieldset>
 
           <fieldset className="bg-slate-50 p-6 rounded-2xl border border-slate-300 space-y-4">
             <legend className="text-base md:text-lg font-bold text-slate-800 float-left w-full mb-2">{config.logotipo.titulo}</legend>
 
             <div className="space-y-4 pt-2 clear-both">
-              {config.logotipo.opcoes.map((opcao) => (
-                <label key={opcao.id} className="flex items-center gap-3 cursor-pointer text-slate-700 font-bold text-base md:text-lg">
-                  <input
-                    type="radio"
-                    name="status_logo"
-                    value={opcao.id}
-                    checked={infoSite.status_logo === opcao.id}
-                    onChange={(event) => setInfoSite({ ...infoSite, status_logo: event.target.value as InfoSite['status_logo'] })}
-                    className="w-5 h-5 text-pink-600 focus:ring-pink-500 accent-pink-600"
-                    required
-                  />
-                  <span className={opcao.destaque ? 'font-extrabold text-pink-800' : ''}>
-                    {opcao.titulo}
-                    {obterRotuloPreco(opcao, pacoteEscolhido) ? ` (${obterRotuloPreco(opcao, pacoteEscolhido)})` : ''}
-                  </span>
-                </label>
-              ))}
+              {config.logotipo.opcoes.map((opcao) => {
+                const rotuloPreco = obterRotuloPreco(opcao, pacoteEscolhido);
+
+                return (
+                  <label key={opcao.id} className="flex items-center gap-3 cursor-pointer text-slate-700 font-bold text-base md:text-lg">
+                    <input
+                      type="radio"
+                      name="status_logo"
+                      value={opcao.id}
+                      checked={infoSite.status_logo === opcao.id}
+                      onChange={(event) => setInfoSite({ ...infoSite, status_logo: event.target.value as InfoSite['status_logo'] })}
+                      className="w-5 h-5 text-pink-600 focus:ring-pink-500 accent-pink-600"
+                      required
+                    />
+                    <span className={opcao.destaque ? 'font-extrabold text-pink-800' : ''}>
+                      {opcao.titulo}
+                      {rotuloPreco ? ` (${rotuloPreco})` : ''}
+                    </span>
+                  </label>
+                );
+              })}
             </div>
 
             {statusLiberaDetalhes ? (
@@ -143,7 +145,7 @@ export function IdentityVisualStep({
                           onChange={(event) =>
                             setInfoSite({
                               ...infoSite,
-                              estilo_marca: toggleValorArray(infoSite.estilo_marca, estilo.id as never, event.target.checked)
+                              estilo_marca: definirItem(infoSite.estilo_marca, estilo.id as never, event.target.checked)
                             })
                           }
                           className="w-5 h-5 text-pink-600 rounded focus:ring-pink-500 accent-pink-600"

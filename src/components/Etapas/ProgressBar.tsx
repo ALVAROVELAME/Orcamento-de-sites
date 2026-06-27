@@ -1,4 +1,5 @@
 import { ehPacoteEcommerce, type Pacote } from '../../data/precos';
+import { formatarMoedaBRL } from '../../utils/formatadores';
 
 interface ProgressBarProps {
   etapaAtual: 1 | 2 | 3 | 4 | 5 | 6;
@@ -16,11 +17,7 @@ export function ProgressBar({
   selecionarPacote
 }: ProgressBarProps) {
   const totalEtapas = ehPacoteEcommerce(pacoteEscolhido) ? 6 : 5;
-
-  const formatarMoeda = (valor: number) => {
-    const numeroValido = typeof valor === 'number' ? valor : 0;
-    return numeroValido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  };
+  const progressoClasse = obterClasseProgresso(etapaAtual, totalEtapas);
 
   const handlePacoteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const pacoteId = event.target.value;
@@ -28,29 +25,6 @@ export function ProgressBar({
     if (pacoteEncontrado) {
       selecionarPacote(pacoteEncontrado);
     }
-  };
-
-  const obterClasseLargura = () => {
-    if (totalEtapas === 5) {
-      const larguras5: Record<number, string> = {
-        1: 'w-1/5',
-        2: 'w-2/5',
-        3: 'w-3/5',
-        4: 'w-4/5',
-        5: 'w-full'
-      };
-      return larguras5[etapaAtual] || 'w-0';
-    }
-
-    const larguras6: Record<number, string> = {
-      1: 'w-1/6',
-      2: 'w-2/6',
-      3: 'w-3/6',
-      4: 'w-4/6',
-      5: 'w-5/6',
-      6: 'w-full'
-    };
-    return larguras6[etapaAtual] || 'w-0';
   };
 
   return (
@@ -97,13 +71,42 @@ export function ProgressBar({
 
         <div className="col-span-2 md:col-span-1 flex flex-row items-center gap-3 justify-center text-center bg-slate-50 md:bg-transparent py-3 md:py-0 rounded-xl border border-slate-100 md:border-none">
           <span className="text-sm md:text-base text-slate-700 font-bold uppercase tracking-wider">Total Estimado:</span>
-          <span className="text-2xl md:text-3xl font-black text-indigo-600 tracking-tight">{formatarMoeda(valorTotal)}</span>
+          <span className="text-2xl md:text-3xl font-black text-indigo-600 tracking-tight">{formatarMoedaBRL(valorTotal)}</span>
         </div>
       </div>
 
       <div className="w-full h-[4px] bg-slate-100 overflow-hidden" aria-hidden="true">
-        <div className={`h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 transition-all duration-700 ease-out ${obterClasseLargura()}`} />
+        <div
+          className={`h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 transition-all duration-700 ease-out ${progressoClasse}`}
+        />
       </div>
     </div>
   );
+}
+
+function obterClasseProgresso(etapaAtual: number, totalEtapas: number) {
+  const etapaNormalizada = Math.min(Math.max(etapaAtual, 1), totalEtapas);
+
+  if (totalEtapas === 6) {
+    const mapaClassesEcommerce: Record<number, string> = {
+      1: 'w-0',
+      2: 'w-[20%]',
+      3: 'w-[40%]',
+      4: 'w-[60%]',
+      5: 'w-[80%]',
+      6: 'w-full'
+    };
+
+    return mapaClassesEcommerce[etapaNormalizada] ?? 'w-0';
+  }
+
+  const mapaClassesPadrao: Record<number, string> = {
+    1: 'w-0',
+    2: 'w-1/4',
+    3: 'w-1/2',
+    4: 'w-3/4',
+    5: 'w-full'
+  };
+
+  return mapaClassesPadrao[etapaNormalizada] ?? 'w-0';
 }

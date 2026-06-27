@@ -13,6 +13,18 @@ interface OpcaoSelecao {
   incluidoNosPacotes?: readonly Pacote['id'][];
 }
 
+interface ConfigSelecaoOpcoes {
+  titulo: string;
+  descricao: string;
+  textoAcaoAntesImagem?: string;
+  imagemAcaoSrc?: string;
+  imagemAcaoAlt?: string;
+  textoAcaoDepoisImagem?: string;
+  opcoes: readonly OpcaoSelecao[];
+  textoProximo?: string;
+  contadorSelecionadas?: string;
+}
+
 interface EtapaSelecaoOpcoesProps {
   campo: CampoSelecaoInfoSite;
   titulo: string;
@@ -30,6 +42,51 @@ interface EtapaSelecaoOpcoesProps {
   textoProximo?: string;
   contadorSelecionadas?: string;
   accent?: 'indigo' | 'emerald';
+}
+
+interface EtapaSelecaoOpcoesComConfigProps {
+  campo: CampoSelecaoInfoSite;
+  config: ConfigSelecaoOpcoes;
+  infoSite: InfoSite;
+  setInfoSite: (info: InfoSite) => void;
+  voltarEtapa: () => void;
+  finalizarProjeto: () => void;
+  pacoteEscolhido: Pacote | null;
+  textoProximo?: string;
+  accent?: 'indigo' | 'emerald';
+}
+
+export function EtapaSelecaoOpcoesComConfig({
+  campo,
+  config,
+  infoSite,
+  setInfoSite,
+  voltarEtapa,
+  finalizarProjeto,
+  pacoteEscolhido,
+  textoProximo,
+  accent
+}: EtapaSelecaoOpcoesComConfigProps) {
+  return (
+    <EtapaSelecaoOpcoes
+      campo={campo}
+      titulo={config.titulo}
+      descricao={config.descricao}
+      textoAcaoAntesImagem={config.textoAcaoAntesImagem}
+      imagemAcaoSrc={config.imagemAcaoSrc}
+      imagemAcaoAlt={config.imagemAcaoAlt}
+      textoAcaoDepoisImagem={config.textoAcaoDepoisImagem}
+      opcoes={config.opcoes}
+      infoSite={infoSite}
+      setInfoSite={setInfoSite}
+      voltarEtapa={voltarEtapa}
+      finalizarProjeto={finalizarProjeto}
+      textoProximo={textoProximo ?? config.textoProximo}
+      contadorSelecionadas={config.contadorSelecionadas}
+      accent={accent}
+      pacoteEscolhido={pacoteEscolhido}
+    />
+  );
 }
 
 export function EtapaSelecaoOpcoes({

@@ -4,24 +4,27 @@ import {
   LISTA_CATEGORIAS_SECOES,
   obterMetaFaixaPrecoCategoria,
   obterModeloSecaoConfig,
-  obterMetaPreco,
+  obterMetaPrecoSecaoModelo,
   obterTotalSecoesComCapa,
   obterCategoriaSecaoConfig,
   itemEstaIncluidoNoPacote,
   type CategoriaSecao,
   type InfoSite,
   type ModeloSecaoId,
+  type ModeloSecaoPreview,
   type Pacote,
+  type SelecaoPrecoProjeto,
   type SecaoNoSite
 } from '../../data/precos';
-import { SelectableAccordion } from '../design/formulario';
+import { scrollParaTopo } from '../../utils/scroll';
+import { FormStepHeader, SelectableAccordion } from '../design/formulario';
 import { BIBLIOTECA_SECOES } from './constants';
+import { AvisoFlutuante } from './AvisoFlutuante';
 import { BotoesNavegacao } from './BotoesNavegacao';
 import { PreviewSecao } from './PreviewSecao';
+import { useAutoExpandirTemporariamente } from './useAutoExpandirTemporariamente';
 
 const TODAS_CATEGORIAS = LISTA_CATEGORIAS_SECOES;
-const TEMPO_AUTO_ABRIR_MS = 400;
-const TEMPO_AUTO_FECHAR_MS = 1500;
 
 function obterCategoriasIncluidasNoPacote(pacote: Pacote | null) {
   if (!pacote) return [];
@@ -39,26 +42,22 @@ function obterModeloIncluidoNaCategoria(categoria: CategoriaSecao, pacote: Pacot
   return categoriaConfig.modelos.find((modelo) => itemEstaIncluidoNoPacote(modelo, pacote))?.id ?? null;
 }
 
-function useAutoExpandirTemporariamente<TId extends string>(
-  ativo: boolean,
-  itemId: TId | null | undefined,
-  setExpandido: (item: TId | null) => void
-) {
-  useEffect(() => {
-    if (!ativo || !itemId) return undefined;
+type SecaoParaPreco = NonNullable<SelecaoPrecoProjeto['secoes']>[number];
 
-    let fecharTimer: ReturnType<typeof setTimeout>;
+function montarSecoesParaPreco(
+  categorias: CategoriaSecao[],
+  secoesComModelo: SecaoNoSite[],
+  pacote: Pacote | null
+): SecaoParaPreco[] {
+  return categorias.map((categoria) => {
+    const secaoComModelo = secoesComModelo.find((secao) => secao.categoria === categoria);
+    const modeloIncluido = obterModeloIncluidoNaCategoria(categoria, pacote) ?? undefined;
 
-    const abrirTimer = setTimeout(() => {
-      setExpandido(itemId);
-      fecharTimer = setTimeout(() => setExpandido(null), TEMPO_AUTO_FECHAR_MS);
-    }, TEMPO_AUTO_ABRIR_MS);
-
-    return () => {
-      clearTimeout(abrirTimer);
-      if (fecharTimer) clearTimeout(fecharTimer);
+    return {
+      categoria,
+      modelo: secaoComModelo?.modelo ?? modeloIncluido
     };
-  }, [ativo, itemId, setExpandido]);
+  });
 }
 
 function atualizarSecaoNoSite(site: SecaoNoSite[], categoria: CategoriaSecao, modelo: ModeloSecaoId) {
@@ -67,11 +66,42 @@ function atualizarSecaoNoSite(site: SecaoNoSite[], categoria: CategoriaSecao, mo
   return [...siteFiltrado, novaSecao];
 }
 
+interface PreviewCategoriaSecaoProps {
+  descricaoCategoria: string;
+  modeloParaImagem?: ModeloSecaoPreview;
+}
+
+function PreviewCategoriaSecao({ descricaoCategoria, modeloParaImagem }: PreviewCategoriaSecaoProps) {
+  return (
+    <div className="p-0 bg-white w-full overflow-x-auto">
+      <div className="w-full bg-white pointer-events-none">
+        <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6 bg-slate-50 border-t border-slate-100 text-left">
+          <p className="text-base md:text-lg text-slate-700 leading-relaxed max-w-3xl">
+            {descricaoCategoria}
+          </p>
+        </div>
+        {modeloParaImagem?.previewImagemSrc ? (
+          <div className="px-5 pb-6 md:px-6 md:pb-8 bg-slate-50">
+            <img
+              src={modeloParaImagem.previewImagemSrc}
+              alt={modeloParaImagem.previewImagemAlt ?? modeloParaImagem.nome}
+              className="block w-full max-w-4xl mx-auto h-auto rounded-md border border-slate-200 shadow-sm"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 interface Etapa3Props {
   infoSite: InfoSite;
   pacoteEscolhido: Pacote | null;
   site: SecaoNoSite[];
   setSite: (site: SecaoNoSite[]) => void;
+  setSecoesParaPreco: (secoes: SecaoParaPreco[]) => void;
   onVoltarEtapaAnterior: () => void;
   onAvancarParaEtapa4: () => void;
 }
@@ -81,6 +111,7 @@ export function Etapa3({
   pacoteEscolhido,
   site,
   setSite,
+  setSecoesParaPreco,
   onVoltarEtapaAnterior,
   onAvancarParaEtapa4
 }: Etapa3Props) {
@@ -99,8 +130,12 @@ export function Etapa3({
   const config = FORMULARIO_CONFIG.etapa3;
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollParaTopo();
   }, [fase, indiceAtual]);
+
+  useEffect(() => {
+    setSecoesParaPreco(montarSecoesParaPreco(categoriasSelecionadas, site, pacoteEscolhido));
+  }, [categoriasSelecionadas, pacoteEscolhido, setSecoesParaPreco, site]);
 
   useEffect(() => {
     if (!mostrarAvisoLimite) return undefined;
@@ -218,99 +253,54 @@ export function Etapa3({
 
   return (
     <div className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen relative overflow-hidden">
-      <div
-        className={`fixed top-4 right-4 md:top-8 md:right-8 z-50 transition-all duration-500 transform ${
-          mostrarAvisoLimite ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="bg-rose-600 text-white p-4 rounded-xl shadow-xl flex items-start gap-4 border border-rose-500 max-w-sm">
-          <div className="mt-0.5">
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          </div>
-          <div className="flex-1">
-            <h4 className="font-bold text-md mb-1">{config.avisoLimite.titulo}</h4>
-            <p className="text-base text-rose-50">{avisoLimiteDescricao}</p>
-          </div>
-          <button
-            onClick={() => setMostrarAvisoLimite(false)}
-            aria-label="Fechar aviso de limite do pacote"
-            title="Fechar aviso de limite do pacote"
-            className="p-1 hover:bg-rose-700 rounded transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
+      <AvisoFlutuante
+        visivel={mostrarAvisoLimite}
+        lado="right"
+        cor="rose"
+        icone="alerta"
+        titulo={config.avisoLimite.titulo}
+        descricao={avisoLimiteDescricao}
+        ariaLabelFechar="Fechar aviso de limite do pacote"
+        onFechar={() => setMostrarAvisoLimite(false)}
+      />
 
-      <div
-        className={`fixed top-4 left-4 md:top-8 md:left-8 z-50 transition-all duration-500 transform ${
-          mostrarAvisoSeccoesRestantes ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="bg-indigo-600 text-white p-4 rounded-xl shadow-xl flex items-start gap-4 border border-indigo-500 max-w-sm">
-          <div className="mt-0.5">
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20.5A8.5 8.5 0 1 0 12 3.5a8.5 8.5 0 0 0 0 17Z" />
-            </svg>
-          </div>
-          <div className="flex-1">
-            <h4 className="font-bold text-md mb-1">{config.avisoSecoesRestantes.titulo}</h4>
-            <p className="text-base text-indigo-50">{avisoSecoesRestantesDescricao}</p>
-          </div>
-          <button
-            onClick={() => setMostrarAvisoSeccoesRestantes(false)}
-            aria-label="Fechar aviso de secoes restantes"
-            title="Fechar aviso de secoes restantes"
-            className="p-1 hover:bg-indigo-700 rounded transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
+      <AvisoFlutuante
+        visivel={mostrarAvisoSeccoesRestantes}
+        lado="left"
+        cor="indigo"
+        icone="info"
+        titulo={config.avisoSecoesRestantes.titulo}
+        descricao={avisoSecoesRestantesDescricao}
+        ariaLabelFechar="Fechar aviso de secoes restantes"
+        onFechar={() => setMostrarAvisoSeccoesRestantes(false)}
+      />
 
       <div className="w-full max-w-none px-0 animate-fade-in delay-[300ms] fill-mode-both relative">
         <div className={`bg-white w-full p-4 md:p-6 relative ${fase === 'escolha_modelos' ? 'shadow-none bg-transparent' : 'shadow-sm border-b border-slate-200'}`}>
           {fase === 'selecao_inicial' && (
             <div className="max-w-7xl mx-auto px-4 mt-2">
-              <div className="mb-6 pb-4 border-b border-slate-100 flex justify-between items-end gap-4">
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-black text-slate-800">{config.selecaoInicial.titulo}</h3>
-                  <div className="mt-1 flex flex-wrap items-center gap-2 text-base text-slate-700 leading-relaxed">
-                    <span>{config.selecaoInicial.descricao}</span>
-                    <span className="font-bold text-slate-900">{config.selecaoInicial.textoAcaoAntesImagem}</span>
-                    <img
-                      src={config.selecaoInicial.imagemAcaoSrc}
-                      alt={config.selecaoInicial.imagemAcaoAlt}
-                      className="inline-block h-12 w-12 md:h-14 md:w-14 rounded-sm align-middle"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <span className="font-bold text-slate-900">{config.selecaoInicial.textoAcaoDepoisImagem}</span>
+              <FormStepHeader
+                titulo={config.selecaoInicial.titulo}
+                descricao={config.selecaoInicial.descricao}
+                textoAcaoAntesImagem={config.selecaoInicial.textoAcaoAntesImagem}
+                imagemAcaoSrc={config.selecaoInicial.imagemAcaoSrc}
+                imagemAcaoAlt={config.selecaoInicial.imagemAcaoAlt}
+                textoAcaoDepoisImagem={config.selecaoInicial.textoAcaoDepoisImagem}
+                descriptionClassName="text-base text-slate-700 leading-relaxed"
+                rightContent={(
+                  <div className="text-right">
+                    <span className={`text-sm font-bold ${categoriasSelecionadas.length >= limiteDoPlano ? 'text-rose-500' : 'text-indigo-600'}`}>
+                      {categoriasSelecionadas.length} / {limiteDoPlano}
+                    </span>
+                    <p className="text-sm text-slate-600">{config.selecaoInicial.contadorSelecionadas}</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <span className={`text-sm font-bold ${categoriasSelecionadas.length >= limiteDoPlano ? 'text-rose-500' : 'text-indigo-600'}`}>
-                    {categoriasSelecionadas.length} / {limiteDoPlano}
-                  </span>
-                  <p className="text-sm text-slate-600">{config.selecaoInicial.contadorSelecionadas}</p>
-                </div>
-              </div>
+                )}
+              />
 
               <div className="flex flex-col gap-6 w-full mt-6 xl:max-w-5xl xl:mx-auto">
                 {TODAS_CATEGORIAS.map((categoria) => {
                   const categoriaConfig = obterCategoriaSecaoConfig(categoria);
-                  const primeiroModelo = BIBLIOTECA_SECOES[categoria][0];
+                  const modeloParaImagemDaCategoria = BIBLIOTECA_SECOES[categoria][0];
                   const isSelected = categoriasSelecionadas.includes(categoria);
 
                   return (
@@ -340,26 +330,10 @@ export function Etapa3({
                         setMostrarAvisoLimite(true);
                       }}
                     >
-                      <div className="p-0 bg-white w-full overflow-x-auto">
-                        <div className="w-full bg-white pointer-events-none">
-                          <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6 bg-slate-50 border-t border-slate-100 text-left">
-                            <p className="text-base md:text-lg text-slate-700 leading-relaxed max-w-3xl">
-                              {categoriaConfig.descricao}
-                            </p>
-                          </div>
-                          {primeiroModelo?.previewImagemSrc ? (
-                            <div className="px-5 pb-6 md:px-6 md:pb-8 bg-slate-50">
-                              <img
-                                src={primeiroModelo.previewImagemSrc}
-                                alt={primeiroModelo.previewImagemAlt ?? primeiroModelo.nome}
-                                className="block w-full max-w-4xl mx-auto h-auto rounded-md border border-slate-200 shadow-sm"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-                          ) : null}
-                        </div>
-                      </div>
+                      <PreviewCategoriaSecao
+                        descricaoCategoria={categoriaConfig.descricao}
+                        modeloParaImagem={modeloParaImagemDaCategoria}
+                      />
                     </SelectableAccordion>
                   );
                 })}
@@ -383,7 +357,7 @@ export function Etapa3({
                     <SelectableAccordion
                       key={modelo.id}
                       titulo={modelo.nome}
-                      metaLabel={obterMetaPreco(modelo, pacoteEscolhido)}
+                      metaLabel={obterMetaPrecoSecaoModelo(categoriaAtual, modelo.id, pacoteEscolhido)}
                       isExpanded={modeloExpandido === modelo.id}
                       isSelected={modeloSelecionado === modelo.id}
                       onToggleExpand={() => setModeloExpandido(modeloExpandido === modelo.id ? null : modelo.id)}
@@ -408,10 +382,13 @@ export function Etapa3({
 
           {fase === 'resumo' && (
             <div className="w-full mt-2 xl:max-w-5xl xl:mx-auto">
-              <div className="max-w-7xl xl:max-w-5xl mx-auto px-4 flex flex-col mb-6 pb-4 border-b border-slate-100 gap-1">
-                <h3 className="text-2xl font-black text-slate-800">{config.resumo.titulo}</h3>
-                {infoSite.nome && <p className="text-base text-indigo-700 font-semibold">{config.resumo.prefixoProjeto} {infoSite.nome}</p>}
-              </div>
+              <FormStepHeader
+                titulo={config.resumo.titulo}
+                descricao={infoSite.nome ? `${config.resumo.prefixoProjeto} ${infoSite.nome}` : undefined}
+                titleClassName="text-2xl font-black text-slate-800"
+                descriptionClassName="text-base text-indigo-700 font-semibold"
+                containerClassName="max-w-7xl xl:max-w-5xl mx-auto px-4 flex flex-col mb-6 pb-4 border-b border-slate-100 gap-1"
+              />
 
               <div className="flex flex-col gap-4 w-full">
                 {site.map((secao, index) => {

@@ -7,11 +7,23 @@ import {
 } from './precos';
 import type { InfoSite } from './tipos';
 
+const ACAO_ABRIR_PREVIA = {
+  textoAcaoAntesImagem: 'Clique no Botão ',
+  imagemAcaoSrc: '/mais.webp',
+  imagemAcaoAlt: 'Simbolo de mais para abrir a previa',
+  textoAcaoDepoisImagem: 'ou na opcao desejada.'
+} as const;
+
+const ACAO_ABRIR_DETALHES = {
+  ...ACAO_ABRIR_PREVIA,
+  imagemAcaoAlt: 'Simbolo de mais para abrir os detalhes'
+} as const;
+
 export const FORMULARIO_CONFIG = {
   etapa1: {
     titulo: 'Escolha seu plano',
     descricao: 'Secoes sao blocos dentro do site. Paginas sao telas separadas, como Contato ou Sobre Nos.',
-    descricaoExtra: 'Agora escolha o pacote que combina com o que voce precisa.',
+    descricaoExtra: 'Escolha um dos 3 pacotes pra começar',
     textoBotaoSelecionar: 'Escolher plano',
     prefixoLimiteSecoes: 'Este plano inclui:',
     sufixoLimiteSecoes: 'secoes principais'
@@ -26,6 +38,7 @@ export const FORMULARIO_CONFIG = {
     hospedagemDominio: {
       titulo: 'Hospedagem e dominio *',
       descricao: 'Informe se voce ja tem hospedagem e dominio. Se ainda nao tiver, podemos incluir isso no seu orcamento.',
+      descricaoAbaixoOpcoes: '"Hospedagem e dominio são o endereco e o lugar do seu site na internet."',
       opcoes: [
         { id: 'tem', titulo: 'Ja tenho hospedagem e dominio' },
         { id: 'nao_tem', titulo: 'Ainda nao tenho e quero incluir no orcamento' }
@@ -51,10 +64,7 @@ export const FORMULARIO_CONFIG = {
     selecaoInicial: {
       titulo: 'Selecione as secoes desejadas',
       descricao: 'Escolha os blocos de conteudo que farao parte da estrutura do seu site.',
-      textoAcaoAntesImagem: 'Clique no Botão ',
-      imagemAcaoSrc: '/mais.webp',
-      imagemAcaoAlt: 'Simbolo de mais para abrir a previa',
-      textoAcaoDepoisImagem: 'ou na opcao desejada.',
+      ...ACAO_ABRIR_PREVIA,
       contadorSelecionadas: 'selecionadas'
     },
     escolhaModelos: {
@@ -79,10 +89,7 @@ export const FORMULARIO_CONFIG = {
   etapa4: {
     titulo: 'Paginas adicionais',
     descricao: 'Escolha as paginas extras que voce quer adicionar ao seu site.',
-    textoAcaoAntesImagem: 'Clique no Botão ',
-    imagemAcaoSrc: '/mais.webp',
-    imagemAcaoAlt: 'Simbolo de mais para abrir os detalhes',
-    textoAcaoDepoisImagem: 'ou na opcao desejada.',
+    ...ACAO_ABRIR_DETALHES,
     contadorSelecionadas: 'selecionadas',
     textoProximo: 'Continuar',
     opcoes: PAGINAS_EXTRAS_OPCOES
@@ -90,10 +97,7 @@ export const FORMULARIO_CONFIG = {
   etapa5: {
     titulo: 'Extras e integracoes',
     descricao: 'Escolha recursos extras para deixar seu site mais completo e mais util para seus clientes.',
-    textoAcaoAntesImagem: 'Clique no Botão ',
-    imagemAcaoSrc: '/mais.webp',
-    imagemAcaoAlt: 'Simbolo de mais para abrir os detalhes',
-    textoAcaoDepoisImagem: 'ou na opcao desejada.',
+    ...ACAO_ABRIR_DETALHES,
     opcoes: EXTRAS_INTEGRACOES_OPCOES,
     textoProximoPadrao: 'Concluir projeto',
     textoProximoEcommerce: 'Continuar'
@@ -101,10 +105,7 @@ export const FORMULARIO_CONFIG = {
   etapa6: {
     titulo: 'Configuracoes da loja virtual',
     descricao: 'Escolha como sua loja virtual vai funcionar para vender seus produtos pela internet.',
-    textoAcaoAntesImagem: 'Clique no Botão ',
-    imagemAcaoSrc: '/mais.webp',
-    imagemAcaoAlt: 'Simbolo de mais para abrir os detalhes',
-    textoAcaoDepoisImagem: 'ou na opcao desejada.',
+    ...ACAO_ABRIR_DETALHES,
     opcoes: ECOMMERCE_EXTRAS_OPCOES,
     textoProximo: 'Finalizar e enviar projeto'
   }

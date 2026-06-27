@@ -16,6 +16,7 @@ import {
   STATUS_LOGO_TEXTOS
 } from './configuracaoCatalogos';
 import { CATALOGO_VISUAL_MODELOS } from './configuracaoVisualSecoes';
+import { formatarMoedaBRL } from '../utils/formatadores';
 import type {
   CategoriaSecao,
   CategoriaSecaoConfig,
@@ -116,15 +117,15 @@ const ECOMMERCE_EXTRAS_PRECOS = [
 
 const PRECOS_CATEGORIAS_SECOES = [
   { id: 'capa', precoBase: 0 },
-  { id: 'cardapio_produtos', precoBase: 140 },
-  { id: 'sobre', precoBase: 100 },
-  { id: 'servicos', precoBase: 150 },
-  { id: 'depoimentos', precoBase: 90 },
-  { id: 'faq', precoBase: 70 },
-  { id: 'blog', precoBase: 160 },
-  { id: 'formulario', precoBase: 110 },
-  { id: 'video', precoBase: 120 },
-  { id: 'galeria', precoBase: 140 }
+  { id: 'cardapio_produtos', precoBase: 0},
+  { id: 'sobre', precoBase: 0 },
+  { id: 'servicos', precoBase: 0},
+  { id: 'depoimentos', precoBase: 0 },
+  { id: 'faq', precoBase: 0 },
+  { id: 'blog', precoBase: 0 },
+  { id: 'formulario', precoBase: 0},
+  { id: 'video', precoBase: 0},
+  { id: 'galeria', precoBase: 0 }
 ] as const;
 
 const PRECOS_MODELOS_SECOES_ENTRADAS = [
@@ -301,13 +302,26 @@ export function obterPrecoExibicao(item: Precificavel | undefined, pacote?: Paco
   return item.preco ?? 0;
 }
 
-function formatarMoeda(valor: number) {
-  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+export function obterPrecoSecaoSelecionada(
+  categoria: CategoriaSecao,
+  modeloId?: ModeloSecaoId,
+  pacote?: Pacote | null
+) {
+  const precoCategoria = PRECOS_SECOES[categoria] ?? 0;
+
+  if (!modeloId) {
+    return precoCategoria;
+  }
+
+  const modelo = obterModeloSecaoConfig(modeloId);
+  if (itemEstaIncluidoNoPacote(modelo ?? undefined, pacote)) return 0;
+
+  return precoCategoria + obterPrecoExibicao(modelo ?? undefined, pacote);
 }
 
 function obterPrecoOriginalRiscado(item: Precificavel | undefined) {
   if (!item || typeof item.preco !== 'number' || item.preco <= 0) return undefined;
-  return formatarMoeda(item.preco);
+  return formatarMoedaBRL(item.preco);
 }
 
 export function obterRotuloPreco(item: Precificavel | undefined, pacote?: Pacote | null) {
@@ -315,7 +329,21 @@ export function obterRotuloPreco(item: Precificavel | undefined, pacote?: Pacote
   if (!item || typeof item.preco !== 'number') return null;
   if (item.preco === 0) return 'Sem custos';
   if (item.preco < 0) return null;
-  return `+ ${formatarMoeda(item.preco)}`;
+  return `+ ${formatarMoedaBRL(item.preco)}`;
+}
+
+export function obterRotuloPrecoSecaoModelo(
+  categoria: CategoriaSecao,
+  modeloId: ModeloSecaoId,
+  pacote?: Pacote | null
+) {
+  const modelo = obterModeloSecaoConfig(modeloId);
+  if (itemEstaIncluidoNoPacote(modelo ?? undefined, pacote)) return 'Incluido no pacote';
+
+  const preco = obterPrecoSecaoSelecionada(categoria, modeloId, pacote);
+  if (preco === 0) return 'Sem custos';
+  if (preco < 0) return null;
+  return `+ ${formatarMoedaBRL(preco)}`;
 }
 
 export function obterMetaPreco(item: Precificavel | undefined, pacote?: Pacote | null): MetaPrecoExibicao | null {
@@ -328,6 +356,25 @@ export function obterMetaPreco(item: Precificavel | undefined, pacote?: Pacote |
   };
 }
 
+export function obterMetaPrecoSecaoModelo(
+  categoria: CategoriaSecao,
+  modeloId: ModeloSecaoId,
+  pacote?: Pacote | null
+): MetaPrecoExibicao | null {
+  const texto = obterRotuloPrecoSecaoModelo(categoria, modeloId, pacote);
+  const modelo = obterModeloSecaoConfig(modeloId);
+  if (!texto || !modelo) return null;
+
+  const precoOriginal = itemEstaIncluidoNoPacote(modelo, pacote)
+    ? formatarMoedaBRL((PRECOS_SECOES[categoria] ?? 0) + (modelo.preco ?? 0))
+    : undefined;
+
+  return {
+    texto,
+    precoOriginal
+  };
+}
+
 export function obterRotuloFaixaPrecoCategoria(categoria: CategoriaSecao, pacote?: Pacote | null) {
   const categoriaConfig = obterCategoriaSecaoConfig(categoria);
   if (categoriaConfig.modelos.length === 0) return null;
@@ -336,17 +383,17 @@ export function obterRotuloFaixaPrecoCategoria(categoria: CategoriaSecao, pacote
     return 'Incluido no pacote';
   }
 
-  const precos = categoriaConfig.modelos.map((modelo) => obterPrecoExibicao(modelo, pacote));
+  const precos = categoriaConfig.modelos.map((modelo) => obterPrecoSecaoSelecionada(categoria, modelo.id, pacote));
   const menorPreco = Math.min(...precos);
   const maiorPreco = Math.max(...precos);
 
   if (maiorPreco === 0) return 'Sem custos';
 
   if (categoriaConfig.modelos.length === 1 || menorPreco === maiorPreco) {
-    return `A partir de ${formatarMoeda(menorPreco)}`;
+    return `A partir de ${formatarMoedaBRL(menorPreco)}`;
   }
 
-  return `A partir de ${formatarMoeda(menorPreco)} ate ${formatarMoeda(maiorPreco)}`;
+  return `A partir de ${formatarMoedaBRL(menorPreco)} ate ${formatarMoedaBRL(maiorPreco)}`;
 }
 
 export function obterMetaFaixaPrecoCategoria(categoria: CategoriaSecao, pacote?: Pacote | null): MetaPrecoExibicao | null {
@@ -371,7 +418,7 @@ export function obterMetaFaixaPrecoCategoria(categoria: CategoriaSecao, pacote?:
   const menorPreco = Math.min(...precosOriginais);
   const maiorPreco = Math.max(...precosOriginais);
   const precoOriginal =
-    menorPreco === maiorPreco ? formatarMoeda(menorPreco) : `${formatarMoeda(menorPreco)} - ${formatarMoeda(maiorPreco)}`;
+    menorPreco === maiorPreco ? formatarMoedaBRL(menorPreco) : `${formatarMoedaBRL(menorPreco)} - ${formatarMoedaBRL(maiorPreco)}`;
 
   return {
     texto,
@@ -437,10 +484,7 @@ export function calcularValorProjeto({
   if (!pacote) return 0;
 
   const valorSecoes = secoes.reduce((total, secao) => {
-    const modelo = secao.modelo ? obterModeloSecaoConfig(secao.modelo) : null;
-    const precoModelo = obterPrecoExibicao(modelo ?? undefined, pacote);
-    const precoCategoria = PRECOS_SECOES[secao.categoria];
-    return total + (modelo ? precoModelo : precoCategoria ?? 0);
+    return total + obterPrecoSecaoSelecionada(secao.categoria, secao.modelo, pacote);
   }, 0);
 
   const valorPaginasExtras = paginasExtras.reduce((total, pagina) => {

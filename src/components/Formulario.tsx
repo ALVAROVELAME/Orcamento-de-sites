@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Etapa1 } from './Etapas/Etapa1';
 import { Etapa2 } from './Etapas/Etapa2';
 import { Etapa3 } from './Etapas/Etapa3';
@@ -10,19 +10,25 @@ import {
   PACOTES,
   calcularValorProjeto,
   itemEstaIncluidoNoPacote,
+  type CategoriaSecao,
   type InfoSite,
+  type ModeloSecaoId,
   type Pacote,
   type SecaoNoSite
 } from '../data/precos';
+import { mesclarUnicos } from '../utils/colecoes';
+import { scrollParaTopo } from '../utils/scroll';
 import { abrirWhatsAppFormulario } from '../utils/whatsappFormulario';
 
 type EtapaFormulario = 1 | 2 | 3 | 4 | 5 | 6;
+type SecaoParaPreco = { categoria: CategoriaSecao; modelo?: ModeloSecaoId };
 
 export function Formulario() {
   const [etapaAtual, setEtapaAtual] = useState<EtapaFormulario>(1);
   const [pacoteEscolhido, setPacoteEscolhido] = useState<Pacote | null>(null);
   const [infoSite, setInfoSite] = useState<InfoSite>(INFO_SITE_INICIAL);
   const [site, setSite] = useState<SecaoNoSite[]>([]);
+  const [secoesParaPreco, setSecoesParaPreco] = useState<SecaoParaPreco[] | null>(null);
   const [etapa3ResetKey, setEtapa3ResetKey] = useState(0);
 
   const obterIdsInclusosNoPacote = <TId extends string>(
@@ -34,42 +40,55 @@ export function Formulario() {
       .map((opcao) => opcao.id);
   };
 
-  const mesclarIdsUnicos = <TId extends string>(atuais: readonly TId[] | undefined, inclusos: readonly TId[]) => {
-    return [...new Set([...(atuais ?? []), ...inclusos])] as TId[];
-  };
-
   const aplicarItensInclusosDoPacote = (atual: InfoSite, pacote: Pacote): InfoSite => {
     const paginasExtrasInclusas = obterIdsInclusosNoPacote(FORMULARIO_CONFIG.etapa4.opcoes, pacote);
     const extrasIntegracoesInclusos = obterIdsInclusosNoPacote(FORMULARIO_CONFIG.etapa5.opcoes, pacote);
 
     return {
       ...atual,
-      paginas_extras: mesclarIdsUnicos(atual.paginas_extras, paginasExtrasInclusas),
-      extras_integracoes: mesclarIdsUnicos(atual.extras_integracoes, extrasIntegracoesInclusos)
+      paginas_extras: mesclarUnicos(atual.paginas_extras, paginasExtrasInclusas),
+      extras_integracoes: mesclarUnicos(atual.extras_integracoes, extrasIntegracoesInclusos)
     };
   };
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollParaTopo();
   }, [etapaAtual]);
 
-  const obterValorTotal = () => {
+  const valorTotal = useMemo(() => {
     if (!pacoteEscolhido) return 0;
 
     return calcularValorProjeto({
       pacoteId: pacoteEscolhido.id,
-      secoes: site,
+      secoes: secoesParaPreco ?? site,
       paginasExtras: infoSite.paginas_extras,
       extrasIntegracoes: infoSite.extras_integracoes,
       ecommerceExtras: infoSite.ecommerce_extras,
       temHospedagemDominio: infoSite.tem_hospedagem_dominio,
       statusLogo: infoSite.status_logo
     });
-  };
+  }, [infoSite, pacoteEscolhido, secoesParaPreco, site]);
 
   const avancarParaEtapa2 = (pacote: Pacote) => {
+    const mudouPacote = pacoteEscolhido?.id !== pacote.id;
     setPacoteEscolhido(pacote);
-    setInfoSite((atual) => aplicarItensInclusosDoPacote(atual, pacote));
+
+    if (mudouPacote) {
+      setSite([]);
+      setSecoesParaPreco([]);
+      setInfoSite((atual) =>
+        aplicarItensInclusosDoPacote({
+          ...atual,
+          paginas_extras: [],
+          extras_integracoes: [],
+          ecommerce_extras: []
+        }, pacote)
+      );
+      setEtapa3ResetKey((prev) => prev + 1);
+    } else {
+      setInfoSite((atual) => aplicarItensInclusosDoPacote(atual, pacote));
+    }
+
     setEtapaAtual(2);
   };
 
@@ -99,6 +118,7 @@ export function Formulario() {
 
     if (mudouPacote) {
       setSite([]);
+      setSecoesParaPreco([]);
       setInfoSite((atual) =>
         aplicarItensInclusosDoPacote({
           ...atual,
@@ -122,7 +142,7 @@ export function Formulario() {
       infoSite,
       pacoteEscolhido,
       site,
-      valorTotal: obterValorTotal()
+      valorTotal
     });
   };
 
@@ -135,7 +155,7 @@ export function Formulario() {
         etapaAtual={etapaAtual}
         pacoteEscolhido={pacoteEscolhido}
         listaPacotes={PACOTES}
-        valorTotal={obterValorTotal()}
+        valorTotal={valorTotal}
         selecionarPacote={selecionarPacoteDireto}
       />
 
@@ -157,6 +177,7 @@ export function Formulario() {
             pacoteEscolhido={pacoteEscolhido}
             site={site}
             setSite={setSite}
+            setSecoesParaPreco={setSecoesParaPreco}
             onVoltarEtapaAnterior={voltarEtapa}
             onAvancarParaEtapa4={avancarParaEtapa4}
           />

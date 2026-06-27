@@ -1,16 +1,16 @@
 import { useState } from 'react';
+import { scrollParaElemento, scrollParaTopo } from '../utils/scroll';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToFormulario = () => {
-    const elemento = document.getElementById('formulario');
-    elemento?.scrollIntoView({ behavior: 'smooth' });
+    scrollParaElemento('formulario');
     setIsOpen(false);
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollParaTopo();
     setIsOpen(false);
   };
 
@@ -19,14 +19,14 @@ export function Navbar() {
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
         
         {/* Logo */}
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <a href="/" className="flex items-center gap-3 flex-shrink-0" aria-label="Voltar para a pagina principal">
           <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
             📝
           </div>
           <div className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
             Orçamento<span className="text-blue-600">Web</span>
           </div>
-        </div>
+        </a>
 
         {/* Links para Desktop */}
         <div className="hidden md:flex items-center gap-6">
@@ -44,21 +44,33 @@ export function Navbar() {
 
         {/* Botão Menu Mobile */}
         <div className="flex items-center md:hidden">
-          <button 
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-2 text-slate-700 hover:text-blue-600 focus:outline-none rounded-xl hover:bg-slate-50"
-            aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={isOpen}
-            aria-controls="menu-mobile-principal"
-          >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isOpen ? (
+          {isOpen ? (
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="p-2 text-slate-700 hover:text-blue-600 focus:outline-none rounded-xl hover:bg-slate-50"
+              aria-label="Fechar menu"
+              aria-expanded="true"
+              aria-controls="menu-mobile-principal"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.3} d="M6 18L18 6M6 6l12 12" />
-              ) : (
+              </svg>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsOpen(true)}
+              className="p-2 text-slate-700 hover:text-blue-600 focus:outline-none rounded-xl hover:bg-slate-50"
+              aria-label="Abrir menu"
+              aria-expanded="false"
+              aria-controls="menu-mobile-principal"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.3} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 

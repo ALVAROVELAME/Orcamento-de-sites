@@ -12,6 +12,7 @@ import {
   type SecaoNoSite,
   type StatusLogoId
 } from '../data/precos';
+import { formatarMoedaBRL, formatarSimNao } from './formatadores';
 
 interface ResumoFormularioWhatsapp {
   infoSite: InfoSite;
@@ -19,9 +20,6 @@ interface ResumoFormularioWhatsapp {
   site: SecaoNoSite[];
   valorTotal: number;
 }
-
-const formatarMoeda = (valor: number) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-const formatarSimNao = (valor?: boolean) => (valor ? 'Sim' : 'Nao');
 
 function criarLinhaLista(titulo: string, rotulo?: string | null) {
   return rotulo ? `- ${titulo} (${rotulo})` : `- ${titulo}`;
@@ -92,8 +90,8 @@ export function montarMensagemFormularioWhatsapp({
       `- Projeto: ${infoSite.nome || 'Nao informado'}`,
       `- Pacote escolhido: ${pacoteEscolhido.nome}`,
       `- Descricao do pacote: ${pacoteEscolhido.descricao}`,
-      `- Preco base do pacote: ${formatarMoeda(pacoteEscolhido.precoBase)}`,
-      `- Total estimado do projeto: ${formatarMoeda(valorTotal)}`
+      `- Preco base do pacote: ${formatarMoedaBRL(pacoteEscolhido.precoBase)}`,
+      `- Total estimado do projeto: ${formatarMoedaBRL(valorTotal)}`
     ]),
     ...criarBloco('IDENTIDADE VISUAL', [
       `- Status do logo: ${formatarStatusLogo(infoSite.status_logo).replace(/^- /, '')}`,

@@ -1,5 +1,6 @@
 import { BotoesNavegacao } from '../../Etapas/BotoesNavegacao';
 import { obterMetaPreco, type Pacote } from '../../../data/precos';
+import { FormStepHeader } from './FormStepHeader';
 import { SelectableAccordion } from './SelectableAccordion';
 
 interface OptionItem {
@@ -56,33 +57,21 @@ export function OptionSelectionStep({
       <div className="w-full max-w-none px-0 animate-fade-in delay-[300ms] fill-mode-both relative">
         <div className="bg-white w-full p-4 md:p-6 relative shadow-sm border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 mt-2">
-            <div className="mb-6 pb-4 border-b border-slate-100 flex justify-between items-end gap-4">
-              <div>
-                <h3 className="text-2xl md:text-3xl font-black text-slate-800">{titulo}</h3>
-                <div className="mt-1 flex flex-wrap items-center gap-2 text-base md:text-lg text-slate-700 leading-relaxed">
-                  <span>{descricao}</span>
-                  {textoAcaoAntesImagem ? <span className="font-bold text-slate-900">{textoAcaoAntesImagem}</span> : null}
-                  {imagemAcaoSrc ? (
-                    <img
-                      src={imagemAcaoSrc}
-                      alt={imagemAcaoAlt ?? 'Imagem de ajuda'}
-                      className="inline-block h-12 w-12 md:h-14 md:w-14 rounded-sm align-middle"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : null}
-                  {textoAcaoDepoisImagem ? <span className="font-bold text-slate-900">{textoAcaoDepoisImagem}</span> : null}
-                </div>
-              </div>
-
-              {contadorSelecionadas ? (
+            <FormStepHeader
+              titulo={titulo}
+              descricao={descricao}
+              textoAcaoAntesImagem={textoAcaoAntesImagem}
+              imagemAcaoSrc={imagemAcaoSrc}
+              imagemAcaoAlt={imagemAcaoAlt}
+              textoAcaoDepoisImagem={textoAcaoDepoisImagem}
+              rightContent={contadorSelecionadas ? (
                 <div className="text-right hidden sm:block">
                   <span className="text-base font-bold text-indigo-700">
                     {selecionados.length} {contadorSelecionadas}
                   </span>
                 </div>
               ) : null}
-            </div>
+            />
 
             <div className="flex flex-col gap-4 w-full mt-6 xl:max-w-5xl xl:mx-auto">
               {opcoes.map((opcao) => {

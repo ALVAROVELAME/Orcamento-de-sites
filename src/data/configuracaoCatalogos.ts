@@ -31,33 +31,33 @@ export interface PacoteBaseConfig {
 const CATALOGO_PACOTES_ATIVOS_BASE: Record<Exclude<PacoteId, 'loja_pequena'>, PacoteBaseConfig> = {
   cartao_3: {
     id: 'cartao_3',
-    nome: 'Cartao Digital 3 Secoes',
-    descricao: 'Ideal para contatos rapidos, link da bio e divulgacao inicial.',
+    nome: 'Cartao Digital Essencial',
+    descricao: 'Entre no ar com uma pagina direta para apresentar seu negocio e gerar contatos rapido.',
     limiteSecoes: 3,
     limitePaginas: 1,
-    detalhes: ['Ate 3 secoes', 'Pagina unica (Link na Bio)', 'Botao WhatsApp', 'Otimizacao PageSpeed'],
+    detalhes: ['Pagina unica para divulgar seu negocio', 'WhatsApp incluido para captar contatos', 'Politica de privacidade incluida', 'Ideal para comecar a vender online'],
     fluxo: 'padrao',
-    icone: '🔗'
+    icone: 'badge-check'
   },
   cartao_6: {
     id: 'cartao_6',
-    nome: 'Cartao Digital 6 Secoes',
-    descricao: 'Mais completo, ideal para quem quer uma apresentacao mais forte da marca.',
+    nome: 'Cartao Digital Completo',
+    descricao: 'Tenha uma pagina mais forte para apresentar sua marca, destacar servicos e aumentar a confianca do cliente.',
     limiteSecoes: 6,
     limitePaginas: 1,
-    detalhes: ['Ate 6 secoes', 'Pagina unica', 'Mapa interativo', 'Integracao de depoimentos'],
+    detalhes: ['Mais espaco para vender seus servicos', 'Mapa incluido para facilitar o contato', 'Depoimentos para gerar confianca', 'Politica de privacidade incluida'],
     fluxo: 'padrao',
-    icone: '🚀'
+    icone: 'gem'
   },
   institucional: {
     id: 'institucional',
-    nome: 'Site Institucional Basico',
-    descricao: 'Presenca online profissional padrao.',
+    nome: 'Site Institucional Profissional',
+    descricao: 'Uma estrutura profissional para empresas que precisam vender melhor, passar autoridade e organizar mais informacoes.',
     limiteSecoes: 8,
     limitePaginas: 3,
-    detalhes: ['Secoes na Home', 'Ate 3 paginas internas', 'Formulario avancado', 'Design exclusivo'],
+    detalhes: ['Ate 3 paginas internas incluidas', 'Sobre Nos e Contato ja incluidos', 'WhatsApp e politica de privacidade incluidos', 'Ideal para vender com mais autoridade'],
     fluxo: 'padrao',
-    icone: '🏢'
+    icone: 'building-2'
   }
 };
 
@@ -72,7 +72,7 @@ const CATALOGO_PACOTES_FUTUROS_BASE: Record<Extract<PacoteId, 'loja_pequena'>, P
     limitePaginas: 5,
     detalhes: ['Catalogo de produtos', 'Carrinho de compras', 'Integracao meios de pagamento', 'Painel de pedidos'],
     fluxo: 'ecommerce',
-    icone: '🛒'
+    icone: 'store'
   }
 };
 
