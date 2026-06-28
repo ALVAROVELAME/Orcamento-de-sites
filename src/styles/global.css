@@ -53,3 +53,66 @@ img, video {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+@keyframes snow-diagonal-drift {
+  0% {
+    transform: translate3d(-24vw, -28vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate3d(36vw, 128vh, 0) rotate(210deg);
+    opacity: 0;
+  }
+}
+
+.animate-snow-diagonal-slow {
+  animation: snow-diagonal-drift 18s linear infinite;
+  will-change: transform, opacity;
+}
+
+.animate-snow-diagonal-medium {
+  animation: snow-diagonal-drift 14s linear infinite;
+  will-change: transform, opacity;
+}
+
+.animate-snow-diagonal-fast {
+  animation: snow-diagonal-drift 10s linear infinite;
+  will-change: transform, opacity;
+}
+
+.snow-delay-1 {
+  animation-delay: -2s;
+}
+
+.snow-delay-2 {
+  animation-delay: -5s;
+}
+
+.snow-delay-3 {
+  animation-delay: -8s;
+}
+
+.snow-delay-4 {
+  animation-delay: -11s;
+}
+
+.snow-delay-5 {
+  animation-delay: -14s;
+}
+
+.snow-delay-6 {
+  animation-delay: -6s;
+}
+
+.snow-delay-7 {
+  animation-delay: -9s;
+}
+
+.snow-delay-8 {
+  animation-delay: -12s;
+}

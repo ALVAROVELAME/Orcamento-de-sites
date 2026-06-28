@@ -149,7 +149,7 @@ export function Formulario() {
   return (
     <main
       id="formulario"
-      className="w-full min-h-screen bg-slate-50 flex flex-col items-center font-sans pt-[72px] md:pt-[72px]"
+      className="w-full min-h-screen bg-transparent flex flex-col items-center font-sans pt-[72px] md:pt-[72px]"
     >
       <ProgressBar
         etapaAtual={etapaAtual}

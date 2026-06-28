@@ -252,7 +252,7 @@ export function Etapa3({
   const categoriaAtualConfig = categoriaAtual ? obterCategoriaSecaoConfig(categoriaAtual) : null;
 
   return (
-    <div className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen relative overflow-hidden">
+    <div className="w-full flex flex-col items-center pb-24 bg-transparent min-h-screen relative overflow-hidden">
       <AvisoFlutuante
         visivel={mostrarAvisoLimite}
         lado="right"
@@ -276,7 +276,7 @@ export function Etapa3({
       />
 
       <div className="w-full max-w-none px-0 animate-fade-in delay-[300ms] fill-mode-both relative">
-        <div className={`bg-white w-full p-4 md:p-6 relative ${fase === 'escolha_modelos' ? 'shadow-none bg-transparent' : 'shadow-sm border-b border-slate-200'}`}>
+        <div className={`w-full p-4 md:p-6 relative ${fase === 'escolha_modelos' ? 'bg-transparent shadow-none' : 'bg-white/85 backdrop-blur-sm shadow-sm border-b border-slate-200'}`}>
           {fase === 'selecao_inicial' && (
             <div className="max-w-7xl mx-auto px-4 mt-2">
               <FormStepHeader

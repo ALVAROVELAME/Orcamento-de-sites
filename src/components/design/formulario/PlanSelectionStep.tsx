@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { BadgeCheck, Building2, Gem, Store } from 'lucide-react';
 import type { Pacote } from '../../../data/precos';
 import { obterTotalSecoesComCapa } from '../../../data/precos';
@@ -76,6 +77,34 @@ export function PlanSelectionStep({
 }: PlanSelectionStepProps) {
   const gridClassName =
     pacotes.length === 3 ? 'md:grid-cols-2 lg:grid-cols-3 lg:max-w-6xl lg:mx-auto' : 'md:grid-cols-2 lg:grid-cols-4';
+  const [quantidadeCardsVisiveis, setQuantidadeCardsVisiveis] = useState(0);
+
+  useEffect(() => {
+    let intervalId: number | undefined;
+
+    const timeoutId = window.setTimeout(() => {
+      setQuantidadeCardsVisiveis(1);
+
+      intervalId = window.setInterval(() => {
+        setQuantidadeCardsVisiveis((quantidadeAtual) => {
+          const proximaQuantidade = Math.min(quantidadeAtual + 1, pacotes.length);
+
+          if (proximaQuantidade >= pacotes.length) {
+            window.clearInterval(intervalId);
+          }
+
+          return proximaQuantidade;
+        });
+      }, 70);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      if (intervalId) window.clearInterval(intervalId);
+    };
+  }, [pacotes.length]);
+
+  const pacotesVisiveis = pacotes.slice(0, quantidadeCardsVisiveis);
 
   return (
     <div className="w-full max-w-7xl px-4 py-8 md:py-20 flex flex-col items-center animate-fade-in">
@@ -106,10 +135,10 @@ export function PlanSelectionStep({
       </div>
 
       <div className={`grid grid-cols-1 gap-6 md:gap-8 w-full ${gridClassName}`}>
-        {pacotes.map((pacote) => (
+        {pacotesVisiveis.map((pacote) => (
           <div
             key={pacote.id}
-            className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/40 border border-slate-100 hover:border-indigo-500 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between"
+            className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/40 border border-slate-100 hover:border-indigo-500 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between animate-fade-in"
           >
             <div>
               <div

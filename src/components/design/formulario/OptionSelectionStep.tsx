@@ -53,9 +53,9 @@ export function OptionSelectionStep({
   const descricaoBorderClass = accent === 'emerald' ? 'border-emerald-500' : 'border-indigo-500';
 
   return (
-    <div className="w-full flex flex-col items-center pb-24 bg-slate-50 min-h-screen">
+    <div className="w-full flex flex-col items-center pb-24 bg-transparent min-h-screen">
       <div className="w-full max-w-none px-0 animate-fade-in delay-[300ms] fill-mode-both relative">
-        <div className="bg-white w-full p-4 md:p-6 relative shadow-sm border-b border-slate-200">
+        <div className="bg-white/85 backdrop-blur-sm w-full p-4 md:p-6 relative shadow-sm border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 mt-2">
             <FormStepHeader
               titulo={titulo}
