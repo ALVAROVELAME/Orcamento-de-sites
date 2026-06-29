@@ -2,9 +2,8 @@
 
 export const SITE_CONFIG = {
   contact: {
-    phoneRaw: "5511999999999",
-    phoneFormatted: "(11) 99999-9999",
-    email: "contato@orcamentoweb.com",
+    phoneRaw: "+557599331557",
+    phoneFormatted: "(75) 99331-557",
     whatsappNumber: "557599331557"
   }
 };

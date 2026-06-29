@@ -56,8 +56,7 @@ export function Footer() {
           <div>
             <h3 className="text-white font-bold mb-4 uppercase text-base">Contato</h3>
             <div className="space-y-2 text-base">
-              <p>📧 contato@orcamentoweb.com</p>
-              <p>📱 (11) 99999-9999</p>
+              <p>📱 (75) 99331-557</p>
             </div>
           </div>
         </div>
@@ -67,7 +66,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="text-center text-base text-slate-300">
-          <p>&copy; 2024 OrçamentoWeb. Todos os direitos reservados.</p>
+          <p>&copy; 2024 OrçamentoWeb. Álvaro Velame. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

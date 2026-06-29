@@ -3,16 +3,18 @@ import {
   mapearTitulosEstiloMarca,
   obterCategoriaSecaoConfig,
   obterMetaPreco,
+  obterMetaPrecoSecaoModelo,
   obterModeloSecaoConfig,
   obterOpcaoExtraIntegracao,
   obterOpcaoPaginaExtra,
   obterOpcaoStatusLogo,
+  PRECO_HOSPEDAGEM_DOMINIO,
   type InfoSite,
   type Pacote,
   type SecaoNoSite,
   type StatusLogoId
 } from '../data/precos';
-import { formatarMoedaBRL, formatarSimNao } from './formatadores';
+import { formatarMoedaBRL } from './formatadores';
 
 interface ResumoFormularioWhatsapp {
   infoSite: InfoSite;
@@ -49,6 +51,11 @@ function formatarStatusLogo(status?: StatusLogoId | '') {
   return criarLinhaLista(opcao.titulo, formatarMetaPreco(obterMetaPreco(opcao)));
 }
 
+function formatarHospedagemDominio(temHospedagemDominio?: boolean) {
+  if (temHospedagemDominio) return 'Ja tenho hospedagem e dominio';
+  return `Incluir hospedagem e dominio (+ ${formatarMoedaBRL(PRECO_HOSPEDAGEM_DOMINIO)})`;
+}
+
 function formatarOpcoesComPreco<TId extends string>(
   ids: readonly TId[] | undefined,
   pacoteEscolhido: Pacote,
@@ -71,7 +78,10 @@ function formatarSecoes(site: SecaoNoSite[], pacoteEscolhido: Pacote) {
     const categoria = obterCategoriaSecaoConfig(secao.categoria);
     const modelo = obterModeloSecaoConfig(secao.modelo);
     const titulo = `${index + 1}. ${categoria.nome} - ${modelo?.nome ?? secao.modelo}`;
-    return criarLinhaLista(titulo, formatarMetaPreco(obterMetaPreco(modelo ?? undefined, pacoteEscolhido)));
+    return criarLinhaLista(
+      titulo,
+      formatarMetaPreco(obterMetaPrecoSecaoModelo(secao.categoria, secao.modelo, pacoteEscolhido))
+    );
   });
 }
 
@@ -95,7 +105,7 @@ export function montarMensagemFormularioWhatsapp({
     ]),
     ...criarBloco('IDENTIDADE VISUAL', [
       `- Status do logo: ${formatarStatusLogo(infoSite.status_logo).replace(/^- /, '')}`,
-      `- Hospedagem e dominio: ${formatarSimNao(infoSite.tem_hospedagem_dominio)}`,
+      `- Hospedagem e dominio: ${formatarHospedagemDominio(infoSite.tem_hospedagem_dominio)}`,
       // Paleta de cores desativada temporariamente.
       // `- Cores escolhidas: ${formatarCores(infoSite.cores)}`,
       `- Quantidade de estilos de marca: ${estilosMarca.length}`

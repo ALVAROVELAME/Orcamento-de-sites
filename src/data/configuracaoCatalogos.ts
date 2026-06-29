@@ -239,161 +239,161 @@ export const CATALOGO_TEXTOS_MODELOS: EntradaTextoModelo<ModeloSecaoId>[] = [
   {
     id: 'CapaModel1',
     nome: 'Capa Essencial de Apresentacao',
-    descricao: 'Apresenta sua empresa de forma clara e objetiva logo na abertura do site, com titulo principal, texto curto, imagem ou fundo simples e botao de contato. Usa uma estrutura limpa, responsiva e facil de entender, ideal para quem precisa de uma presenca profissional direta.'
+    descricao: 'Apresenta sua empresa de forma clara na abertura do site, com título, texto curto, imagem e botão de contato. Estrutura limpa, responsiva e direta.'
   },
   {
     id: 'CapaModel2',
     nome: 'Capa Profissional Animada',
-    descricao: 'Cria uma abertura mais moderna e visualmente trabalhada, combinando texto, imagem em destaque, botoes, fundo personalizado, formas decorativas e animacoes suaves. Exige mais composicao visual e melhora a primeira impressao do visitante, transmitindo mais profissionalismo e confianca.'
+    descricao: 'Abertura moderna com texto, imagem em destaque, botões, fundo personalizado, formas decorativas e animações suaves. Transmite profissionalismo e confiança.'
   },
   {
     id: 'CapaModel3',
     nome: 'Capa Premium de Conversao',
-    descricao: 'Desenvolve uma abertura de alto impacto, com elementos estrategicos como cards de beneficios, numeros, selos de confianca, prova de valor, microinteracoes e animacoes mais elaboradas. Ideal para aumentar a percepcao de valor da marca e incentivar o visitante a pedir orcamento, chamar no WhatsApp ou comprar.'
+    descricao: 'Abertura de alto impacto com cards de benefícios, selos de confiança, microinterações e animações elaboradas. Ideal para incentivar orçamentos, WhatsApp ou compras.'
   },
 
   {
     id: 'SobreModel1',
     nome: 'Sobre Classico',
-    descricao: 'Mostra quem voce e, o que faz e por que sua empresa existe, de forma direta, clara e facil de entender.'
+    descricao: 'Mostra quem você é, o que faz e por que sua empresa existe, de forma direta e fácil de entender.'
   },
   {
     id: 'SobreModel2',
     nome: 'Sobre com Blocos Visuais',
-    descricao: 'Organiza sua apresentacao em blocos, icones ou cards para destacar diferenciais e deixar a leitura mais profissional.'
+    descricao: 'Organiza sua apresentação em blocos, ícones ou cards para destacar diferenciais com visual mais profissional.'
   },
   {
     id: 'SobreModel3',
     nome: 'Sobre Storytelling',
-    descricao: 'Conta a historia da sua empresa de forma mais envolvente, usando uma sequencia visual para transmitir experiencia e autoridade.'
+    descricao: 'Conta a história da sua empresa de forma envolvente, usando sequência visual para transmitir experiência e autoridade.'
   },
 
   {
     id: 'ServicosModel1',
     nome: 'Servicos em Lista',
-    descricao: 'Mostra seus servicos de forma simples e objetiva, ajudando o visitante a entender rapidamente o que voce oferece.'
+    descricao: 'Mostra seus serviços de forma simples e objetiva, ajudando o visitante a entender rapidamente o que você oferece.'
   },
   {
     id: 'ServicosModel2',
     nome: 'Servicos em Cards',
-    descricao: 'Apresenta seus servicos em cards com icones e beneficios, deixando a apresentacao mais clara, bonita e atrativa.'
+    descricao: 'Apresenta serviços em cards com ícones e benefícios, tornando a apresentação mais clara e atrativa.'
   },
   {
     id: 'ServicosModel3',
     nome: 'Servicos em Vitrine',
-    descricao: 'Cria uma vitrine mais comercial para destacar seus principais servicos e guiar o visitante para a acao.'
+    descricao: 'Vitrine comercial para destacar seus principais serviços e guiar o visitante para a ação.'
   },
 
   {
     id: 'CardapioModel1',
     nome: 'Cardapio em Lista',
-    descricao: 'Mostra seus produtos em uma lista limpa, com nome, descricao e preco, facilitando a consulta rapida pelo cliente.'
+    descricao: 'Lista limpa com nome, descrição e preço, facilitando a consulta rápida pelo cliente.'
   },
   {
     id: 'CardapioModel2',
     nome: 'Cardapio em Cards',
-    descricao: 'Apresenta seus produtos em cards visuais com descricao, preco e destaque de contato, deixando o cardapio mais bonito e facil de vender.'
+    descricao: 'Produtos em cards visuais com descrição, preço e destaque de contato. Mais bonito e fácil de vender.'
   },
   {
     id: 'CardapioModel3',
     nome: 'Cardapio Vitrine',
-    descricao: 'Cria um cardapio com aparencia mais premium, separando produtos por categorias e valorizando promocoes ou itens especiais.'
+    descricao: 'Cardápio premium com produtos por categorias e destaque para promoções ou itens especiais.'
   },
 
   {
     id: 'DepCarrossel',
     nome: 'Depoimentos Simples',
-    descricao: 'Mostra comentarios de clientes de forma simples, ajudando a aumentar a confianca de quem visita o site.'
+    descricao: 'Exibe comentários de clientes de forma simples, aumentando a confiança de quem visita o site.'
   },
   {
     id: 'DepGoogle',
     nome: 'Depoimentos em Cards Elegantes',
-    descricao: 'Apresenta avaliacoes em cards mais elegantes, reforcando credibilidade com um visual mais organizado e profissional.'
+    descricao: 'Avaliações em cards organizados e elegantes, reforçando credibilidade com visual profissional.'
   },
   {
     id: 'DepTradicional',
     nome: 'Depoimento Principal com Apoios',
-    descricao: 'Cria mais destaque para a prova social, colocando um depoimento principal em evidencia e outros comentarios de apoio.'
+    descricao: 'Um depoimento principal em evidência com outros comentários de apoio, criando mais impacto na prova social.'
   },
 
   {
     id: 'FaqModel1',
     nome: 'FAQ Limpo',
-    descricao: 'Responde as duvidas mais comuns de forma clara, ajudando o visitante a tomar decisoes com mais seguranca.'
+    descricao: 'Responde as dúvidas mais comuns de forma clara, ajudando o visitante a decidir com mais segurança.'
   },
   {
     id: 'FaqModel2',
     nome: 'FAQ em Blocos',
-    descricao: 'Organiza as perguntas em blocos ou em formato abre-e-fecha, deixando a leitura mais limpa e profissional.'
+    descricao: 'Perguntas em formato abre-e-fecha, deixando a leitura mais limpa e a navegação mais fácil.'
   },
   {
     id: 'FaqModel3',
     nome: 'FAQ Organizado por Temas',
-    descricao: 'Separa as duvidas por temas, facilitando a navegacao e ajudando o cliente a encontrar respostas com mais rapidez.'
+    descricao: 'Dúvidas separadas por temas, facilitando que o cliente encontre respostas com mais rapidez.'
   },
 
   {
     id: 'BlogModel1',
     nome: 'Blog Simples',
-    descricao: 'Mostra seus conteudos, novidades ou artigos de forma simples, fortalecendo a presenca da marca no site.'
+    descricao: 'Exibe conteúdos, novidades ou artigos de forma simples, fortalecendo a presença da marca.'
   },
   {
     id: 'BlogModel2',
     nome: 'Blog em Grade Visual',
-    descricao: 'Organiza os conteudos em uma grade visual com titulos e resumos, deixando o blog mais atrativo e facil de navegar.'
+    descricao: 'Conteúdos em grade com títulos e resumos, tornando o blog mais atrativo e fácil de navegar.'
   },
   {
     id: 'BlogModel3',
     nome: 'Blog com Destaque Editorial',
-    descricao: 'Cria uma area editorial mais profissional, destacando um conteudo principal e apoiando com outros artigos menores.'
+    descricao: 'Um conteúdo principal em destaque apoiado por artigos menores, com aparência editorial profissional.'
   },
 
   {
     id: 'FormularioModel1',
     nome: 'Contato Simples',
-    descricao: 'Facilita o contato do visitante por WhatsApp ou formulario simples, tornando mais rapido pedir orcamento ou tirar duvidas.'
+    descricao: 'Facilita o contato por WhatsApp ou formulário simples para pedir orçamento ou tirar dúvidas rapidamente.'
   },
   {
     id: 'FormularioModel2',
     nome: 'Contato com Area de Apoio',
-    descricao: 'Acompanha o formulario com informacoes uteis, icones e orientacoes, deixando o contato mais claro e transmitindo mais confianca.'
+    descricao: 'Formulário acompanhado de informações, ícones e orientações que transmitem mais clareza e confiança.'
   },
   {
     id: 'FormularioModel3',
     nome: 'Contato com Layout de Conversao',
-    descricao: 'Cria uma area de contato mais persuasiva, com beneficios, mensagens de confianca e chamada forte para incentivar a conversao.'
+    descricao: 'Área de contato persuasiva com benefícios, mensagens de confiança e chamada forte para conversão.'
   },
 
   {
     id: 'VideoModel1',
     nome: 'Video Simples',
-    descricao: 'Mostra um video institucional, promocional ou demonstrativo de forma simples dentro do site.'
+    descricao: 'Exibe um vídeo institucional, promocional ou demonstrativo de forma simples dentro do site.'
   },
   {
     id: 'VideoModel2',
     nome: 'Video com Texto de Apoio',
-    descricao: 'Combina o video com um texto de apoio, ajudando o visitante a entender melhor sua proposta, servico ou produto.'
+    descricao: 'Vídeo combinado com texto de apoio para ajudar o visitante a entender melhor sua proposta.'
   },
   {
     id: 'VideoModel3',
     nome: 'Video com Secao de Destaques',
-    descricao: 'Transforma o video em uma secao mais comercial, com beneficios, chamada para acao e destaques que ajudam na conversao.'
+    descricao: 'Vídeo em seção comercial com benefícios e chamada para ação que auxiliam na conversão.'
   },
 
   {
     id: 'GaleriaModel1',
     nome: 'Galeria em Grade',
-    descricao: 'Mostra fotos de produtos, ambiente, projetos ou resultados em uma grade simples e organizada.'
+    descricao: 'Fotos de produtos, ambiente ou projetos em grade simples e organizada.'
   },
   {
     id: 'GaleriaModel2',
     nome: 'Galeria em Mosaico',
-    descricao: 'Apresenta as imagens em um mosaico mais visual, criando uma experiencia mais bonita e valorizando melhor as fotos.'
+    descricao: 'Imagens em mosaico visual, criando uma experiência mais bonita e valorizando melhor as fotos.'
   },
   {
     id: 'GaleriaModel3',
     nome: 'Galeria Portfolio',
-    descricao: 'Cria uma galeria com aparencia de portfolio, destacando imagens importantes e transmitindo mais profissionalismo para a marca.'
+    descricao: 'Galeria com aparência de portfólio, destacando imagens importantes e transmitindo profissionalismo.'
   }
 ];
 
